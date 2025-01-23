@@ -1,0 +1,37 @@
+HTTrack3.49-5 launched on Mon, 20 Jan 2025 10:46:33 at https://themesflat.co/html/ecomus/index.html +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/*
+(webhttrack -q -%i -w https://themesflat.co/html/ecomus/index.html -O "/home/gedexo/websites/ecomus template" -n -%P -N0 -s2 -p7 -D -a -K0 -c4 -%k -A100000 -F  -%F  +*.png +*.gif +*.jpg +*.jpeg +*.css +*.js -ad.doubleclick.net/* -%s -%u )
+
+Information, Warnings and Errors reported for this mirror:
+note:	the hts-log.txt file, and hts-cache folder, may contain sensitive information,
+	such as username/password authentication for websites mirrored in this project
+	do not share these files/folders if you want these information to remain private
+
+11:00:27	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): https://themesflat.co/html/ecomus/js/rangle-slider.js
+11:16:48	Warning: 	file not stored in cache due to bogus state (incomplete type with OK (200), size 0): https://themesflat.co/html/ecomus/order-tracking.html
+11:24:03	Warning: 	File not parsed, looks like binary: https://themesflat.co/html/ecomus/images/shop/products/preview_images/dance-bag_3d.glb
+11:24:42	Warning: 	HTML file (330744 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/shop-default.html
+11:24:49	Warning: 	File seems complete (same size), but there was a cache read error (4294967295): https://themesflat.co/html/ecomus/js/sibforms.js
+11:24:57	Warning: 	HTML file (290109 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-multi-brand.html
+11:25:13	Warning: 	HTML file (296181 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-pickleball.html
+11:25:27	Warning: 	HTML file (357090 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/shop-left-sidebar.html
+11:25:34	Warning: 	HTML file (330736 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/shop-women.html
+11:27:00	Warning: 	File seems complete (same size), but there was a cache read error (4294967295): https://themesflat.co/html/ecomus/js/model-viewer.min.js
+11:27:34	Warning: 	HTML file (328257 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-sock.html
+11:27:40	Warning: 	HTML file (310520 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-jewerly.html
+11:27:46	Warning: 	HTML file (282881 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-sneaker.html
+11:27:51	Warning: 	HTML file (318315 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-accessories.html
+11:28:02	Warning: 	HTML file (297800 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-plant.html
+11:28:08	Warning: 	HTML file (296094 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-swimwear.html
+11:28:14	Warning: 	HTML file (308695 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-electric-bike.html
+11:28:21	Warning: 	HTML file (340530 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-footwear.html
+11:28:27	Warning: 	HTML file (526999 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-book-store.html
+11:28:36	Warning: 	HTML file (387424 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-gaming-accessories.html
+11:28:43	Warning: 	HTML file (338664 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-parallax.html
+11:29:12	Warning: 	HTML file (362670 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/home-men.html
+11:32:49	Warning: 	HTML file (4574992 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/images/shop/products/preview_images/dance-bag_3d.glb
+11:33:49	Warning: 	File not parsed, looks like binary: https://themesflat.co/html/ecomus/images/shop/products/preview_images/dance-bag_3d.glb
+11:34:29	Warning: 	Retry after error -4 (No data (connection closed)) at link https://themesflat.co/html/ecomus/images/brand/old-navy-logo.png (from https://themesflat.co/html/ecomus/brands-v2.html)
+11:40:36	Warning: 	HTML file (0 bytes) retransferred due to lack of cache: https://themesflat.co/html/ecomus/order-tracking.html
+
+HTTrack Website Copier/3.49-5 mirror complete in 54 minutes 6 seconds : 1904 links scanned, 1923 files written (214496421 bytes overall) [170422676 bytes received at 52502 bytes/sec], 55217405 bytes transferred using HTTP compression in 219 files, ratio 18%, 1.6 requests per connection
+(No errors, 26 warnings, 0 messages)
