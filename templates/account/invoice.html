@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="{% static 'web/img/logo.png' %}" rel="icon" />
+<title>kmtsilks Invoice Id : #{{ order.order_id }} </title>
+<meta name="author" content="harnishdesign.net">
+
+<!-- Web Fonts
+======================= -->
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900' type='text/css'>
+
+<!-- Stylesheet
+======================= -->
+<link rel="stylesheet" type="text/css" href="{% static 'assets/invoice/vendor/bootstrap.min.css' %}"/>
+
+<link rel="stylesheet" type="text/css" href="{% static 'assets/invoice/vendor/all.min.css' %}"/>
+
+<link rel="stylesheet" type="text/css" href="{% static 'assets/invoice/vendor/stylesheet.css' %}"/>
+</head>
+<body>
+<!-- Container -->
+<div class="container-fluid invoice-container">
+  <!-- Header -->
+  <header>
+	  <div class="row align-items-center gy-3">
+		<div class="col-sm-7 text-center text-sm-start">
+		  <img id="logo" src="{% static 'web/img/logo.png' %}" height="70px" title="kmtsilks" alt="kmtsilks" />
+		</div>
+		<div class="col-sm-5 text-center text-sm-end">
+		  <h4 class="text-7 mb-0">Invoice</h4>
+		</div>
+	  </div>
+	  <hr>
+  </header>
+  
+  <!-- Main Content -->
+  <main>
+	  <div class="row">
+		<div class="col-sm-6"><strong>Date:</strong> {{ order.created|date:"Y-m-d" }}</div>
+        <div class="col-sm-6 text-sm-end"> <strong>Invoice No:</strong> #{{ order.order_id }}</div>
+
+	  </div>
+	  <hr>
+	  <div class="row">
+		<div class="col-sm-6 text-sm-end order-sm-1"> <strong>To:</strong>
+		  <address>
+            {{ order.full_name }}<br />
+            {{ order.address_line_1 }}<br />
+            {{ order.address_line_2 }}<br />
+            {{ order.city }}, {{ order.state }} - {{ order.pin_code }}
+            <br>
+            {{ order.mobile_no }}
+            <br>
+			{{ order.email }}
+		  </address>
+		</div>
+		<div class="col-sm-6 order-sm-0"> <strong>From:</strong>
+		  <address>
+            kmtsilks,<br> 
+			kmtsilks,<br>
+         	Dubai,<br>
+			Dubai
+        	1235
+			<br>
+			+91 123456
+			<br>
+			info@kmtsilks.com
+		  </address>
+		</div>
+	  </div>
+		<div class="table-responsive">
+		<table class="table border mb-0">
+			<thead>
+			  <tr class="bg-light">
+				<td class="col-3"><strong>Product</strong></td>
+				<td class="col-4"><strong>Size</strong></td>
+				<td class="col-2 text-center"><strong>Rate</strong></td>
+				<td class="col-1 text-center"><strong>QTY</strong></td>
+				<td class="col-2 text-end"><strong>Amount</strong></td>
+			  </tr>
+			</thead>
+			<tbody>
+                {% for item in order.get_items %}
+				<tr>
+				  <td class="col-6">{{ item.product }}</td>
+				  <td class="col-1 text-1">{{ item.product.weight }}  {{ item.product.unit }}</td>
+				  <td class="col-1 text-center">₹{{ item.price }}</td>
+				  <td class="col-1 text-center">{{ item.quantity }}</td>
+				  <td class="col-2 text-end">₹{{ item.subtotal }}</td>
+				</tr>
+                {% endfor %}
+			</tbody>
+		</table>
+		</div>
+		<div class="table-responsive">
+			<table class="table border border-top-0 mb-0">
+				{% comment %} <tr class="bg-light">
+				  <td class="text-end"><strong>Subtotal:</strong></td>
+				  <td class="col-sm-2 text-end"> ₹{{ order.subtotal }}</td>
+				</tr> {% endcomment %}
+				<tr class="bg-light">
+				  <td class="text-end"><strong>Service Fee:</strong></td>
+				  <td class="col-sm-2 text-end">₹{{ order.service_fee }}</td>
+				</tr>
+				<tr class="bg-light">
+					<td class="text-end"><strong>Shipping Fee:</strong></td>
+					<td class="col-sm-2 text-end">₹{{ order.shipping_fee }}</td>
+				  </tr>
+				<tr class="bg-light">
+				  <td class="text-end"><strong>Grand Total:</strong></td>
+				  <td class="col-sm-2 text-end">₹{{ order.payable }}</td>
+				</tr>
+			</table>
+		</div>
+  </main>
+  <!-- Footer -->
+  <footer class="text-center mt-4">
+  <p class="text-1"><strong>NOTE :</strong> This is computer generated receipt and does not require physical signature.</p>
+  <div class="btn-group btn-group-sm d-print-none"> <a href="javascript:window.print()" class="btn btn-light border text-black-50 shadow-none"><i class="fa fa-print"></i> Print & Download</a> </div>
+  </footer>
+</div>
+</body>
+</html>

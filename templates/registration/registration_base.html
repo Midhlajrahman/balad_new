@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Primary Meta Tags -->
+    <title>{% block title %} {% endblock %} kmtsilks</title>
+    <meta name="title" content="">
+    <meta name="description" content="">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="">
+    <meta property="twitter:title" content="">
+    <meta property="twitter:description" content="">
+    <meta property="twitter:image" content="">
+
+    <!-- Favicon icon-->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/favicon/icon.svg' %}">
+
+    <!-- Libs CSS -->
+    <link href="{% static 'assets/libs/bootstrap-icons/font/bootstrap-icons.min.css' %}{{current_version}}" rel="stylesheet">
+    <link href="{% static 'assets/libs/feather-webfont/dist/feather-icons.css' %}{{current_version}}" rel="stylesheet">
+    <link href="{% static 'assets/libs/simplebar/dist/simplebar.min.css' %}{{current_version}}" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/theme.min.css' %}{{current_version}}">
+    <!-- Google tag (gtag.js) -->
+
+
+</head>
+
+<body>
+
+    <!-- navigation -->
+    <div class="border-bottom shadow-sm">
+        <nav class="navbar navbar-light py-2">
+        <div class="container justify-content-center justify-content-lg-between">
+            <a class="navbar-brand" href="/">
+            {% comment %} <img src="{% static 'assets/images/logo/logo.png' %}" alt="kmtsilks" class="nav-logo d-inline-block align-text-top"> {% endcomment %}
+            White House
+            </a>
+            {% block reg_nav %}{% endblock reg_nav %}
+        </div>
+        </nav>
+    </div>
+
+    <main>
+        {% block content %} {% endblock content %}
+    </main>
+    {% comment %} {% include 'web/includes/footer.html' %} {% endcomment %}
+      <!-- Libs JS -->
+    <script src="{% static 'assets/libs/jquery/dist/jquery.min.js'  %}{{current_version}}"></script>
+    <script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js'  %}{{current_version}}"></script>
+    <script src="{% static 'assets/libs/simplebar/dist/simplebar.min.js'  %}{{current_version}}"></script>
+
+    <!-- Theme JS -->
+    <script src="{% static 'assets/js/theme.min.js'  %}{{current_version}}"></script>
+
+</body>
+
+</html>

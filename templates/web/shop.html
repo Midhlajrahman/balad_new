@@ -1,0 +1,259 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% block content %}
+<style>
+
+</style>
+<!-- page-title -->
+<div class="tf-page-title">
+    <div class="container-full">
+        <div class="row">
+            <div class="col-12">
+                <div class="heading text-center">Shop</div>
+                <p class="text-center text-2 text_black-2 mt_5">Shop through our latest selection of Fashion</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /page-title -->
+<section class="flat-spacing-1">
+    <div class="container">
+        <div class="tf-shop-control grid-3 align-items-center">
+            <div class="tf-control-filter">
+                <!-- <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-btn-filter"><span class="icon icon-filter"></span><span class="text">Filter</span></a> -->
+            </div>
+            <ul class="tf-control-layout d-flex justify-content-center">
+                <li class="tf-view-layout-switch sw-layout-2" data-value-grid="grid-2">
+                    <div class="item"><span class="icon icon-grid-2"></span></div>
+                </li>
+                <li class="tf-view-layout-switch sw-layout-3 active" data-value-grid="grid-3">
+                    <div class="item"><span class="icon icon-grid-3"></span></div>
+                </li>
+                <li class="tf-view-layout-switch sw-layout-4" data-value-grid="grid-4">
+                    <div class="item"><span class="icon icon-grid-4"></span></div>
+                </li>
+
+            </ul>
+            <div class="tf-control-sorting d-flex justify-content-end">
+                <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+                    <div class="btn-select">
+                        <span class="text-sort-value" id="dropdownMenuButton">Latest</span>
+                        <span class="icon icon-arrow-down"></span>
+                    </div>
+                    <div class="dropdown-menu">
+                        <div class="select-item active">
+                            <span class="text-value-item dropdown-item" data-value="latest">Latest</span>
+                        </div>
+                        <div class="select-item">
+                            <span class="text-value-item dropdown-item" data-value="low-to-high">Low to High</span>
+                        </div>
+                        <div class="select-item">
+                            <span class="text-value-item dropdown-item" data-value="high-to-low">High to Low</span>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="tf-row-flex">
+            <aside class="tf-shop-sidebar wrap-sidebar-mobile">
+                <div class="widget-facet wd-categories">
+                    <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true"
+                        aria-controls="categories">
+                        <span>Product categories</span>
+                        <span class="icon icon-arrow-up"></span>
+                    </div>
+                    <div id="categories" class="collapse show">
+                        <ul class="list-categoris category-list current-scrollbar mb_36">
+                            <li class="cate-item"><a href="javascript:void(0);" data-category="all">All</a></li>
+                            {% for category in categories %}
+                            <li class="cate-item"><a href="javascript:void(0);"
+                                    data-category="{{ category.slug }}"><span>{{category.name}}</span>&nbsp;<span>({{category.get_product_count}})</span></a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="widget-facet wd-categories">
+                    <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true"
+                        aria-controls="categories">
+                        <span>Colors</span>
+                        <span class="icon icon-arrow-up"></span>
+                    </div>
+                    <div id="categories" class="collapse show">
+                        <ul class="list-color-product">
+                            {% for color in all_colors %}
+                            <li
+                                class="list-color-item list-color-item1 color-swatch {% if forloop.first %}active{% endif %}">
+                                <span class="tooltip">{{ color.name }}</span>
+                                <span class="swatch-value swatch-value1" style="background-color: {{ color.hex_code }};"
+                                    data-color="{{ color.name }}"></span>
+                                {% if color.image %}
+                                <img class="lazyload" data-src="{{ color.image.url }}" src="{{ color.image.url }}"
+                                    alt="{{ color.name }}">
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+
+
+                <div class="widget-facet wd-categories">
+                    <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true"
+                        aria-controls="categories">
+                        <span>Price slider</span>
+                        <span class="icon icon-arrow-up"></span>
+                    </div>
+                    <div id="categories" class="collapse show">
+                        <ul class="list-categoris category-list current-scrollbar mb_36">
+                            <div class="price-slide range-slider">
+                                <div class="price">
+                                    <input type="range" id="price-range" min="0" max="5000" step="1" value="200"
+                                        class="price-range-slider">
+                                    <div class="price-range-labels">
+                                        <span id="min-price">100</span> - <span id="max-price">5000</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </ul>
+                    </div>
+                </div>
+
+
+
+
+                <div class="widget-facet wd-categories">
+                    <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true"
+                        aria-controls="categories">
+                        <span>Brands</span>
+                        <span class="icon icon-arrow-up"></span>
+                    </div>
+
+                    <div id="categories" class="collapse show">
+                        <ul class="list-brand-product category-list current-scrollbar mb_36">
+                            {% for brand in all_brands %}
+                            <li class="cate-item list-brand-item">
+                                <input type="radio" id="brand_{{ brand.id }}" name="brand" value="{{ brand.id }}"
+                                    class="brand-radio">
+                                <label for="brand_{{ brand.id }}" class="brand-name">
+                                    <span>{{ brand.brand_name }}</span>&nbsp;
+                                </label>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="widget-facet">
+                    <div class="facet-title" data-bs-target="#follow" data-bs-toggle="collapse" aria-expanded="true"
+                        aria-controls="follow">
+                        <span>Follow us</span>
+                        <span class="icon icon-arrow-up"></span>
+                    </div>
+                    <div id="follow" class="collapse show">
+                        <ul class="tf-social-icon d-flex gap-10">
+                            <li><a href="#" class="box-icon w_34 round bg_line social-facebook"><i
+                                        class="icon fs-14 icon-fb"></i></a></li>
+                            <li><a href="#" class="box-icon w_34 round bg_line social-twiter"><i
+                                        class="icon fs-12 icon-Icon-x"></i></a></li>
+                            <li><a href="#" class="box-icon w_34 round bg_line social-instagram"><i
+                                        class="icon fs-14 icon-instagram"></i></a></li>
+                            <li><a href="#" class="box-icon w_34 round bg_line social-tiktok"><i
+                                        class="icon fs-14 icon-tiktok"></i></a></li>
+                            <li><a href="#" class="box-icon w_34 round bg_line social-pinterest"><i
+                                        class="icon fs-14 icon-pinterest-1"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+            <div class="tf-shop-content">
+                <div class="grid-layout wrapper-shop product-list" data-grid="grid-3">
+                    <!-- card product 1 -->
+                    {% for product in products %}
+
+                    <div class="card-product isotope-item" data-category="{{ product.category.slug }}"
+                        data-item="{{product.id}}" data-price="{{ product.get_sale_price }}"
+                        data-color="{{ product.colour_set.all|join:' ' }}" data-brand="{{ product.brands.brand_name }}"
+                        data-size="{{ product.size_set.all|join:' ' }}">
+                        <div class="card-product-wrapper" data-item="{{product.id}}">
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}" class="product-img">
+                                <img class="lazyload img-product" data-src="{{product.image.url}}"
+                                    src="{{product.image.url}}" alt="image-product">
+                                <img class="lazyload img-hover" data-src="{{product.image.url}}"
+                                    src="{{product.image.url}}" alt="image-product">
+                            </a>
+                            <div class="list-product-btn absolute-2">
+
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
+                                    class="box-icon bg_white quickview tf-btn-loading">
+                                    <span class="icon icon-view"></span>
+                                    <span class="tooltip">Quick View</span>
+                                </a>
+                            </div>
+
+                        </div>
+                        <div class="card-product-info">
+                            {% comment %} <a href="{{product.get_absolute_url}}" class="title link">{{product.name}}</a>
+                            {% endcomment %}
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
+                                class="title link">{{product.name}}</a>
+                            <span class="price">{{product.get_sale_price}}</span>
+                            <ul class="list-color-product">
+                                {% for color in product.colour_set.all %}
+
+                                <li class="list-color-item color-swatch  {% if forloop.first %}active{% endif %}">
+                                    <span class="tooltip">{{ color.name }}</span>
+                                    <span class="swatch-value" style="background-color: {{ color.hex_code }};"></span>
+                                    <img class="lazyload" data-src="{{ color.image.url }}" src="{{ color.image.url }}"
+                                        alt="image-product">
+                                </li>
+
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+{% comment %} <div class="btn-sidebar-style2">
+    <button data-bs-toggle="offcanvas" data-bs-target="#sidebarmobile" aria-controls="offcanvas"><i
+            class="icon icon-sidebar-2"></i></button>
+</div> {% endcomment %}
+
+</div>
+
+<!-- Filter -->
+
+{% for product in products %}
+{% include "web/includes/quick_view_modal.html" %}
+{% endfor %}
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+
+<script src="{% static 'web/js/product_detail.js' %}"></script>
+<div id="cart-modal" style="">
+    {% include "web/includes/cart_modal.html" %}
+</div>
+<script src="{% static 'web/js/shop-filter.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.all.min.js"></script>
+
+{% endblock  %}
+
+
+{% endblock %}

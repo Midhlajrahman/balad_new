@@ -1,0 +1,107 @@
+
+<div class="modal fade modalDemo quick_view" id="quick_view_{{ product.id }}" tabindex="-1"
+    aria-labelledby="quickViewLabel_{{ product.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="header">
+                <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></span>
+            </div>
+            <div class="wrap">
+                <div class="tf-product-media-wrap modal-wrap modal-img">
+                    <div dir="ltr" class="swiper tf-single-slide">
+                        <div class="swiper-wrapper">
+                            {% for image in product.get_images %}
+                            <div class="swiper-slide">
+                                <div class="item">
+                                    <img data-src="{{ image.image.url }}" src="{{ image.image.url }}">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="swiper-button-next button-style-arrow single-slide-prev"></div>
+                        <div class="swiper-button-prev button-style-arrow single-slide-next"></div>
+                    </div>
+                </div>
+                <div class="tf-product-info-wrap position-relative">
+                    <div class="tf-product-info-list">
+                        <div class="tf-product-info-title">
+                            <h5><a class="link" href="#" id="product-name-{{ product.id }}">{{ product.name }}</a></h5>
+                        </div>
+                       
+                        <div class="tf-product-info-price">
+                            <div class="price-on-sale" id="price-on-sale-{{ product.id }}">{{ product.get_sale_price }}
+                            </div>
+                            <div class="compare-at-price" id="compare-at-price-{{ product.id }}">{{product.get_regular_price }}</div>
+                        </div>
+                       <div class="tf-product-description">
+                            <p>Crafted with premium-quality fabric, our clothing offers unmatched comfort and durability. </p>
+                        </div>
+                        <div class="tf-product-info-variant-picker">
+                            <div class="variant-picker-item">
+                                <div class="variant-picker-label">
+                                    Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.colour_set.first.name }}</span>
+                                </div>
+                                <div class="variant-picker-values" data-product-id="{{ product.id }}">
+                                    {% for color in product.colour_set.all %}
+                                    <input id="values-{{ color.name|lower }}" type="radio"
+                                        name="color1-{{ product.id }}" {% if forloop.first %}checked{% endif %}
+                                        onclick="updateProduct('{{ color.id }}')">
+                                    <label class="hover-tooltip radius-60 color-btn" for="values-{{ color.name|lower }}"
+                                        data-color="{{ color.name }}" data-value="{{ color.name }}">
+                                        <span class="btn-checkbox"
+                                            style="background-color: {{ color.hex_code }}"></span>
+                                        <span class="tooltip">{{ color.name }}</span>
+                                    </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="variant-picker-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="variant-picker-label">
+                                        Size: <span class="fw-6 variant-picker-label-value size-label"
+                                            id="current-size-{{ product.id }}"></span>
+                                    </div>
+
+                                </div>
+                                <div class="variant-picker-values">
+                                    <input type="hidden" id="selected-size-product-id" name="product_id" value="">
+                                    <div class="btn-group product-size m-0">
+                                        {% for item in product.get_sizes %}
+                                        <input type="radio" class="btn-check size-selector"
+                                            name="product_size-{{ product.id }}" value="{{ item.id }}"
+                                            id="btnradio{{ product.id }}{{ forloop.counter }}"
+                                            data-sale-price="{{ item.sale_price }}"
+                                            data-regular-price="{{ item.regular_price }}"
+                                            data-product-id="{{ product.id }}" {% if forloop.first %}checked{% endif %}>
+                                        <label class="btn btn-size" for="btnradio{{ product.id }}{{ forloop.counter }}">
+                                            {{ item.weight }} {{ item.unit }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tf-product-info-quantity">
+                            <div class="quantity-title fw-6">Quantity</div>
+                            <div class="wg-quantity">
+                                <span class="btn-quantity minus-btn">-</span>
+                                <input type="text" name="quantity" value="1" class="quantity__input">
+                                <span class="btn-quantity plus-btn">+</span>
+                            </div>
+                        </div>
+                        <div class="tf-product-info-buy-button">
+                            <form class="">
+                                <a href="javascript:void(0);"
+                                    class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart cart-add-btn"
+                                    data-product="{{ product.id }}"><span>Add to cart &nbsp;</span></a>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

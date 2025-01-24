@@ -1,0 +1,55 @@
+{% extends 'account/base.html' %} {% load static %} {% block title %}order{%endblock%} {% block content %}
+
+  <!-- heading -->
+  <h2 class="mb-6">My Orders</h2>
+  <div class="table-responsive-xxl border-0">
+    <!-- Table -->
+    {% if orders %}
+    <table class="table mb-0 text-nowrap table-centered">
+      <!-- Table Head -->
+      <thead class="bg-light">
+        <tr>
+          <th>Order</th>
+          <th>Date</th>
+          <th>Items</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Table body -->
+        {% for item in orders %}
+        <tr>
+          <td class="align-middle border-top-0">
+            <a href="{{item.get_user_absolute_url}}" class="fw-semi-bold text-inherit">
+              <h6 class="mb-0">#{{item.order_id}}</h6>
+            </a>
+          </td>
+          <td class="align-middle border-top-0">{{item.created}}</td>
+          <td class="align-middle border-top-0">{{item.get_items.count}}</td>
+          <td class="align-middle border-top-0">
+            <span class="badge bg-{% if item.order_status == 'Delivered' %}success{% elif item.order_status == 'Shipped' %}info{% elif item.order_status == 'Pending' %}warning {% elif item.order_status == 'Placed' %}warning{% elif item.order_status == 'Cancelled' %}danger{% endif %}">{{item.get_order_status_display}}</span>
+          </td>
+          <td class="align-middle border-top-0">₹ {{item.payable}}</td>
+          <td class="text-muted align-middle border-top-0">
+            <a
+              href="{{item.get_user_absolute_url}}"
+              class="text-inherit"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              data-bs-title="View">
+              <i class="feather-icon icon-eye"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="text-center">
+      <img src="{% static 'assets/images/assets/order_empty.png' %}" class="img-responsive img-fluid" alt="kmtsilks">
+    </div>
+    {% endif %}
+  </div>
+{% endblock content %}

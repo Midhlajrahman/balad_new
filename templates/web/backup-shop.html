@@ -1,0 +1,1635 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% block content  %}
+<style>
+
+</style>
+<!-- page-title -->
+        <div class="tf-page-title">
+            <div class="container-full">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="heading text-center">Shop</div>
+                        <p class="text-center text-2 text_black-2 mt_5">Shop through our latest selection of Fashion</p> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /page-title -->
+        <section class="flat-spacing-1">
+            <div class="container">
+                <div class="tf-shop-control grid-3 align-items-center">
+                    <div class="tf-control-filter">
+                        <!-- <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-btn-filter"><span class="icon icon-filter"></span><span class="text">Filter</span></a> -->
+                    </div>
+                    <ul class="tf-control-layout d-flex justify-content-center">
+                        <li class="tf-view-layout-switch sw-layout-2" data-value-grid="grid-2">
+                            <div class="item"><span class="icon icon-grid-2"></span></div>
+                        </li>
+                        <li class="tf-view-layout-switch sw-layout-3 active" data-value-grid="grid-3">
+                            <div class="item"><span class="icon icon-grid-3"></span></div>
+                        </li>
+                        <li class="tf-view-layout-switch sw-layout-4" data-value-grid="grid-4">
+                            <div class="item"><span class="icon icon-grid-4"></span></div>
+                        </li>
+                        
+                    </ul>
+                    <div class="tf-control-sorting d-flex justify-content-end">
+                        <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
+                            <div class="btn-select">
+                                <span class="text-sort-value" id="dropdownMenuButton">Latest</span>
+                                <span class="icon icon-arrow-down"></span>
+                            </div>
+                            <div class="dropdown-menu">
+                                <div class="select-item active">
+                                    <span class="text-value-item dropdown-item" data-value="latest">Latest</span>
+                                </div>
+                                <div class="select-item">
+                                    <span class="text-value-item dropdown-item" data-value="low-to-high">Low to High</span>
+                                </div>
+                                <div class="select-item">
+                                    <span class="text-value-item dropdown-item"  data-value="high-to-low">High to Low</span>
+                                </div>
+                           
+
+                           
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tf-row-flex">
+                    <aside class="tf-shop-sidebar wrap-sidebar-mobile">
+                        <div class="widget-facet wd-categories">
+                            <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true" aria-controls="categories">
+                                <span>Product categories</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="categories" class="collapse show">
+                                <ul class="list-categoris category-list current-scrollbar mb_36">
+                                    <li  class="cate-item"><a href="javascript:void(0);" data-category="all">All</a></li>
+                                    {% for category in categories %}
+                                    <li class="cate-item"><a href="javascript:void(0);" data-category="{{ category.slug }}"><span>{{category.name}}</span>&nbsp;<span>({{category.get_product_count}})</span></a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+                         <div class="widget-facet wd-categories">
+                            <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true" aria-controls="categories">
+                                <span>Colors</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="categories" class="collapse show">
+                                <ul class="list-color-product">
+                                    {% for color in all_colors %}
+                                    <li class="list-color-item list-color-item1 color-swatch {% if forloop.first %}active{% endif %}">
+                                        <span class="tooltip">{{ color.name }}</span>
+                                        <span class="swatch-value swatch-value1" style="background-color: {{ color.hex_code }};" data-color="{{ color.name }}" ></span>
+                                        {% if color.image %}
+                                        <img class="lazyload" data-src="{{ color.image.url }}" src="{{ color.image.url }}" alt="{{ color.name }}">
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+
+
+
+                        <div class="widget-facet wd-categories">
+                            <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true" aria-controls="categories">
+                                <span>Price slider</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="categories" class="collapse show">
+                                <ul class="list-categoris category-list current-scrollbar mb_36">
+                                    <div class="price-slide range-slider">
+                                        <div class="price">
+                                            <input type="range" id="price-range" min="0" max="5000" step="1" value="200" class="price-range-slider">
+                                            <div class="price-range-labels">
+                                            <span id="min-price">100</span> - <span id="max-price">5000</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 
+                                </ul>
+                            </div>
+                        </div>
+
+                    
+                        
+
+                        <div class="widget-facet wd-categories">
+                            <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true" aria-controls="categories">
+                                <span>Brands</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                        
+                            <div id="categories" class="collapse show">
+                                <ul class="list-brand-product category-list current-scrollbar mb_36">
+                                    {% for brand in all_brands %}
+                                        <li class="cate-item list-brand-item">
+                                            <input type="radio" id="brand_{{ brand.id }}" name="brand" value="{{ brand.id }}" class="brand-radio">
+                                            <label for="brand_{{ brand.id }}" class="brand-name">
+                                                <span>{{ brand.brand_name }}</span>&nbsp;
+                                            </label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                  
+                        <div class="widget-facet">
+                            <div class="facet-title" data-bs-target="#follow" data-bs-toggle="collapse" aria-expanded="true" aria-controls="follow">
+                                <span>Follow us</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="follow" class="collapse show">
+                                <ul class="tf-social-icon d-flex gap-10">
+                                    <li><a href="#" class="box-icon w_34 round bg_line social-facebook"><i class="icon fs-14 icon-fb"></i></a></li>
+                                    <li><a href="#" class="box-icon w_34 round bg_line social-twiter"><i class="icon fs-12 icon-Icon-x"></i></a></li>
+                                    <li><a href="#" class="box-icon w_34 round bg_line social-instagram"><i class="icon fs-14 icon-instagram"></i></a></li>
+                                    <li><a href="#" class="box-icon w_34 round bg_line social-tiktok"><i class="icon fs-14 icon-tiktok"></i></a></li>
+                                    <li><a href="#" class="box-icon w_34 round bg_line social-pinterest"><i class="icon fs-14 icon-pinterest-1"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </aside>
+                    <div class="tf-shop-content">
+                        <div class="grid-layout wrapper-shop product-list" data-grid="grid-3">
+                            <!-- card product 1 -->
+                            {% for product in products  %}
+
+                            <div class="card-product isotope-item"  data-category="{{ product.category.slug }}" data-item="{{product.id}}" data-price="{{ product.get_sale_price }}"   data-color="{{ product.colour_set.all|join:' ' }}" data-brand="{{ product.brands.brand_name }}"   data-size="{{ product.size_set.all|join:' ' }}" >
+                                <div class="card-product-wrapper"  data-item="{{product.id}}">
+                                    <a href="product-detail.html" class="product-img">
+                                        <img class="lazyload img-product" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">
+                                        <img class="lazyload img-hover" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">
+                                    </a>
+                                    <div class="list-product-btn absolute-2">
+                                        <a href="#" data-product-id="{{ product.id }}" data-bs-toggle="modal" class="box-icon bg_white quick-add tf-btn-loading">
+                                            <span class="icon icon-bag"></span>
+                                            <span class="tooltip">Quick Add</span>
+                                        </a>
+                                        <a href="javascript:void(0);" class="box-icon bg_white wishlist btn-icon-action">
+                                            <span class="icon icon-heart"></span>
+                                            <span class="tooltip">Add to Wishlist</span>
+                                            <span class="icon icon-delete"></span>
+                                        </a>
+                                        <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="box-icon bg_white compare btn-icon-action">
+                                            <span class="icon icon-compare"></span>
+                                            <span class="tooltip">Add to Compare</span>
+                                            <span class="icon icon-check"></span>
+                                        </a>
+                                        {% comment %} <a class="product__add-to__cart--btn__style2" data-open="quick-view{{ product.id }}" href="javascript:void(0)">
+                                            <span class="add__to--cart__text"> View</span>
+                                        </a> {% endcomment %}
+                                        <a href="#" data-bs-toggle="modal"  data-bs-target="#quick_view_{{ product.id }}"  class="box-icon bg_white quickview tf-btn-loading">
+                                            <span class="icon icon-view"></span>
+                                            <span class="tooltip">Quick View</span>
+                                        </a>
+                                    </div>
+                                  
+                                </div>
+                                <div class="card-product-info">
+                                    <a href="{{product.get_absolute_url}}" class="title link">{{product.name}}</a>
+                                    <span class="price">{{product.get_sale_price}}</span>
+                                    <ul class="list-color-product">
+                                        {% for color in product.colour_set.all %}
+
+                                        <li class="list-color-item color-swatch  {% if forloop.first %}active{% endif %}">
+                                            <span class="tooltip">{{ color.name }}</span>
+                                            <span class="swatch-value" style="background-color: {{ color.hex_code }};"></span>
+                                            <img class="lazyload" data-src="{{ color.image.url }}" src="{{ color.image.url }}" alt="image-product">
+                                        </li>
+
+                                        {% endfor %}
+                                 
+                                    </ul>
+                                </div>
+                            </div>
+
+                                                        
+                            {% endfor %}
+                          
+                        </div>
+                        <!-- pagination -->
+                        <ul class="tf-pagination-wrap tf-pagination-list">
+                            <li class="active">
+                                <a href="#" class="pagination-link">1</a>
+                            </li>
+                            <li>
+                                <a href="#" class="pagination-link animate-hover-btn">2</a>
+                            </li>
+                            <li>
+                                <a href="#" class="pagination-link animate-hover-btn">3</a>
+                            </li>
+                            <li>
+                                <a href="#" class="pagination-link animate-hover-btn">4</a>
+                            </li>
+                            <li>
+                                <a href="#" class="pagination-link animate-hover-btn">
+                                    <span class="icon icon-arrow-right"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+        <div class="btn-sidebar-style2">
+            <button data-bs-toggle="offcanvas" data-bs-target="#sidebarmobile" aria-controls="offcanvas"><i class="icon icon-sidebar-2"></i></button>
+        </div>
+      
+    </div>
+
+
+
+
+        <!-- Filter -->
+        <div class="offcanvas offcanvas-start canvas-filter" id="filterShop">
+            <div class="canvas-wrapper">
+                <header class="canvas-header">
+                    <div class="filter-icon">
+                        <span class="icon icon-filter"></span>
+                        <span>Filter</span>
+                    </div>
+                    <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+                </header>
+                <div class="canvas-body">
+                    <div class="widget-facet wd-categories">
+                        <div class="facet-title" data-bs-target="#categories" data-bs-toggle="collapse" aria-expanded="true" aria-controls="categories">
+                            <span>Product categories</span>
+                            <span class="icon icon-arrow-up"></span>
+                        </div>
+                        <div id="categories" class="collapse show">
+                            <ul class="list-categoris current-scrollbar mb_36">
+                                <li class="cate-item current"><a href="shop-default.html"><span>Fashion</span></a></li>
+                                <li class="cate-item"><a href="shop-default.html"><span>Men</span></a></li>
+                                <li class="cate-item"><a href="shop-default.html"><span>Women</span></a></li>
+                                <li class="cate-item"><a href="shop-default.html"><span>Denim</span></a></li>
+                                <li class="cate-item"><a href="shop-default.html"><span>Dress</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <form action="#" id="facet-filter-form" class="facet-filter-form">
+                        <div class="widget-facet">
+                            <div class="facet-title" data-bs-target="#availability" data-bs-toggle="collapse" aria-expanded="true" aria-controls="availability">
+                                <span>Availability</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="availability" class="collapse show">
+                                <ul class="tf-filter-group current-scrollbar mb_36">
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="availability" class="tf-check" id="availability-1">
+                                        <label for="availability-1" class="label"><span>In stock</span>&nbsp;<span>(14)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="availability" class="tf-check" id="availability-2">
+                                        <label for="availability-2" class="label"><span>Out of stock</span>&nbsp;<span>(2)</span></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="widget-facet">
+                            <div class="facet-title" data-bs-target="#price" data-bs-toggle="collapse" aria-expanded="true" aria-controls="price">
+                                <span>Price</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="price" class="collapse show">
+                                <div class="widget-price filter-price">
+                                    <div class="tow-bar-block">
+                                        <div class="progress-price"></div>
+                                    </div>
+                                    <div class="range-input">
+                                        <input class="range-min" type="range" min="0" max="300" value="0"/>
+                                        <input class="range-max" type="range" min="0" max="300" value="300"/>
+                                    </div>
+                                    <div class="box-title-price">
+                                        <span class="title-price">Price :</span>
+                                        <div class="caption-price">
+                                            <div>
+                                                <span>$</span>
+                                                <span class="min-price">0</span>
+                                            </div>
+                                            <span>-</span>
+                                            <div>
+                                                <span>$</span>
+                                                <span class="max-price">300</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="widget-facet">
+                            <div class="facet-title" data-bs-target="#brand" data-bs-toggle="collapse" aria-expanded="true" aria-controls="brand">
+                                <span>Brand</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="brand" class="collapse show">
+                                <ul class="tf-filter-group current-scrollbar mb_36">
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="brand" class="tf-check" id="brand-1">
+                                        <label for="brand-1" class="label"><span>Ecomus</span>&nbsp;<span>(8)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="brand" class="tf-check" id="brand-2">
+                                        <label for="brand-2" class="label"><span>M&H</span>&nbsp;<span>(8)</span></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="widget-facet">
+                            <div class="facet-title" data-bs-target="#color" data-bs-toggle="collapse" aria-expanded="true" aria-controls="color">
+                                <span>Color</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="color" class="collapse show">
+                                <ul class="tf-filter-group filter-color current-scrollbar mb_36">
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_beige" id="beige">
+                                        <label for="beige" class="label"><span>Beige</span>&nbsp;<span>(3)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_dark" id="black">
+                                        <label for="black" class="label"><span>Black</span>&nbsp;<span>(18)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_blue-2" id="blue">
+                                        <label for="blue" class="label"><span>Blue</span>&nbsp;<span>(3)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_brown" id="brown">
+                                        <label for="brown" class="label"><span>Brown</span>&nbsp;<span>(3)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_cream" id="cream">
+                                        <label for="cream" class="label"><span>Cream</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_dark-beige" id="dark-beige">
+                                        <label for="dark-beige" class="label"><span>Dark Beige</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_dark-blue" id="dark-blue">
+                                        <label for="dark-blue" class="label"><span>Dark Blue</span>&nbsp;<span>(3)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_dark-green" id="dark-green">
+                                        <label for="dark-green" class="label"><span>Dark Green</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_dark-grey" id="dark-grey">
+                                        <label for="dark-grey" class="label"><span>Dark Grey</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_grey" id="grey">
+                                        <label for="grey" class="label"><span>Grey</span>&nbsp;<span>(2)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_light-blue" id="light-blue">
+                                        <label for="light-blue" class="label"><span>Light Blue</span>&nbsp;<span>(5)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_light-green" id="light-green">
+                                        <label for="light-green" class="label"><span>Light Green</span>&nbsp;<span>(3)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_light-grey" id="light-grey">
+                                        <label for="light-grey" class="label"><span>Light Grey</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_light-pink" id="light-pink">
+                                        <label for="light-pink" class="label"><span>Light Pink</span>&nbsp;<span>(2)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_purple" id="light-purple">
+                                        <label for="light-purple" class="label"><span>Light Purple</span>&nbsp;<span>(2)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_light-yellow" id="light-yellow">
+                                        <label for="light-yellow" class="label"><span>Light Yellow</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_orange" id="orange">
+                                        <label for="orange" class="label"><span>Orange</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_pink" id="pink">
+                                        <label for="pink" class="label"><span>Pink</span>&nbsp;<span>(2)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_taupe" id="taupe">
+                                        <label for="taupe" class="label"><span>Taupe</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_white" id="white">
+                                        <label for="white" class="label"><span>White</span>&nbsp;<span>(14)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="color" class="tf-check-color bg_yellow" id="yellow">
+                                        <label for="yellow" class="label"><span>Yellow</span>&nbsp;<span>(1)</span></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="widget-facet">
+                            <div class="facet-title" data-bs-target="#size" data-bs-toggle="collapse" aria-expanded="true" aria-controls="size">
+                                <span>Size</span>
+                                <span class="icon icon-arrow-up"></span>
+                            </div>
+                            <div id="size" class="collapse show">
+                                <ul class="tf-filter-group current-scrollbar">
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="size" class="tf-check" id="s">
+                                        <label for="s" class="label"><span>S</span>&nbsp;<span>(7)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="size" class="tf-check" id="m">
+                                        <label for="m" class="label"><span>M</span>&nbsp;<span>(8)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="size" class="tf-check" id="l">
+                                        <label for="l" class="label"><span>L</span>&nbsp;<span>(8)</span></label>
+                                    </li>
+                                    <li class="list-item d-flex gap-12 align-items-center">
+                                        <input type="radio" name="size" class="tf-check" id="xl">
+                                        <label for="xl" class="label"><span>XL</span>&nbsp;<span>(6)</span></label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>    
+                </div>
+                
+            </div>       
+        </div>
+        <!-- End Filter -->
+
+{% comment %} {% for product in products  %}
+
+
+<div class="modal" id="quick-view{{ product.id }}" data-product="{{ product.id }}">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="header">
+                        <button class="close-modal" data-close aria-label="Close">×</button>
+                    </div>
+                    <div class="wrap">
+                        <div class="tf-product-info-item">
+                            {% for image in product.get_images %}
+                            <div class="image" data-variant = "{{ image.variant.id }}">
+                                <img src="{{ image.image.url }}" alt="">
+                            </div>
+                            {% endfor %}
+                            <div class="content">
+                                <a href="product-detail.html">{{ product }}</a>
+                                <div class="tf-product-info-price">
+                                    <div class="price" id="product-price">$18.00</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tf-product-info-variant-picker mb_15">
+                            <div class="variant-picker-item">
+                                <div class="variant-picker-label">
+                                    Color: <span class="fw-6 variant-picker-label-value">Orange</span>
+                                </div>
+                                <div class="variant-picker-values" id="color-picker-container">
+                                    <input id="values-orange" type="radio" name="color" checked>
+                                    <label class="hover-tooltip radius-60" for="values-orange" data-value="Orange">
+                                        <span class="btn-checkbox bg-color-orange"></span>
+                                        <span class="tooltip">Orange</span>
+                                    </label>
+                                    <input id="values-black" type="radio" name="color">
+                                    <label class=" hover-tooltip radius-60" for="values-black" data-value="Black">
+                                        <span class="btn-checkbox bg-color-black"></span>
+                                        <span class="tooltip">Black</span>
+                                    </label>
+                                    <input id="values-white" type="radio" name="color">
+                                    <label class="hover-tooltip radius-60" for="values-white" data-value="White">
+                                        <span class="btn-checkbox bg-color-white"></span>
+                                        <span class="tooltip">White</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="variant-picker-item">
+                                <div class="variant-picker-label">
+                                    Size: <span class="fw-6 variant-picker-label-value">S</span>
+                                </div>
+                                <div class="variant-picker-values" id="size-picker-container">
+                                 
+                                </div>
+                            </div>
+                        </div>
+                  
+                        <div class="tf-product-info-quantity mb_15">
+                            <div class="quantity-title fw-6">Quantity</div>
+                            <div class="wg-quantity">
+                                <span class="btn-quantity minus-btn">-</span>
+                                <input type="text" name="number" value="1">
+                                <span class="btn-quantity plus-btn">+</span>
+                            </div>
+                        </div>
+                        <div class="tf-product-info-buy-button">
+                            <form class="">
+                             
+                                <a href="javascript:void(0);" class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart "><span>Add to cart -&nbsp;</span></a>
+                      
+                                <div class="tf-product-btn-wishlist btn-icon-action">
+                                    <i class="icon-heart"></i>
+                                    <i class="icon-delete"></i>
+                                </div>
+                                <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-product-btn-wishlist box-icon bg_white compare btn-icon-action">
+                                    <span class="icon icon-compare"></span>
+                                    <span class="icon icon-check"></span>
+                                </a>
+                               
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        {% endfor %}    {% endcomment %}
+
+       
+        
+     
+
+<!-- /modal quick_add -->
+  
+           {% comment %} <!-- shoppingCart -->
+           <div class="modal fullRight fade modal-shopping-cart" id="shoppingCart">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="header">
+                        <div class="title fw-5">Shopping cart</div>
+                        <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
+                    </div>
+                    <div class="wrap">
+                     
+                        <div class="tf-mini-cart-wrap">
+                            <div class="tf-mini-cart-main">
+                                <div class="tf-mini-cart-sroll">
+                                    <div class="tf-mini-cart-items">
+                                        {% for item in cart_items %}
+                                        <div class="tf-mini-cart-item">
+                                            <div class="tf-mini-cart-image">
+                                                <a href="product-detail.html">
+                                                    <img src="{% static 'web/images/products/white-2.jpg' %}" alt="">
+                                                </a>
+                                            </div>
+                                            <div class="tf-mini-cart-info">
+                                                <a class="title link" href="product-detail.html"></a>
+                                                <div class="meta-variant">{{ item.product.product.name }}</div>
+                                                <div class="price fw-6">$25.00</div>
+                                                <div class="tf-mini-cart-btns">
+                                                    <div class="wg-quantity small">
+                                                        <span class="btn-quantity minus-btn">-</span>
+                                                        <input type="text" name="number" value="1">
+                                                        <span class="btn-quantity plus-btn">+</span>
+                                                    </div>
+                                                    <div class="tf-mini-cart-remove">Remove</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                       {% endfor %}
+                                    </div>
+                                  
+                                </div>
+                            </div>
+                            <div class="tf-mini-cart-bottom">
+                                <div class="tf-mini-cart-tool">
+                                    <div class="tf-mini-cart-tool-btn btn-add-note">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18" fill="currentColor"><path d="M5.12187 16.4582H2.78952C2.02045 16.4582 1.39476 15.8325 1.39476 15.0634V2.78952C1.39476 2.02045 2.02045 1.39476 2.78952 1.39476H11.3634C12.1325 1.39476 12.7582 2.02045 12.7582 2.78952V7.07841C12.7582 7.46357 13.0704 7.77579 13.4556 7.77579C13.8407 7.77579 14.1529 7.46357 14.1529 7.07841V2.78952C14.1529 1.25138 12.9016 0 11.3634 0H2.78952C1.25138 0 0 1.25138 0 2.78952V15.0634C0 16.6015 1.25138 17.8529 2.78952 17.8529H5.12187C5.50703 17.8529 5.81925 17.5407 5.81925 17.1555C5.81925 16.7704 5.50703 16.4582 5.12187 16.4582Z"></path><path d="M15.3882 10.0971C14.5724 9.28136 13.2452 9.28132 12.43 10.0965L8.60127 13.9168C8.51997 13.9979 8.45997 14.0979 8.42658 14.2078L7.59276 16.9528C7.55646 17.0723 7.55292 17.1993 7.58249 17.3207C7.61206 17.442 7.67367 17.5531 7.76087 17.6425C7.84807 17.7319 7.95768 17.7962 8.07823 17.8288C8.19879 17.8613 8.32587 17.8609 8.44621 17.8276L11.261 17.0479C11.3769 17.0158 11.4824 16.9543 11.5675 16.8694L15.3882 13.0559C16.2039 12.2401 16.2039 10.9129 15.3882 10.0971ZM10.712 15.7527L9.29586 16.145L9.71028 14.7806L12.2937 12.2029L13.2801 13.1893L10.712 15.7527ZM14.4025 12.0692L14.2673 12.204L13.2811 11.2178L13.4157 11.0834C13.6876 10.8115 14.1301 10.8115 14.402 11.0834C14.6739 11.3553 14.6739 11.7977 14.4025 12.0692Z"></path></svg>
+                                    </div>
+                                    <div class="tf-mini-cart-tool-btn btn-add-gift">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M2.99566 2.73409C2.99566 0.55401 5.42538 -0.746668 7.23916 0.463462L8.50073 1.30516L9.7623 0.463462C11.5761 -0.746668 14.0058 0.55401 14.0058 2.73409V3.24744H14.8225C15.9633 3.24744 16.8881 4.17233 16.8881 5.31312V6.82566C16.8881 7.21396 16.5734 7.52873 16.1851 7.52873H15.8905V15.1877C15.8905 15.1905 15.8905 15.1933 15.8905 15.196C15.886 16.7454 14.6286 18 13.0782 18H3.92323C2.37003 18 1.11091 16.7409 1.11091 15.1877V7.52877H0.81636C0.42806 7.52877 0.113281 7.21399 0.113281 6.82569V5.31316C0.113281 4.17228 1.03812 3.24744 2.179 3.24744H2.99566V2.73409ZM4.40181 3.24744H7.79765V2.52647L6.45874 1.63317C5.57987 1.0468 4.40181 1.67677 4.40181 2.73409V3.24744ZM9.20381 2.52647V3.24744H12.5996V2.73409C12.5996 1.67677 11.4216 1.0468 10.5427 1.63317L9.20381 2.52647ZM2.179 4.6536C1.81472 4.6536 1.51944 4.94888 1.51944 5.31316V6.12261H5.73398L5.734 4.6536H2.179ZM5.73401 7.52877V13.9306C5.73401 14.1806 5.86682 14.4119 6.08281 14.5379C6.29879 14.6639 6.56545 14.6657 6.78312 14.5426L8.50073 13.5715L10.2183 14.5426C10.436 14.6657 10.7027 14.6639 10.9187 14.5379C11.1346 14.4119 11.2674 14.1806 11.2674 13.9306V7.52873H14.4844V15.1603C14.4844 15.1627 14.4843 15.1651 14.4843 15.1675V15.1877C14.4843 15.9643 13.8548 16.5938 13.0782 16.5938H3.92323C3.14663 16.5938 2.51707 15.9643 2.51707 15.1877V7.52877H5.73401ZM15.482 6.12258V5.31312C15.482 4.94891 15.1867 4.6536 14.8225 4.6536H11.2674V6.12258H15.482ZM9.86129 4.6536H7.14017V12.7254L8.15469 12.1518C8.36941 12.0304 8.63204 12.0304 8.84676 12.1518L9.86129 12.7254V4.6536Z"></path></svg>
+                                    </div>
+                                    <div class="tf-mini-cart-tool-btn btn-estimate-shipping">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="18" viewBox="0 0 26 18" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0.811989C0 0.36354 0.36354 0 0.811989 0H15.4278C15.8763 0 16.2398 0.36354 16.2398 0.811989V3.10596H21.0144C23.6241 3.10596 25.8643 5.05894 25.8643 7.61523V14.6414C25.8643 15.0899 25.5007 15.4534 25.0523 15.4534H23.545C23.2139 16.9115 21.9098 18 20.3514 18C18.7931 18 17.4889 16.9115 17.1578 15.4534H8.69534C8.36423 16.9115 7.0601 18 5.50175 18C3.9434 18 2.63927 16.9115 2.30815 15.4534H0.811989C0.36354 15.4534 0 15.0899 0 14.6414V0.811989ZM2.35089 13.8294C2.74052 12.4562 4.00366 11.4503 5.50175 11.4503C6.99983 11.4503 8.26298 12.4562 8.6526 13.8294H14.6158V1.62398H1.62398V13.8294H2.35089ZM16.2398 4.72994V7.95749H24.2403V7.61523C24.2403 6.08759 22.8649 4.72994 21.0144 4.72994H16.2398ZM24.2403 9.58147H16.2398V13.8294H17.2006C17.5902 12.4562 18.8533 11.4503 20.3514 11.4503C21.8495 11.4503 23.1126 12.4562 23.5023 13.8294H24.2403V9.58147ZM5.50175 13.0743C4.58999 13.0743 3.85087 13.8134 3.85087 14.7251C3.85087 15.6369 4.58999 16.376 5.50175 16.376C6.41351 16.376 7.15263 15.6369 7.15263 14.7251C7.15263 13.8134 6.41351 13.0743 5.50175 13.0743ZM20.3514 13.0743C19.4397 13.0743 18.7005 13.8134 18.7005 14.7251C18.7005 15.6369 19.4397 16.376 20.3514 16.376C21.2632 16.376 22.0023 15.6369 22.0023 14.7251C22.0023 13.8134 21.2632 13.0743 20.3514 13.0743Z"></path></svg>
+                                    </div>
+                                </div>
+                                <div class="tf-mini-cart-bottom-wrap">
+                                    <div class="tf-cart-totals-discounts">
+                                        <div class="tf-cart-total">Subtotal</div>
+                                        <div class="tf-totals-total-value fw-6">$49.99 USD</div>
+                                    </div>
+                                    <div class="tf-cart-tax">Taxes and <a href="#">shipping</a> calculated at checkout</div>
+                                    <div class="tf-mini-cart-line"></div>
+                                    <div class="tf-cart-checkbox">
+                                        <div class="tf-checkbox-wrapp">
+                                            <input class="" type="checkbox" id="CartDrawer-Form_agree" name="agree_checkbox">
+                                            <div>
+                                                <i class="icon-check"></i>
+                                            </div>
+                                        </div>
+                                        <label for="CartDrawer-Form_agree">
+                                            I agree with the 
+                                            <a href="#" title="Terms of Service">terms and conditions</a>
+                                        </label>
+                                    </div>
+                                    <div class="tf-mini-cart-view-checkout">
+                                        <a href="view-cart.html" class="tf-btn btn-outline radius-3 link w-100 justify-content-center">View cart</a>
+                                        <a href="checkout.html" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Check out</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                          
+                            <div class="tf-mini-cart-tool-openable add-gift">
+                                <div class="overplay tf-mini-cart-tool-close"></div>
+                                <form class="tf-product-form-addgift">
+                                    <div class="tf-mini-cart-tool-content">
+                                        <div class="tf-mini-cart-tool-text">
+                                            <div class="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.65957 3.64545C4.65957 0.73868 7.89921 -0.995558 10.3176 0.617949L11.9997 1.74021L13.6818 0.617949C16.1001 -0.995558 19.3398 0.73868 19.3398 3.64545V4.32992H20.4286C21.9498 4.32992 23.1829 5.56311 23.1829 7.08416V9.10087C23.1829 9.61861 22.7632 10.0383 22.2454 10.0383H21.8528V20.2502C21.8528 20.254 21.8527 20.2577 21.8527 20.2614C21.8467 22.3272 20.1702 24 18.103 24H5.89634C3.82541 24 2.14658 22.3212 2.14658 20.2502V10.0384H1.75384C1.23611 10.0384 0.816406 9.61865 0.816406 9.10092V7.08421C0.816406 5.56304 2.04953 4.32992 3.57069 4.32992H4.65957V3.64545ZM6.53445 4.32992H11.0622V3.36863L9.27702 2.17757C8.10519 1.39573 6.53445 2.2357 6.53445 3.64545V4.32992ZM12.9371 3.36863V4.32992H17.4649V3.64545C17.4649 2.2357 15.8942 1.39573 14.7223 2.17756L12.9371 3.36863ZM3.57069 6.2048C3.08499 6.2048 2.69128 6.59851 2.69128 7.08421V8.16348H8.31067L8.3107 6.2048H3.57069ZM8.31071 10.0384V18.5741C8.31071 18.9075 8.48779 19.2158 8.77577 19.3838C9.06376 19.5518 9.4193 19.5542 9.70953 19.3901L11.9997 18.0953L14.2898 19.3901C14.58 19.5542 14.9356 19.5518 15.2236 19.3838C15.5115 19.2158 15.6886 18.9075 15.6886 18.5741V10.0383H19.9779V20.2137C19.9778 20.2169 19.9778 20.2201 19.9778 20.2233V20.2502C19.9778 21.2857 19.1384 22.1251 18.103 22.1251H5.89634C4.86088 22.1251 4.02146 21.2857 4.02146 20.2502V10.0384H8.31071ZM21.308 8.16344V7.08416C21.308 6.59854 20.9143 6.2048 20.4286 6.2048H15.6886V8.16344H21.308ZM13.8138 6.2048H10.1856V16.9672L11.5383 16.2024C11.8246 16.0405 12.1748 16.0405 12.461 16.2024L13.8138 16.9672V6.2048Z"></path></svg>
+                                            </div>
+                                            <div class="tf-gift-wrap-infos">
+                                                <p>Do you want a gift wrap?</p>
+                                                Only
+                                                <span class="price fw-6">$5.00</span>
+                                            </div>
+                                        </div>
+                                        <div class="tf-cart-tool-btns">
+                                            <button type="submit" class="tf-btn fw-6 w-100 justify-content-center btn-fill animate-hover-btn radius-3"><span>Add a gift wrap</span></button>
+                                            <div class="tf-mini-cart-tool-primary text-center w-100 fw-6 tf-mini-cart-tool-close">Cancel</div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div> 
+            <!-- /shoppingCart --> {% endcomment %}
+      
+{% for product in  products %}
+
+
+            <!-- modal quick_view -->
+{% comment %} <div class="modal fade modalDemo quick_view" id="quick_view_{{ product.id }}"  tabindex="-1" aria-labelledby="quickViewLabel_{{ product.id }}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="header">
+                <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></span>
+            </div>
+            <div class="wrap">
+                <div class="tf-product-media-wrap">
+                    <div dir="ltr" class="swiper tf-single-slide">
+                        <div class="swiper-wrapper" >
+                            {% for image in product.get_images %}
+                            <div class="swiper-slide">
+                                <div class="item">
+                                    <img data-src="{{ image.image.url }}" src="{{ image.image.url }}">
+                                </div>
+                            </div>
+                            {% endfor %}
+                           
+                        </div>
+                        <div class="swiper-button-next button-style-arrow single-slide-prev"></div>
+                        <div class="swiper-button-prev button-style-arrow single-slide-next"></div>
+                    </div>
+                </div>
+                <div class="tf-product-info-wrap position-relative">
+                    <div class="tf-product-info-list">
+                        <div class="tf-product-info-title">
+                            <h5><a class="link" href="product-detail.html" id="product-name-{{ product.id }}">{{ product.name }}</a></h5>
+                        </div>
+                        <div class="tf-product-info-badges">
+                            <div class="badges text-uppercase">Best seller</div>
+                           
+                        </div>
+                        <div class="tf-product-info-price">
+                            <div class="price-on-sale"  id="price-on-sale-{{ product.id }}">{{product.get_sale_price}}</div>
+                            <div class="compare-at-price" id="compare-at-price-{{ product.id }}">{{product.get_regular_price}}</div>
+                        </div>
+                        <div class="tf-product-description">
+                            <p>Nunc arcu faucibus a et lorem eu a mauris adipiscing conubia ac aptent ligula facilisis a auctor habitant parturient a a.Interdum fermentum.</p>
+                        </div>
+                        <div class="tf-product-info-variant-picker">
+                            <div class="variant-picker-item">
+                                <div class="variant-picker-label">
+                                    Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{ product.colour_set.first.name }}</span>
+                                </div>
+                                <div class="variant-picker-values" data-product-id="{{ product.id }}">
+                                    {% for color in product.colour_set.all %}
+                                        <input id="values-{{ color.name|lower }}" 
+                                               type="radio" 
+                                               name="color1" 
+                                               {% if forloop.first %}checked{% endif %}
+                                               onclick="updateProduct('{{ color.id }}')">
+                                        <label class="hover-tooltip radius-60 color-btn" 
+                                               for="values-{{ color.name|lower }}" 
+                                               data-color="{{ color.name }}" 
+                                               data-value="{{ color.name }}">
+                                            <span class="btn-checkbox" style="background-color: {{ color.hex_code }}"></span>
+                                            <span class="tooltip">{{ color.name }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                          
+                            <div class="variant-picker-item">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="variant-picker-label">
+                                        Size: <span class="fw-6 variant-picker-label-value size-label"></span>
+                                    </div>
+                                 
+                                </div>
+                                <div class="variant-picker-values">
+                                    <input type="hidden" id="selected-size-product-id" name="product_id" value="">
+                                    <div class="btn-group product-size m-0">
+                                        {% for item in product.get_sizes %}
+                                        <input 
+                                            type="radio" 
+                                            class="btn-check size-selector" 
+                                            name="product_size-{{ product.id }}" 
+                                            value="{{ item.id }}" 
+                                            id="btnradio{{ product.id }}{{ forloop.counter }}" 
+                                            data-sale-price="{{ item.sale_price }}" 
+                                            data-regular-price="{{ item.regular_price }}" 
+                                            data-product-id="{{ item.id }}"
+                                            {% if forloop.first %}checked{% endif %}
+                                           >
+                                        <label class="btn btn-size" for="btnradio{{ product.id }}{{ forloop.counter }}"> 
+                                            {{ item.weight }} {{ item.unit }}
+
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>    
+
+                        </div> {% endcomment %}
+                        <div class="modal fade modalDemo quick_view" id="quick_view_{{ product.id }}" tabindex="-1" aria-labelledby="quickViewLabel_{{ product.id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="header">
+                                        <span class="icon-close icon-close-popup" data-bs-dismiss="modal" aria-label="Close"></span>
+                                    </div>
+                                    <div class="wrap">
+                                        <div class="tf-product-media-wrap">
+                                            <div dir="ltr" class="swiper tf-single-slide">
+                                                <div class="swiper-wrapper">
+                                                    {% for image in product.get_images %}
+                                                    <div class="swiper-slide">
+                                                        <div class="item">
+                                                            <img data-src="{{ image.image.url }}" src="{{ image.image.url }}">
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="swiper-button-next button-style-arrow single-slide-prev"></div>
+                                                <div class="swiper-button-prev button-style-arrow single-slide-next"></div>
+                                            </div>
+                                        </div>
+                                        <div class="tf-product-info-wrap position-relative">
+                                            <div class="tf-product-info-list">
+                                                <div class="tf-product-info-title">
+                                                    <h5><a class="link" href="product-detail.html" id="product-name-{{ product.id }}">{{ product.name }}</a></h5>
+                                                </div>
+                                                <div class="tf-product-info-badges">
+                                                    <div class="badges text-uppercase">Best seller</div>
+                                                </div>
+                                                <div class="tf-product-info-price">
+                                                    <div class="price-on-sale" id="price-on-sale-{{ product.id }}">{{ product.get_sale_price }}</div>
+                                                    <div class="compare-at-price" id="compare-at-price-{{ product.id }}">{{ product.get_regular_price }}</div>
+                                                </div>
+                                                <div class="tf-product-description">
+                                                    <p>Nunc arcu faucibus a et lorem eu a mauris adipiscing conubia ac aptent ligula facilisis a auctor habitant parturient a a.Interdum fermentum.</p>
+                                                </div>
+                                                <div class="tf-product-info-variant-picker">
+                                                    <div class="variant-picker-item">
+                                                        <div class="variant-picker-label">
+                                                            Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{ product.colour_set.first.name }}</span>
+                                                        </div>
+                                                        <div class="variant-picker-values" data-product-id="{{ product.id }}">
+                                                            {% for color in product.colour_set.all %}
+                                                                <input id="values-{{ color.name|lower }}" 
+                                                                       type="radio" 
+                                                                       name="color1-{{ product.id }}" 
+                                                                       {% if forloop.first %}checked{% endif %}
+                                                                       onclick="updateProduct('{{ color.id }}')">
+                                                                <label class="hover-tooltip radius-60 color-btn" 
+                                                                       for="values-{{ color.name|lower }}" 
+                                                                       data-color="{{ color.name }}" 
+                                                                       data-value="{{ color.name }}">
+                                                                    <span class="btn-checkbox" style="background-color: {{ color.hex_code }}"></span>
+                                                                    <span class="tooltip">{{ color.name }}</span>
+                                                                </label>
+                                                            {% endfor %}
+                                                        </div>
+                                                    </div>
+                                                  
+                                                    <div class="variant-picker-item">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <div class="variant-picker-label">
+                                                                Size: <span class="fw-6 variant-picker-label-value size-label" id="current-size-{{ product.id }}"></span>
+                                                            </div>
+                                                         
+                                                        </div>
+                                                        <div class="variant-picker-values">
+                                                            <input type="hidden" id="selected-size-product-id" name="product_id" value="">
+                                                            <div class="btn-group product-size m-0">
+                                                                {% for item in product.get_sizes %}
+                                                                <input 
+                                                                    type="radio" 
+                                                                    class="btn-check size-selector" 
+                                                                    name="product_size-{{ product.id }}" 
+                                                                    value="{{ item.id }}" 
+                                                                    id="btnradio{{ product.id }}{{ forloop.counter }}" 
+                                                                    data-sale-price="{{ item.sale_price }}" 
+                                                                    data-regular-price="{{ item.regular_price }}" 
+                                                                    data-product-id="{{ product.id }}"
+                                                                    {% if forloop.first %}checked{% endif %}>
+                                                                <label class="btn btn-size" for="btnradio{{ product.id }}{{ forloop.counter }}"> 
+                                                                    {{ item.weight }} {{ item.unit }}
+                                                                </label>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>    
+                                                </div>
+
+                        <div class="tf-product-info-quantity">
+                            <div class="quantity-title fw-6">Quantity</div>
+                            <div class="wg-quantity">
+                                <span class="btn-quantity minus-btn">-</span>
+                                <input type="text" name="quantity" value="1" class="quantity__input">
+                                <span class="btn-quantity plus-btn">+</span>
+                            </div>
+                        </div>
+                        <div class="tf-product-info-buy-button">
+                            <form class="">
+                                <a href="javascript:void(0);" class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart cart-add-btn" data-product="{{ product.id }}"><span>Add to cart -&nbsp;</span><span class="tf-qty-price">$8.00</span></a>
+                               
+                               
+                            </form>
+                        </div>
+                        <div>
+                            <a href="product-detail.html" class="tf-btn fw-6 btn-line">View full details<i class="icon icon-arrow1-top-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div id="cart-modal" style="">
+        {% include "web/includes/cart_modal.html" %}
+    </div>
+    <!-- /modal quick_view -->
+    {% endfor %}
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+  
+	<script>
+		document.addEventListener("DOMContentLoaded", function() {
+			// Get all category links
+			const categoryLinks = document.querySelectorAll('.category-list a');
+			
+			// Get all product items
+			const products = document.querySelectorAll('.product-list .card-product');
+			
+			// Add click event to each category link
+			categoryLinks.forEach(link => {
+				link.addEventListener('click', function() {
+					// Get the selected category from the data-category attribute
+					const selectedCategory = this.getAttribute('data-category');
+					
+					// Filter products based on selected category
+					filterProductsByCategory(selectedCategory);
+	
+					// Optionally, highlight the active category
+					categoryLinks.forEach(link => link.classList.remove('active'));
+					this.classList.add('active');
+				});
+			});
+	
+			// Function to filter products based on category
+			function filterProductsByCategory(categorySlug) {
+				products.forEach(product => {
+					const productCategory = product.getAttribute('data-category');
+					
+					if (categorySlug === 'all' || productCategory === categorySlug) {
+						// Show product if category matches or 'all' is selected
+						product.style.display = 'block';
+					} else {
+						// Hide product if category doesn't match
+						product.style.display = 'none';
+					}
+				});
+			}
+	
+			// Optionally, trigger filter based on default category on page load
+			const defaultCategory = document.querySelector('.category-list a.active');
+			if (defaultCategory) {
+				filterProductsByCategory(defaultCategory.getAttribute('data-category'));
+			}
+		});
+	</script>
+
+    <script>
+		document.querySelectorAll('.dropdown-item').forEach(item => {
+			item.addEventListener('click', event => {
+				event.preventDefault();
+				
+				// Update the button text to the selected filter
+				const selectedFilter = event.target.getAttribute('data-value');
+				const button = document.getElementById('dropdownMenuButton');
+				button.textContent = event.target.textContent;
+		
+				// Get both product containers for each tab
+				const productsContainers = document.querySelectorAll('.product-list');
+				
+				productsContainers.forEach(productsContainer => {
+					const products = Array.from(productsContainer.getElementsByClassName('card-product'));
+		
+					let sortedProducts;
+					if (selectedFilter === "latest") {
+						sortedProducts = products.sort((a, b) => parseInt(b.dataset.item) - parseInt(a.dataset.item));
+					} else if (selectedFilter === "low-to-high") {
+						sortedProducts = products.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+					} else if (selectedFilter === "high-to-low") {
+						sortedProducts = products.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+					}
+				
+		
+					// Clear the container and append sorted products
+					productsContainer.innerHTML = "";
+					sortedProducts.forEach(product => productsContainer.appendChild(product));
+				});
+			});
+		});
+	</script>
+    <script>
+        const uniqueColors = new Set();
+        const colorItems = document.querySelectorAll('.list-color-item1');
+    
+        colorItems.forEach(item => {
+            const swatchValue = item.querySelector('.swatch-value1');
+            const colorHex = swatchValue ? swatchValue.style.backgroundColor.trim() : null;
+    
+            // Check if the color already exists in the set
+            if (colorHex && !uniqueColors.has(colorHex)) {
+                uniqueColors.add(colorHex); // Add the unique color
+            } else {
+                // Hide duplicate color items
+                item.style.display = "none";
+            }
+        });
+
+        document.querySelectorAll('.list-color-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const selectedColor = item.querySelector('.swatch-value').getAttribute('data-color').trim();
+    
+                if (!selectedColor) return; // Exit if no color is selected
+    
+                // Get all product cards
+                const productCards = document.querySelectorAll('.card-product');
+    
+                productCards.forEach(card => {
+                    const productColors = card.getAttribute('data-color').split(' ');
+    
+                    // Show or hide products based on color match
+                    if (productColors.includes(selectedColor)) {
+                        card.style.display = "block"; // Show the product
+                    } else {
+                        card.style.display = "none"; // Hide the product
+                    }
+                });
+    
+                // Update active state for color selection
+                document.querySelectorAll('.list-color-item').forEach(swatch => swatch.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    </script>
+
+  
+    <script>
+        document.querySelectorAll('.list-brand-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const selectedBrand = item.querySelector('.brand-name').textContent.trim();
+    
+                if (!selectedBrand) return; // Exit if no brand is selected
+    
+                // Get all product cards
+                const productCards = document.querySelectorAll('.card-product');
+    
+                productCards.forEach(card => {
+                    // Get the brand(s) associated with the product
+                    const productBrands = card.getAttribute('data-brand').split(' ');
+    
+                    // Show or hide products based on brand match
+                    if (productBrands.includes(selectedBrand)) {
+                        card.style.display = "block"; // Show the product
+                    } else {
+                        card.style.display = "none"; // Hide the product
+                    }
+                });
+    
+                // Update active state for brand selection
+                document.querySelectorAll('.list-brand-item').forEach(brand => brand.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+    </script>
+    <script>
+		$(document).ready(function() {
+
+			// Handle price range slider
+			$(".price-range-slider").on("input", function() {
+			let minPrice = parseFloat($(this).val());
+			let maxPrice = parseFloat($(this).attr("max"));
+			
+			// Update price display
+			$("#min-price").text(minPrice.toFixed(2));
+			$("#max-price").text(maxPrice.toFixed(2));
+			
+			// Filter products based on price range
+			filterProducts(minPrice, maxPrice);
+			});
+			
+			// Function to filter products based on category and price range
+			function filterProducts(minPrice = 0, maxPrice = 2000) {
+			$(".isotope-item").each(function() {
+			let productPrice = parseFloat($(this).data("price"));
+			
+			// Check if the product's price falls within the selected price range
+			let showPrice = productPrice >= minPrice && productPrice <= maxPrice;
+			
+			// Show the product if both category and price match
+			if (showPrice) {
+			$(this).show();
+			} else {
+			$(this).hide();
+			        }
+			    });
+			    }
+			});
+			
+	</script>
+    {% comment %} <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const quickAddButtons = document.querySelectorAll(".quick-add");
+            const modal = document.getElementById("quick_add");
+        
+            quickAddButtons.forEach(button => {
+                button.addEventListener("click", function (event) {
+                    const productCard = button.closest(".card-product");
+                    const productImage = productCard.querySelector(".img-product").getAttribute("src");
+                    const productName = productCard.querySelector(".title").textContent.trim();
+                    const productPrice = productCard.dataset.price;
+                    const productColors = productCard.dataset.color.split(" ");
+                    const productId = productCard.dataset.item;
+        
+                 
+                    modal.querySelector(".image img").setAttribute("src", productImage);
+                    modal.querySelector(".content a").textContent = productName;
+                    modal.querySelector(".tf-product-info-price .price").textContent = `${productPrice}`;
+        
+               
+                    const colorContainer = modal.querySelector(".variant-picker-values");
+                    colorContainer.innerHTML = ""; 
+                    productColors.forEach((color, index) => {
+                        const colorOption = `
+                            <input id="values-${color}" type="radio" name="color" ${index === 0 ? "checked" : ""}>
+                            <label class="hover-tooltip radius-60" for="values-${color}" data-value="${color}">
+                                <span class="btn-checkbox bg-color-${color.toLowerCase()}"></span>
+                                <span class="tooltip">${color}</span>
+                            </label>`;
+                        colorContainer.insertAdjacentHTML("beforeend", colorOption);
+                    });
+        
+                    // Show the modal
+                    const bootstrapModal = new bootstrap.Modal(modal);
+                    bootstrapModal.show();
+                });
+            });
+        });
+    </script> {% endcomment %}
+    {% comment %} <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const quickAddButtons = document.querySelectorAll(".quick-add");
+            const modal = document.getElementById("quick_add");
+        
+            quickAddButtons.forEach(button => {
+                button.addEventListener("click", function () {
+                    const productCard = button.closest(".card-product");
+                    const productImage = productCard.querySelector(".img-product").getAttribute("src");
+                    const productName = productCard.querySelector(".title").textContent.trim();
+                    const productPrice = productCard.dataset.price;
+                    const productColors = productCard.dataset.color.split(" ");
+                    const productId = productCard.dataset.item;
+        
+                    // Debugging Logs
+                    console.log("Product Colors:", productColors);
+        
+                    // Update modal content
+                    modal.querySelector(".image img").setAttribute("src", productImage);
+                    modal.querySelector(".content a").textContent = productName;
+                    modal.querySelector(".tf-product-info-price .price").textContent = `${productPrice}`;
+        
+                    // Update color options dynamically
+                    const colorContainer = modal.querySelector(".variant-picker-values");
+                    colorContainer.innerHTML = ""; // Clear existing options
+                    productColors.forEach((color, index) => {
+                        const colorOption = `
+                            <input id="color-${color}" type="radio" name="color" ${index === 0 ? "checked" : ""}>
+                            <label class="hover-tooltip radius-60" for="color-${color}" data-value="${color}">
+                                <span class="btn-checkbox bg-color-${color.toLowerCase()}"></span>
+                                <span class="tooltip">${color}</span>
+                            </label>`;
+                        colorContainer.insertAdjacentHTML("beforeend", colorOption);
+                    });
+        
+                    // Show the modal
+                    const bootstrapModal = new bootstrap.Modal(modal);
+                    bootstrapModal.show();
+                });
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('hidden.bs.modal', function (event) {
+            if (event.target.id === 'quick_add') {
+                document.body.classList.remove('modal-open');
+                document.body.style.overflow = '';
+            }
+        });
+    </script> {% endcomment %}
+    {% comment %} <script>
+        document.addEventListener('hidden.bs.modal', function () {
+            const backdrops = document.querySelectorAll('.modal-backdrop');
+            backdrops.forEach(backdrop => backdrop.remove());
+        });
+    </script>
+
+     {% endcomment %}
+
+   
+
+{% comment %} 
+    <script>
+        document.querySelectorAll('.quick-add').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                const productId = this.dataset.productId;
+        
+                // Fetch product data from the server
+                fetch(`/quick-add/${productId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update the modal with the fetched product data
+                        document.querySelector('#quick_add .image img').src = data.image_url;
+                        document.querySelector('#quick_add .content a').textContent = data.name;
+                        document.querySelector('#product-price').textContent = `${data.price}`;
+                        
+                        // Populate sizes
+                        const sizeContainer = document.querySelector('#quick_add .variant-picker-values');
+                        sizeContainer.innerHTML = ''; // Clear existing size options
+                        data.sizes.forEach(size => {
+                            sizeContainer.innerHTML += `
+                                <input 
+                                    type="radio" 
+                                    name="size" 
+                                    id="size-${size.id}" 
+                                    data-sale-price="${size.sale_price}" 
+                                    ${sizeContainer.childElementCount === 0 ? 'checked' : ''}>
+                                <label class="style-text" for="size-${size.id}" data-value="${size.name}">
+                                    <p>${size.name}</p>
+                                </label>`;
+                        });
+        
+                        // Populate colors
+                        const colorContainer = document.querySelector('#quick_add .variant-picker-values');
+                        colorContainer.innerHTML = ''; // Clear existing color options
+                        data.colors.forEach(color => {
+                            colorContainer.innerHTML += `
+                                <input 
+                                    type="radio" 
+                                    name="color" 
+                                    id="color-${color.name}">
+                                <label class="hover-tooltip radius-60" for="color-${color.name}" data-value="${color.name}">
+                                    <span class="btn-checkbox" style="background-color: ${color.hex_code};"></span>
+                                    <span class="tooltip">${color.name}</span>
+                                </label>`;
+                        });
+        
+                        // Show the modal
+                        const modal = new bootstrap.Modal(document.getElementById('quick_add'));
+                        modal.show();
+                    })
+                    .catch(error => console.error('Error fetching product data:', error));
+            });
+        });
+        
+    </script> {% endcomment %}
+
+
+
+{% comment %} #modal
+ 
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const sizeRadios = document.querySelectorAll('input[name="size"]');
+        const priceElement = document.getElementById('product-price');
+        
+        // Function to update price
+        function updatePrice() {
+            const selectedSize = document.querySelector('input[name="size"]:checked');
+            
+            if (selectedSize) {
+                const newPrice = selectedSize.getAttribute('data-sale-price');
+                priceElement.textContent = `${newPrice}`;
+            } else {
+                // If no size is selected, you may want to handle the default case
+                priceElement.textContent = '$0.00'; // Or any default price
+            }
+        }
+    
+        // Add event listeners to size radio buttons
+        sizeRadios.forEach(radio => {
+            radio.addEventListener('change', updatePrice);
+        });
+    
+        // Update price when the modal is shown (if a size is pre-selected)
+        updatePrice();
+    
+        // Event listener for "quick-add" buttons
+        document.querySelectorAll('.quick-add').forEach(function(button) {
+            button.addEventListener('click', function(event) {
+                const productId = this.dataset.productId;
+    
+                // Fetch product data from the server
+                fetch(`/quick-add/${productId}/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Update the modal with the fetched product data
+                        document.querySelector('#quick_add .image img').src = data.image_url;
+                        document.querySelector('#quick_add .content a').textContent = data.name;
+                        document.querySelector('#product-price').textContent = `${data.price}`;
+    
+                        // Populate sizes
+                        const sizeContainer = document.querySelector('#size-picker-container');
+                        sizeContainer.innerHTML = ''; // Clear existing size options
+                        data.sizes.forEach(size => {
+                            sizeContainer.innerHTML += `
+                                <input 
+                                    type="radio" 
+                                    name="size" 
+                                    id="size-${size.id}" 
+                                    data-sale-price="${size.sale_price}" 
+                                    ${sizeContainer.childElementCount === 0 ? 'checked' : ''}>
+                                <label class="style-text" for="size-${size.id}" data-value="${size.unit}">
+                                    <p>${size.unit}</p>
+                                </label>`;
+                        });
+    
+                        // Populate colors
+                        const colorContainer = document.querySelector('#color-picker-container');
+                        colorContainer.innerHTML = ''; // Clear existing color options
+                        data.colors.forEach(color => {
+                            colorContainer.innerHTML += `
+                                <input 
+                                    type="radio" 
+                                    name="color" 
+                                    id="color-${color.name}">
+                                <label class="hover-tooltip radius-60" for="color-${color.name}" data-value="${color.name}">
+                                    <span class="btn-checkbox" style="background-color: ${color.hex_code};"></span>
+                                    <span class="tooltip">${color.name}</span>
+                                </label>`;
+                        });
+    
+                        // Update price based on the selected size
+                        updatePrice();
+    
+                        // Show the modal
+                        const modal = new bootstrap.Modal(document.getElementById('quick_add'));
+                        modal.show();
+                    })
+                    .catch(error => console.error('Error fetching product data:', error));
+            });
+        });
+    });
+  </script> {% endcomment %}
+
+{% comment %} <script>
+    $('.btn-add-to-cart').on('click', function() {
+        var productId = $(this).data('product-id'); // This should correctly fetch the product ID from the button's data attribute
+        var productSize = $('select[name="product_size"]').val(); // Get the selected size
+        var productQuantity = 1; // You can update this based on a quantity input if needed
+    
+        // Ensure productId is not empty before making the AJAX call
+        if (productId) {
+            $.ajax({
+                url: '/cart/add/', // Ensure this URL is correct
+                type: 'POST',
+                data: {
+                    product_id: productId,
+                    size_id: productSize,
+                    quantity: productQuantity,
+                    csrfmiddlewaretoken: csrf_token  // Include the CSRF token here
+                },
+                success: function(response) {
+                    updateCartUI(response.cart_count, response.cart_total); // Update cart UI on success
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    console.log("Response:", xhr.responseText);
+                }
+            });
+        } else {
+            console.error('Product ID is missing.');
+        }
+    });
+</script> {% endcomment %}
+{% comment %} 
+
+<script>
+    $(document).ready(function() {
+        // When the 'Add to Cart' button is clicked
+        $('.btn-add-to-cart').on('click', function() {
+            var productId = $(this).data('product-id');
+            
+            // Fetch product data based on the productId (this could be done via AJAX or pre-loaded data)
+            $.ajax({
+                url: '/get-product-details/',  // URL to fetch product details
+                type: 'GET',
+                data: { 'product_id': productId },
+                success: function(response) {
+                    // Assume response contains the product details
+                    var product = response.product;
+    
+                    // Update modal content dynamically
+                    $('#modal-product-image').attr('src', product.image_url);
+                    $('#modal-product-name').text(product.name);
+                    $('#modal-product-price').text('$' + product.price);
+                    $('#modal-product-color').text(product.color);  // Update with color
+                    $('#modal-product-size').text(product.size);    // Update with size
+    
+                    // You can also add logic for size/color options dynamically if needed
+                },
+                error: function(xhr, status, error) {
+                    console.log('Error fetching product details: ' + error);
+                }
+            });
+        });
+    });
+</script> {% endcomment %}
+
+
+
+{% comment %} <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Capture the "Add to Cart" button click
+        document.querySelectorAll(".btn-add-to-cart").forEach((button) => {
+            button.addEventListener("click", function () {
+                // Retrieve product data from the Quick Add modal
+                const productName = document.querySelector(".tf-product-info-item .content a").textContent;
+                const productPrice = document.querySelector("#product-price").textContent;
+                const productImage = document.querySelector(".tf-product-info-item .image img").src;
+                const productColor = document.querySelector(".variant-picker-label span").textContent.trim();
+                const productSize = document.querySelector(".variant-picker-values input:checked + label").getAttribute("data-value");
+                const quantity = document.querySelector(".wg-quantity input").value;
+    
+                // Update the Shopping Cart modal
+                const cartItemsContainer = document.querySelector(".tf-mini-cart-items");
+    
+                const cartItemHTML = `
+                    <div class="tf-mini-cart-item">
+                        <div class="tf-mini-cart-image">
+                            <a href="product-detail.html">
+                                <img src="${productImage}" alt="${productName}">
+                            </a>
+                        </div>
+                        <div class="tf-mini-cart-info">
+                            <a class="title link" href="product-detail.html">${productName}</a>
+                            <div class="meta-variant">${productColor}, ${productSize}</div>
+                            <div class="price fw-6">${productPrice}</div>
+                            <div class="tf-mini-cart-btns">
+                                <div class="wg-quantity small">
+                                    <span class="btn-quantity minus-btn">-</span>
+                                    <input type="text" name="number" value="${quantity}">
+                                    <span class="btn-quantity plus-btn">+</span>
+                                </div>
+                                <div class="tf-mini-cart-remove">Remove</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+    
+                // Append the new item to the shopping cart
+                cartItemsContainer.insertAdjacentHTML("beforeend", cartItemHTML);
+    
+                // Close the Quick Add modal
+                const quickAddModal = document.getElementById("quick_add");
+                const bootstrapModal = bootstrap.Modal.getInstance(quickAddModal);
+                bootstrapModal.hide();
+    
+                // Open the Shopping Cart modal
+                const shoppingCartModal = new bootstrap.Modal(document.getElementById("shoppingCart"));
+                shoppingCartModal.show();
+            });
+        });
+    });
+    
+</script> {% endcomment %}
+
+{% comment %} <script>
+    $(document).on("click", "[data-open]", function () {
+        const modalId = $(this).data("open");
+        console.log("Opening modal:", modalId); // Debug log
+    
+        const modal = $("#" + modalId);
+        if (modal.length) {
+            modal.addClass("is-visible").attr("aria-hidden", "false"); // Show modal
+            resetModal(modalId); // Reset modal state
+            initializeModal(modalId); // Initialize modal
+        } else {
+            console.error("Modal not found:", modalId);
+        }
+    });
+    
+    $(document).on("click", "[data-close]", function () {
+        const modal = $(this).closest(".modal");
+        console.log("Closing modal:", modal.attr("id"));
+        modal.removeClass("is-visible").attr("aria-hidden", "true"); // Hide modal
+        resetModal(modal.attr("id")); // Reset modal state
+    });
+    
+    // Modal Reset Function
+    function resetModal(modalId) {
+        const modal = $('#' + modalId);
+        modal.find('.image').addClass('d-none'); // Hide images
+        modal.find('input').prop('checked', false); // Uncheck all inputs
+        modal.find('.price').text(''); // Clear price
+    }
+    
+    // Modal Initialization Function
+    function initializeModal(modalId) {
+        const modal = $('#' + modalId);
+        modal.find('input[name="color"]').on('change', function () {
+            const selectedVariant = $(this).data('variant');
+            updateDimensions(selectedVariant, modalId);
+        });
+        modal.find('input[name="dimension"]').on('change', function () {
+            const selectedDimension = $(this).val();
+            updateDimensionDetails(selectedDimension, modalId);
+        });
+    
+        modal.find('input[name="color"]:checked').trigger('change');
+        modal.find('input[name="dimension"]:checked').trigger('change');
+    }
+    
+    // Dimension Update Function
+    function updateDimensions(selectedVariant, modalId) {
+        const modal = $('#' + modalId);
+        modal.find('.image').addClass('d-none');
+        modal.find(`.image[data-variant="${selectedVariant}"]`).removeClass('d-none');
+    }
+    
+    // Dimension Details Update Function
+    function updateDimensionDetails(selectedDimension, modalId) {
+        const modal = $('#' + modalId);
+        modal.find('.price').hide();
+        modal.find(`.price[data-dimension="${selectedDimension}"]`).show();
+    }
+    
+</script> {% endcomment %}
+{% comment %} <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Function to handle size change
+        function handleSizeChange(event) {
+            const selectedSize = event.target;
+            const productId = selectedSize.getAttribute('data-product-id');
+            const salePrice = selectedSize.getAttribute('data-sale-price');
+            const regularPrice = selectedSize.getAttribute('data-regular-price');
+
+            const salePriceElement = document.querySelector(`#price-on-sale-${productId}`);
+            const regularPriceElement = document.querySelector(`#compare-at-price-${productId}`);
+            const sizeLabel = document.querySelector(`#current-size-${productId}`);
+
+            // Ensure elements exist before attempting to update them
+            if (salePriceElement) {
+                salePriceElement.innerText = salePrice;
+            } else {
+                console.error(`Element with ID price-on-sale-${productId} not found.`);
+            }
+
+            if (regularPriceElement) {
+                regularPriceElement.innerText = regularPrice;
+            } else {
+                console.error(`Element with ID compare-at-price-${productId} not found.`);
+            }
+
+            if (sizeLabel) {
+                sizeLabel.innerText = selectedSize.nextElementSibling.innerText.trim();
+            } else {
+                console.error(`Element with ID current-size-${productId} not found.`);
+            }
+        }
+
+        // Attach event listeners to modal show event
+        const modals = document.querySelectorAll('.modalDemo');
+        modals.forEach(modal => {
+            modal.addEventListener('shown.bs.modal', function () {
+                const productId = modal.getAttribute('id').split('_').pop();
+                const sizeSelectors = modal.querySelectorAll(`.size-selector[name="product_size-${productId}"]`);
+                
+                sizeSelectors.forEach(selector => {
+                    selector.addEventListener('change', handleSizeChange);
+                });
+            });
+        });
+    });
+</script> {% endcomment %}
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to handle size change
+        function handleSizeChange(event) {
+            const selectedSize = event.target;
+            const productId = selectedSize.getAttribute('data-product-id');
+            const salePrice = selectedSize.getAttribute('data-sale-price');
+            const regularPrice = selectedSize.getAttribute('data-regular-price');
+            const salePriceElement = document.querySelector(`#price-on-sale-${productId}`);
+            const regularPriceElement = document.querySelector(`#compare-at-price-${productId}`);
+            const priceElement = document.querySelector(`#tf-qty-price-${productId}`);
+            const sizeLabel = document.querySelector(`#current-size-${productId}`);
+
+            // Ensure elements exist before attempting to update them
+            if (salePriceElement) {
+                salePriceElement.innerText = salePrice;
+            } else {
+                console.error(`Element with ID price-on-sale-${productId} not found.`);
+            }
+
+            if (regularPriceElement) {
+                regularPriceElement.innerText = regularPrice;
+            } else {
+                console.error(`Element with ID compare-at-price-${productId} not found.`);
+            }
+
+            if (sizeLabel) {
+                sizeLabel.innerText = selectedSize.nextElementSibling.innerText.trim();
+            } else {
+                console.error(`Element with ID current-size-${productId} not found.`);
+            }
+
+            if (priceElement) {
+                priceElement.innerText = `$${salePrice}`;
+            } else {
+                console.error(`Element with ID tf-qty-price-${productId} not found.`);
+            }
+        }
+
+        // Attach event listeners to modal show event
+        const modals = document.querySelectorAll('.modalDemo');
+        modals.forEach(modal => {
+            modal.addEventListener('shown.bs.modal', function () {
+                const productId = modal.getAttribute('id').split('_').pop();
+                const sizeSelectors = modal.querySelectorAll(`.size-selector[name="product_size-${productId}"]`);
+                
+                sizeSelectors.forEach(selector => {
+                    selector.addEventListener('change', handleSizeChange);
+                });
+            });
+        });
+
+        // Handle add to cart button click
+        const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function(event) {
+                const productId = this.getAttribute('data-product');
+                const quantity = this.closest('.modal-content').querySelector('.quantity__input').value;
+                const price = this.querySelector('.tf-qty-price').innerText;
+
+                // Handle the add to cart logic here
+                console.log(`Adding product ID: ${productId} to cart with quantity: ${quantity} and price: ${price}`);
+
+              
+            });
+        });
+    });
+
+
+</script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.all.min.js"></script>
+	
+	<script src="{% static 'web/js/product_detail.js' %}"></script>
+  
+
+    
+
+
+ 
+    {% endblock  %}

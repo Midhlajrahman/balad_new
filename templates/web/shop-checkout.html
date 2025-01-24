@@ -1,0 +1,224 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% block content  %}
+
+
+   
+        <!-- page-title -->
+        <div class="tf-page-title">
+            <div class="container-full">
+                <div class="heading text-center">Check Out</div>
+            </div>
+        </div>
+
+        <!-- /page-title -->
+        {% if cart_items %}
+        <!-- page-cart -->
+        <section class="flat-spacing-11">
+            <div class="container">
+                <div class="tf-page-cart-wrap layout-2">
+                    <div class="tf-page-cart-item">
+                        <h5 class="fw-5 mb_20">Billing details</h5>
+                        <form method="POST" enctype="multipart/form-data">
+                        <div class="form-checkout">
+                            {% csrf_token %}
+                            <div class="box grid-2">
+                                <fieldset class="fieldset">
+                                    <label class="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+									{% if form.full_name.field.required %}
+									<small class="text-danger">*</small>
+								    {% endif %}
+                                    {{ form.full_name }}
+                                    {% if form.full_name.errors %}
+									<label class="text-danger">{{ form.full_name.errors.as_text }}</label>
+								    {% endif %}
+                                </fieldset>
+                                <fieldset class="fieldset">
+                                    <label class="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+									{% if form.email.field.required %}
+									<small class="text-danger">*</small>
+								{% endif %}
+								    {{ form.email }}
+								    {% if form.email.errors %}
+									<label class="text-danger">{{ form.email.errors.as_text }}</label>
+								    {% endif %}
+                                </fieldset>
+                            </div>
+                          
+                            <fieldset class="box fieldset">
+                                <label class="{{ form.mobile_no.id_for_label }}">{{ form.mobile_no.label }}</label>
+								
+                                {% if form.mobile_no.field.required %}
+                                    <small class="text-danger">*</small>
+                                {% endif %}
+                                {{ form.mobile_no }}
+                                {% if form.mobile_no.errors %}
+                                    <label class="text-danger">{{ form.mobile_no.errors.as_text }}</label>
+                                {% endif %}
+                            </fieldset>
+                            <fieldset class="box fieldset">
+                                <label class="{{ form.address_line_1.id_for_label }}">{{ form.address_line_1.label }}</label>
+                                {% if form.address_line_1.field.required %}
+                                <small class="text-danger">*</small>
+                            {% endif %}
+                            {{ form.address_line_1 }}
+                            {% if form.address_line_1.errors %}
+                                <label class="text-danger">{{ form.address_line_1.errors.as_text }}</label>
+                            {% endif %}
+                            </fieldset>
+                            <fieldset class="box fieldset">
+                                <label class="{{ form.address_line_2.id_for_label }}">{{ form.address_line_2.label }}*</label>
+                                {% if form.address_line_2.field.required %}
+                                <small class="text-danger">*</small>
+                            {% endif %}
+                            {{ form.address_line_2 }}
+                            {% if form.address_line_2.errors %}
+                                <label class="text-danger">{{ form.address_line_2.errors.as_text }}</label>
+                            {% endif %}
+                            </fieldset>
+                            <fieldset class="box fieldset">
+                                <label class="{{ form.state.id_for_label }}">{{ form.state.label }} </label>
+                                {% if form.state.field.required %}
+                                <small class="text-danger">*</small>
+                            {% endif %}
+                            {{ form.state }}
+                            {% if form.state.errors %}
+                                <label class="text-danger">{{ form.state.errors.as_text }}</label>
+                            {% endif %}
+                            </fieldset>
+                            <fieldset class="box fieldset">
+                                <label class="{{ form.district.id_for_label }}">{{ form.district.label }}</label>
+                                {% if form.district.field.required %}
+                                    <small class="text-danger">*</small>
+                                {% endif %}
+                                {{ form.district }}
+                                {% if form.district.errors %}
+                                    <label class="text-danger">{{ form.district.errors.as_text }}</label>
+                                {% endif %}
+                            </fieldset>
+                            <fieldset class="box fieldset">
+                                <label class="{{ form.city.id_for_label }}">{{ form.city.label }} </label>
+									
+                                {% if form.city.field.required %}
+                                <small class="text-danger">*</small>
+                            {% endif %}
+                            {{ form.city }}
+                            {% if form.city.errors %}
+                                <label class="text-danger">{{ form.city.errors.as_text }}</label>
+                            {% endif %}								
+                            </fieldset>
+                            <fieldset class="box fieldset">
+                                <label class="{{ form.pin_code.id_for_label }}">{{ form.pin_code.label }}</label>
+                                {% if form.pin_code.field.required %}
+                                <small class="text-danger">*</small>
+                            {% endif %}
+                            {{ form.pin_code }}
+                            {% if form.pin_code.errors %}
+                                <label class="text-danger">{{ form.pin_code.errors.as_text }}</label>
+                            {% endif %}
+                            </fieldset>
+                         
+                        </div>
+                    </div>
+                    <div class="tf-page-cart-footer">
+                        <div class="tf-cart-footer-inner">
+                            <h5 class="fw-5 mb_20">Your order</h5>
+                            <div class="tf-page-cart-checkout widget-wrap-checkout">
+                                <ul class="wrap-checkout-product">
+                                    {% for item in cart_items %}
+                                    <li class="checkout-product-item">
+                                        {% comment %} <figure class="img-product">
+                                            <img src="{{ item.product.image.url }}" alt="product">
+                                            <span class="quantity">{{ item.quantity }}</span>
+                                        </figure> {% endcomment %}
+                                        <input class="price" type='hidden' id="shipping_price" data-shipping_price="{{shipping_price.price}}" value=0>
+                                        <div class="content">
+                                            <div class="info">
+                                                <p class="name price"> {{item.variant}}</p>
+                                                <span class="variant">{{item.product.unit}} - Quantity : {{ item.quantity }}</span>
+                                            </div>
+                                            <span class="price">{{item.total_price|floatformat:2}}</span>
+                                        </div>
+                                    </li>
+                                    {% endfor %}
+
+                                </ul>
+                               
+                                <div class="d-flex justify-content-between line pb_20">
+                                    <h6 class="fw-5">Total</h6>
+                                    <h6 class="total fw-5"  id="cart_total" id="total_amt">{{cart_total|floatformat:2}}</h6>
+                                </div>
+                                <div class="wd-check-payment">
+
+
+                                    <input type="hidden" id="id_selected_address" name="selected_address" value="">
+                                    <input type="hidden" id="id_selected_payment" name="selected_payment" value="">
+                                    <input type="hidden" id="id_payable" name="payable" value="">
+                                    <input type="hidden" id="id_service_fee" name="service_fee" value="0">
+                                    <input type="hidden" id="id_shipping_fee" name="shipping_fee" value="{{ shipping_price|floatformat:2 }}">
+                                    <input type="hidden" id="id_total_amt" name="total_amt" value="{{ cart_total|floatformat:2 }}">
+                                    
+                                    {% comment %} <div class="fieldset-radio mb_20">
+                                        <input type="radio" name="paymentMethod" id="delivery  cashOnDelivery" value="COD" class="tf-check">
+                                        <label for="delivery  cashOnDelivery"></label>
+                                    </div> {% endcomment %}
+                                    <p class="text_black-2 mb_20">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="privacy-policy.html" class="text-decoration-underline">privacy policy</a>.</p>
+                                    <div class="box-checkbox fieldset-radio mb_20">
+                                        <input type="checkbox" id="check-agree" class="tf-check">
+                                        <label for="check-agree" class="text_black-2">I have read and agree to the website <a href="terms-conditions.html" class="text-decoration-underline">terms and conditions</a>.</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="tf-btn radius-3 btn-fill btn-icon animate-hover-btn justify-content-center">Place order</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+        <!-- page-cart -->
+
+        {% block js %}
+        <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+        crossorigin="anonymous"></script>
+        <script src="{% static 'web/js/cart.js' %}"></script>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const cartTotal = parseFloat(document.getElementById("cart_total").textContent);
+			const shippingInput = document.getElementById("shipping_price");
+			const serviceFeeInput = document.getElementById("service_fee");
+			const totalAmtInput = document.getElementById("total_amt");
+
+			const paymentRadios = document.querySelectorAll("input[name='paymentMethod']");
+			const selectedPaymentInput = document.getElementById("id_selected_payment");
+
+			paymentRadios.forEach(function (radio) {
+				radio.addEventListener("change", function () {
+					if (this.checked) {
+						selectedPaymentInput.value = this.value; // Update hidden input with selected value
+					}
+				});
+			});
+
+
+		
+			function updateTotal() {
+				const shipping = parseFloat(shippingInput.dataset.shippingPrice || 0);
+				const serviceFee = parseFloat(serviceFeeInput.textContent || 0);
+				const total = cartTotal + shipping + serviceFee;
+				totalAmtInput.textContent = total.toFixed(2);
+				document.getElementById("id_total_amt").value = total.toFixed(2);
+			}
+		
+			shippingInput.addEventListener("input", updateTotal);
+			serviceFeeInput.addEventListener("input", updateTotal);
+		});
+		
+	  </script>
+
+
+
+        {% endblock  %}
+        {% endblock %}

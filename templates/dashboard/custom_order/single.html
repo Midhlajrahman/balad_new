@@ -1,0 +1,79 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %} 
+{% block title %}Order View{% endblock%} 
+{% block content %}
+<div class="row">
+    <div class="col-xl-12 col-12 mb-5">
+        <!-- card -->
+        <div class="card h-100 card-lg">
+            <div class="card-body p-6">
+                <div class="d-md-flex justify-content-between">
+                    <div class="d-flex align-items-center mb-2 mb-md-0">
+                        <h2 class="mb-0">Order for: {{ order.name }}</h2>
+                        <span class="badge bg-light-warning text-dark-warning ms-2">Custom Order</span>
+                    </div>
+                </div>
+                <div class="mt-8 row">
+                    <div class="col-lg-6 col-md-6 col-12 mb-6">
+                        <h6>Customer Details</h6>
+                        <p class="mb-1 lh-lg">{{ order.name }}<br>
+                        {{ order.phone }} <br>
+                        {{ order.email }} <br>
+                        </p>
+                    </div>
+                    <!-- address -->
+                    <div class="col-lg-6 col-md-6 col-12 mb-6">
+                        <h6>Shipping Address</h6>
+                        <p class="mb-1 lh-lg">{{ order.address }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 table-responsive">
+                    <!-- Table -->
+                    <table class="table mb-0 text-nowrap table-centered">
+                        <!-- Table Head -->
+                        <thead class="bg-light">
+                            <tr>
+                                <th>Measurement</th>
+                                <th>Value (in cm)</th>
+                            </tr>
+                        </thead>
+                        <!-- tbody -->
+                        <tbody>
+                            <tr>
+                                <td>Front Neck Depth</td>
+                                <td>{{ order.front_neck_depth }}</td>
+                            </tr>
+                            <tr>
+                                <td>Back Neck Depth</td>
+                                <td>{{ order.back_neck_depth }}</td>
+                            </tr>
+                            <tr>
+                                <td>Bust</td>
+                                <td>{{ order.bust }}</td>
+                            </tr>
+                            <tr>
+                                <td>Waist</td>
+                                <td>{{ order.waist }}</td>
+                            </tr>
+                            <tr>
+                                <td>Sleeve Length</td>
+                                <td>{{ order.sleeve_length }}</td>
+                            </tr>
+                            <tr>
+                                <td>Shoulder Length</td>
+                                <td>{{ order.shoulder_length }}</td>
+                            </tr>
+                            <tr>
+                                <td>Full Length</td>
+                                <td>{{ order.full_length }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

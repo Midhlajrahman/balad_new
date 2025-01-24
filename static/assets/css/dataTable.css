@@ -1,0 +1,82 @@
+@media (min-width:700px){
+    .dataTables_wrapper.no-footer{
+        padding: 1.5rem !important;
+    }
+}
+
+
+.dataTables_wrapper.no-footer th{
+ border-bottom: 0px;
+}
+
+.dataTables_wrapper.no-footer input[type="search"]{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid #dfe2e1;
+    border-radius: 0.5rem;
+    color: #21313c;
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 1.6;
+    padding: 0.55rem 1rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+.dataTables_wrapper.no-footer select[name="myTable_length"]{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-clip: padding-box;
+    background-color: #fff;
+    border: 1px solid #dfe2e1;
+    border-radius: 0.5rem;
+    color: #21313c;
+    font-size: .875rem;
+    font-weight: 500;
+    line-height: 1.6;
+    padding: 0.55rem 1rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.myTable{
+    padding-top: 20px !important;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current, .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{
+    border: 0 !important;
+    color: white !important;
+    z-index: 3 !important;
+    background: #4A6F1B !important ;
+    border-radius: 0.5rem !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    border: 0 !important;
+    color: white !important;
+    z-index: 3 !important;
+    background: #4A6F1B !important ;
+    border-radius: 0.5rem !important;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover, .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    cursor: default;
+    color: #666 !important;
+    border: 1px solid transparent;
+    box-shadow: none;
+    background: #ecf0ef;
+    border-radius: 0.5rem !important;
+
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button{
+    border: 1px solid #dfe2e1;
+    border-radius: 0.5rem !important;
+    margin-left: 0;
+    margin-right: 0.25rem;
+}
+.myTable_wrapper input[type="search"]:focus {
+    background-color: #fff;
+    border-color: #85d685;
+    box-shadow: 0 0 0 0.25rem rgba(10, 173, 10, .25);
+    color: #21313c;
+    outline: 0;
+}

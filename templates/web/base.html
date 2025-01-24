@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+    <meta charset="utf-8">
+    <title>KMT SILKS</title>
+    <meta name="author" content="#">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <!-- font -->
+   <link rel="stylesheet" href="{% static 'web/fonts/fonts.css' %}">
+   <link rel="stylesheet" href="{% static 'web/fonts/font-icons.css' %}">
+   <link rel="stylesheet" href="{% static 'web/css/bootstrap.min.css' %}">
+   <link rel="stylesheet" href="{% static 'web/css/swiper-bundle.min.css' %}">
+   <link rel="stylesheet" href="{% static 'web/css/animate.css' %}">
+   <link rel="stylesheet" href="{% static 'web/css/styles.css' %}" type="text/css"> 
+    <!-- Favicon and Touch Icons  -->
+    {% comment %} <link rel="shortcut icon" href="{% static 'web/images/logo/favicon.png' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'web/images/logo/favicon.png' %}"> {% endcomment %}
+
+</head>
+    {% include "web/partials/header.html" %}
+    {% block content  %}
+    
+    {% endblock  %}
+    {% include "web/partials/footer.html" %}
+
+    <!-- Javascript -->
+    <script type="text/javascript" src="{% static 'web/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/swiper-bundle.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/carousel.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/bootstrap-select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/lazysize.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/bootstrap-select.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/count-down.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/wow.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/multiple-modal.js' %}"></script>
+    <script type="text/javascript" src="{% static 'web/js/main.js' %}"></script>
+    {% block js %}
+    {% endblock %}
+</body>
+
+</html>

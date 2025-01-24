@@ -1,0 +1,181 @@
+{% extends 'account/base.html' %} {% load static %} {% block title %} Account Address{%endblock%} {% block content %}
+{% load crispy_forms_tags %}  
+<div class="d-flex justify-content-between mb-6">
+    <!-- heading -->
+    <h2 class="mb-0">Address</h2>
+    <!-- button -->
+    <a
+      href="#"
+      class="btn btn-outline-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#addAddressModal"
+      >Add a new address
+    </a>
+  </div>
+  <div class="row">
+    {% if address %}
+    {% for i in address %}
+    <div class="col-lg-6 col-12 mb-4">
+      <!-- form -->
+      <div class="card card-body p-6 ">
+        <div class="form-check mb-4">
+          <input class="form-check-input d-block" type="radio" value="{{i.id}}" name="address" id="{{i.address_type}}-Radio-{{i.id}}" {% if i.is_default %}checked{% endif %}>
+          <label class="form-check-label text-dark" for="{{i.address_type}}-Radio-{{i.id}}" style="background-color: initial !important;">
+            {{i.address_type}}
+          </label>
+        </div>
+        <!-- address -->
+        <address> <strong>{{i.full_name}}</strong> <br>
+          {{i.address_line_1}} <br>
+          {{i.address_line_2}} <br>
+          {{i.district}}, {{i.city}},<br>
+          {{i.state}} <br>
+          {{i.pincode}}<br>
+          <abbr title="Phone">P:  {{i.mobile_no}}</abbr></address>
+        {% if i.is_default %}
+          <span class="text-info">Default address </span>
+        {% endif %}
+        <div class="mt-4">
+          <a href="#" class="text-inherit" data-bs-toggle="modal" data-bs-target="#editAddressModal" data-address-id="{{ i.id }}">Edit</a>
+          <a href="#" class="text-danger ms-3" data-bs-toggle="modal" data-bs-target="#deleteModal" data-address-id="{{ i.id }}">Delete</a>
+        </div>
+      </div>
+    </div>
+    {% endfor%}
+    {% endif%}
+  </div>
+
+<!-- Modal -->
+<!-- add -->
+<div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- modal body -->
+      <div class="modal-body p-6">
+        <div class="d-flex justify-content-between mb-5">
+          <!-- heading -->
+          <div>
+            <h5 class="h6 mb-1" id="addAddressModalLabel">New Shipping Address</h5>
+            <p class="small mb-0">Add new shipping address for your order delivery.</p>
+          </div>
+          <div>
+            <!-- button -->
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <!-- row -->
+        <form method="post" action="{% url 'accounts:address_create' %}" class="ajax redirect" data-redirect="{% url 'web:checkout' %}">
+          {% csrf_token %}
+          {{ form|crispy }}
+      
+          <div class="col-12 text-end">
+              <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary" type="submit">Save Address</button>
+          </div>
+      </form>
+      
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- edit -->
+<div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- modal body -->
+      <div class="modal-body p-6">
+        <div class="d-flex justify-content-between mb-5">
+          <!-- heading -->
+          <div>
+            <h5 class="h6 mb-1" id="editAddressModalLabel">Update Shipping Address</h5>
+            <p class="small mb-0">Update shipping address for your order delivery.</p>
+          </div>
+          <div>
+            <!-- button -->
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <!-- row -->
+        <form class="ajax redirect" data-redirect="{% url 'web:checkout' %}" id="editAddressForm" method="post" action="">
+          {% csrf_token %}
+          {{ form|crispy }}
+          <div class="col-12 text-end">
+              <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+              <button class="btn btn-primary" type="submit">Save Changes</button>
+          </div>
+      </form>
+      
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- delete -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"  aria-hidden="true">
+  <div class="modal-dialog">
+      <!-- modal content -->
+      <div class="modal-content">
+        <!-- modal header -->
+        <div class="modal-header">
+            <h5 class="modal-title" id="deleteModalLabel">Delete address</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- modal body -->
+        <form action="" method="post" class="ajax redirect" data-redirect="{% url 'web:checkout' %}" id="deleteAddressForm">
+          {% csrf_token %}
+        <div class="modal-body">
+            <h6>Are you sure you want to delete this address?</h6>
+        </div>
+        <!-- modal footer -->
+        <div class="modal-footer">
+            <!-- btn -->
+            <button type="button" class="btn btn-outline-gray-400" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="delete_address btn btn-danger">Delete</button>
+        </div></form>
+      </div>
+  </div>
+</div>
+{% endblock content %}
+{% block js %}
+{% include 'web/includes/form-ajax.html' %}
+<script>
+  // edit address
+  $('#editAddressModal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);  // Button that triggered the modal
+    var addressId = button.data('address-id');  // Extract the address ID from data-* attributes
+    
+    // Set the form action dynamically based on the address ID
+    var form = $('#editAddressForm');
+    var currentHref = "/accounts/user/address/" + addressId + "/edit/";
+    form.attr('action', currentHref );
+
+    // Fetch the data for the specific address and populate the form fields
+    $.ajax({
+      url: '{% url "accounts:address_get" %}',  // Replace with the actual URL to fetch address data
+      data: { address_id: addressId },
+      dataType: 'json',
+      success: function(data) {
+          // Populate the form fields with the data received
+          $.each(data, function(name, value) {
+              $('[name="' + name + '"]').val(value);
+          });
+      },
+      error: function(response) {
+          // Handle error
+          console.log('Error:', response);
+      }
+    });
+  });
+  // delete address
+  $('#deleteModal').on('show.bs.modal', function(event) {
+    var button = $(event.relatedTarget);  // Button that triggered the modal
+    var addressId = button.data('address-id');  // Extract the address ID from data-* attributes
+    console.log('Address ID:', addressId);
+    // Set the form action dynamically based on the address ID
+    var form = $('#deleteAddressForm');
+    var currentHref = "/accounts/user/address/" + addressId + "/delete/";
+    form.attr('action', currentHref );
+  });
+</script>
+{%endblock%}

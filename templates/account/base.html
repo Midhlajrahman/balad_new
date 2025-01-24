@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta content="kmtsilks" name="author">
+        <title>{% block title %}{% endblock %} | kmtsilks</title>
+        <!-- Favicon icon-->
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/images/favicon/icon.svg' %}">
+         <!-- Libs CSS -->
+        <link href="{% static 'assets/libs/bootstrap-icons/font/bootstrap-icons.min.css' %}{{current_version}}" rel="stylesheet">
+        <link href="{% static 'assets/libs/feather-webfont/dist/feather-icons.css' %}{{current_version}}" rel="stylesheet">
+        <link href="{% static 'assets/libs/simplebar/dist/simplebar.min.css' %}{{current_version}}" rel="stylesheet">
+        <!-- Theme CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/theme.min.css' %}{{current_version}}" />
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}{{current_version}}" />
+        {% block css_plugins %}{% endblock %}
+        {% block css %}{% endblock %}
+
+        
+       
+    </head>
+    <body>
+        {% include 'web/includes/header.html' %}
+        <main>
+            <section>
+                <div class="container">
+                  <!-- row -->
+                  <div class="row">
+                    {% include 'account/includes/sidebar.html' %}
+                    <div class="col-lg-9 col-md-8 col-12">
+                        <div class="py-5 p-md-6 p-lg-6">
+                        {% block content %}{% endblock %} 
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        {% include 'web/includes/footer.html' %}
+        <!-- Libs JS -->
+        <script src="{% static 'assets/libs/jquery/dist/jquery.min.js'  %}{{current_version}}"></script>
+        <script src="{% static 'assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js'  %}{{current_version}}"></script>
+        <script src="{% static 'assets/libs/simplebar/dist/simplebar.min.js'  %}{{current_version}}"></script>
+        <!-- Theme JS -->
+        <script src="{% static 'assets/js/theme.min.js'  %}{{current_version}}"></script>
+        {% block js_plugins %}{% endblock %}
+        {% block js %}{% endblock %}
+    </body>
+</html>

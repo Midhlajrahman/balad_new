@@ -1,0 +1,83 @@
+{% extends "registration/registration_base.html" %}
+{% load i18n crispy_forms_tags %}
+
+{% load static%}
+{% block reg_nav%}
+<span class="navbar-text">
+  Don’t have an account? <a href="{% url 'registration_register' %} "> Sign Up</a>
+</span>
+{% endblock%}
+{% block title %} Log in {% endblock %}
+
+{% block content %}
+
+<!-- section -->
+<section class="my-lg-14 my-8">
+  <div class="container">
+    <!-- row -->
+    <div class="row justify-content-center align-items-center">
+      
+      <!-- col -->
+      <div class="col-12 col-md-6 offset-lg-1 col-lg-4 order-lg-2 order-1">
+        <div class="mb-lg-9 mb-5">
+          <h1 class="mb-1 h2 fw-bold">Sign in to kmtsilks</h1>
+          <p>Welcome back to kmtsilks! Enter your email to get started.</p>
+        </div>
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="row g-3">
+            <!-- row -->
+            {{form|crispy}}
+
+            <div class="d-flex justify-content-between">
+              <!-- form check -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                <!-- label --> <label class="form-check-label" for="flexCheckDefault">
+                  Remember me
+                </label>
+              </div>
+              <div> Forgot password? <a href="{% url 'auth_password_reset' %}">Reset It</a></div>
+            </div>
+            <!-- btn -->
+            <div class="col-12 d-grid"> <button type="submit" class="btn btn-dark">Sign In</button>
+            </div>
+            <!-- link -->
+            <div>Don’t have an account? <a href="{% url 'registration_register' %} "> Sign Up</a></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+
+{% comment %}
+**registration/login.html**
+
+It's your responsibility to provide the login form in a template called
+registration/login.html by default. This template gets passed four
+template context variables:
+
+``form``
+A Form object representing the login form. See the forms
+documentation for more on Form objects.
+
+``next``
+The URL to redirect to after successful login. This may contain a
+query string, too.
+
+``site``
+The current Site, according to the SITE_ID setting. If you don't
+have the site framework installed, this will be set to an instance
+of RequestSite, which derives the site name and domain from the
+current HttpRequest.
+
+``site_name``
+An alias for site.name. If you don't have the site framework
+installed, this will be set to the value of
+request.META['SERVER_NAME']. For more on sites, see The
+"sites" framework.
+{% endcomment %}
