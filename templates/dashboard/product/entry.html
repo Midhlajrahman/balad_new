@@ -3,6 +3,12 @@
 {% block title %}{{title}}{% endblock%} 
 
 {% block content %}
+<style>
+  .tox-tinymce {
+    width: 100% !important; /* Adjust width */
+    max-width: 800px; /* Optional: Add a max-width constraint */
+}
+</style>
 <div class="row mb-8">
   <div class="col-md-12">
     <div class="d-md-flex justify-content-between align-items-center">
@@ -72,15 +78,19 @@
             </div>
             <div class="mb-3 col-md-6">
               <div class="form-check form-switch mb-4">
-                <input class="form-check-input" type="checkbox" role="switch" id="id_is_seasonal" {% if form.instance.is_seasonal %} checked {% endif %} name="is_seasonal">
-                <label class="form-check-label" for="id_is_seasonal">Is Seasonal</label>
+                <input class="form-check-input" type="checkbox" role="switch" id="id_is_wedding_product" {% if form.instance.is_wedding_product %} checked {% endif %} name="is_wedding_product">
+                <label class="form-check-label" for="id_is_wedding_product">Is Wedding Product</label>
               </div>
             </div>
+
             <div class="mb-3 col-md-6">
-              <div class="form-check form-switch mb-4">
-                <input class="form-check-input" type="checkbox" role="switch" id="id_is_customisable" {% if form.instance.is_customisable %} checked {% endif %} name="is_customisable">
-                <label class="form-check-label" for="id_is_customisable">Is Customisable</label>
-              </div>
+              <label class="form-label">{{form.color.label}} {% if form.color.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+              {{form.color}}
+            </div>
+            
+            <div class="mb-3 col-md-6">
+              <label class="form-label">{{form.sku.label}} {% if form.sku.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+              {{form.sku}}
             </div>
          
            <div class="mb-3 col-lg-12 mt-5">
@@ -115,8 +125,10 @@
           <div class="mb-3 ">
             <label class="form-label">{{form.category.label}} {% if form.category.field.required %}<span class="text-danger">*</span>{% endif %}</label>
             {{form.category}}
+            <a href="{% url 'main:category_create' %}" class="btn btn-light mt-2">Create Category</a>
           </div>
         </div>
+       
       
       </div>
       <div class="card mb-6 card-lg">
@@ -124,6 +136,18 @@
           <div class="mb-3 ">
             <label class="form-label">{{form.subcategory.label}} {% if form.subcategory.field.required %}<span class="text-danger">*</span>{% endif %}</label>
             {{form.subcategory}}
+            <a href="{% url 'main:sub_category_create' %}" class="btn btn-light mt-2">Create Sub Category</a>
+          </div>
+        </div>
+      
+      </div>
+
+      <div class="card mb-6 card-lg">
+        <div class="card-body p-6 ">
+          <div class="mb-3 ">
+            <label class="form-label">{{form.brands.label}} {% if form.brands.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+            {{form.brands}}
+            <a href="{% url 'main:brands_create' %}" class="btn btn-light mt-2">Create Brand</a>
           </div>
         </div>
       
@@ -204,7 +228,7 @@
     </div>
   </div>
 
-  <div class="row">
+  {% comment %} <div class="row">
     <div class="col-md-12">
       <div class="card mb-6 card-lg">
         <div class="card-body p-6 ">
@@ -237,11 +261,11 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
 
   {{ available_size_formset.management_form }}
   {{ product_image_formset.management_form }}
-  {{colour_formset.management_form}}
+  {% comment %} {{colour_formset.management_form}} {% endcomment %}
   <div class="col-md-5">
     <button style="width:60%" type="submit" class="btn btn-primary">Submit</button>
  </div>
@@ -301,6 +325,32 @@
     });
   });
 </script>
+
+<script>
+  $(document).ready(function () {
+      $("#id_category").change(function () {
+          var categoryId = $(this).val();
+          if (categoryId) {
+              $.ajax({
+                  url: "{% url 'main:load_subcategories' %}",
+                  data: { category_id: categoryId },
+                  dataType: "json",
+                  success: function (data) {
+                      var subcategoryDropdown = $("#id_subcategory");
+                      subcategoryDropdown.empty();
+                      subcategoryDropdown.append('<option value="">Select Subcategory</option>');
+                      $.each(data, function (key, value) {
+                          subcategoryDropdown.append('<option value="' + value.id + '">' + value.name + '</option>');
+                      });
+                  },
+              });
+          } else {
+              $("#id_subcategory").empty().append('<option value="">Select Subcategory</option>');
+          }
+      });
+  });
+</script>
+
 {{available_size_formset.media}}
 {{product_image_formset.media}}
 {{form.media}}

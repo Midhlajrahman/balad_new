@@ -22,6 +22,9 @@ INSTALLED_PLUGINS = [
     "crispy_bootstrap5",
     "versatileimagefield",
     "django_recaptcha",
+
+    'dal',
+    'dal_select2',
 ]
 
 
@@ -109,8 +112,8 @@ AUTH_PASSWORD_VALIDATORS = [
     # {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-TINYMCE_JS_URL = "https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"
-TINYMCE_COMPRESSOR = False
+# TINYMCE_JS_URL = "https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js"
+# TINYMCE_COMPRESSOR = False
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "Asia/Kolkata"
@@ -203,3 +206,16 @@ RAZOR_PAY_SECRET = config("RAZOR_PAY_SECRET")
 
 RECAPTCHA_PUBLIC_KEY = "6Lf_EqApAAAAAJHsDpM3jMUGs4PPfSUd58eqL5DG"
 RECAPTCHA_PRIVATE_KEY = "6Lf_EqApAAAAABjw2eBv9pUGIxFZIjDj3F0d5ga7"
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 500,
+    "width": 900,
+    "plugins": "link image preview codesample table fullscreen",
+    "toolbar": "undo redo | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | codesample | table | fullscreen",
+    "menubar": "file edit view insert format tools table",
+    "content_style": "body { font-family:Arial,sans-serif; font-size:14px }",
+}
+
+TINYMCE_JS_URL = '/static/tinymce/tinymce.min.js'
+TINYMCE_JS_ROOT = '/static/tinymce'

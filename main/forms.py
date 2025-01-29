@@ -1,5 +1,6 @@
 from django import forms
 from main.models import District, ShippingFee, State
+from tinymce.widgets import TinyMCE
 from products.models import (
     AvailableSize,
     Category,
@@ -7,8 +8,10 @@ from products.models import (
     ProductImage,
     Review,
     Slider,
-    Colour,
-    SubCategory
+    # Colour,
+    SubCategory,
+    WeddingBanner,
+    Brands
    
 )
 from web.models import Testimonial
@@ -50,21 +53,16 @@ class ProductForm(forms.ModelForm):
         widgets = {
             "name": forms.TextInput(attrs={"placeholder": "Product Name", "class": "form-control"}),
             "slug": forms.TextInput(attrs={"placeholder": "Product Slug", "class": "form-control"}),
-            "details": forms.Textarea(attrs={"cols": "60", "rows": "10"}),
+            "details": TinyMCE(attrs={'cols': 60, 'rows': 10}),
             "meta_title": forms.TextInput(attrs={"placeholder": "Title", "class": "form-control"}),
             "meta_description": forms.Textarea(attrs={"placeholder": "Description", "class": "form-control", "rows": 3}),
             "image": forms.FileInput(attrs={"class": "file-input"}),
             "category": forms.Select(attrs={"class": "form-select"}),
+            "brands":forms.Select(attrs={"class": "form-select"}),
             "subcategory": forms.Select(attrs={"class": "form-select"}),
-            # "rating": forms.TextInput(
-            #     attrs={
-            #         "placeholder": "Product Rating ",
-            #         "class": "form-control",
-            #         "type": "number",
-            #         "max": 5,
-            #         "min": 1,
-            #     }
-            # ),
+            "color":forms.TextInput(attrs={"placeholder": "Color", "class": "form-control"}),
+            "sku":forms.TextInput(attrs={"placeholder": "Sku", "class": "form-control"}),
+           
         }
 
 class StateForm(forms.ModelForm):
@@ -140,21 +138,21 @@ class AvailableSizeForm(forms.ModelForm):
             ),
         }
 
-class ColourForm(forms.ModelForm):
-    class Meta:
-        model = Colour
-        fields = (
-            "name",
-            "image",
-            "hex_code",
+# class ColourForm(forms.ModelForm):
+#     class Meta:
+#         model = Colour
+#         fields = (
+#             "name",
+#             "image",
+#             "hex_code",
         
-        )
-        widgets = {
-            "name": forms.TextInput(attrs={"placeholder": "Enter Color Name", "class": "form-control"}),
-            "image":forms.FileInput(attrs={"class": "file-input form-control"}),
-            "hex_code": forms.TextInput(attrs={"placeholder": "", "class": "form-control"}),
+#         )
+#         widgets = {
+#             "name": forms.TextInput(attrs={"placeholder": "Enter Color Name", "class": "form-control"}),
+#             "image":forms.FileInput(attrs={"class": "file-input form-control"}),
+#             "hex_code": forms.TextInput(attrs={"placeholder": "", "class": "form-control"}),
             
-        }
+#         }
 
 
 class ProductImageForm(forms.ModelForm):
@@ -210,6 +208,18 @@ class SliderForm(forms.ModelForm):
             "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
 
+class WeddingForm(forms.ModelForm):
+    class Meta:
+        model = WeddingBanner
+        fields = ("name","slug", "banner_image","category", "is_active")
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-control"}),
+            "slug": forms.TextInput(attrs={"placeholder": "Banner Slug", "class": "form-control"}),
+            "banner_image": forms.FileInput(attrs={"class": "file-input"}),
+            "category": forms.Select(attrs={"class": "form-select"}),
+            "is_active": forms.CheckboxInput(attrs={"class": "form-check-input"}),
+        }
+
 
 class ShippingFeeForm(forms.ModelForm):
     class Meta:
@@ -229,4 +239,15 @@ class TestimonialForm(forms.ModelForm):
             "name": forms.TextInput(attrs={"class": "form-control"}),
             "position": forms.TextInput(attrs={"class": "form-control"}),
             "description": forms.Textarea(attrs={"class": "form-control"}),
+        }
+
+class BrandsForm(forms.ModelForm):
+    class Meta:
+        model = Brands
+        fields = ("brand_name", "brand_image")
+        widgets = {
+            
+            "brand_name": forms.TextInput(attrs={"class": "form-control"}),
+            "brand_image":forms.FileInput(attrs={"class": "file-input"}),
+           
         }

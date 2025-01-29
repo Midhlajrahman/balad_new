@@ -1,0 +1,83 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %} 
+{% block title %}Categories{% endblock%} 
+{% block content %}
+<!-- row -->
+<div class="row mb-8">
+    <div class="col-md-12">
+        <div class="d-md-flex justify-content-between align-items-center">
+            <!-- pageheader -->
+            <div>
+                <h2 class="m-0">Brands</h2>
+            </div>
+            <!-- button -->
+            <div class="mt-5 mt-md-0">
+                <a href="{% url 'main:brands_create' %}" class="btn btn-primary">Add New Brand</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row ">
+    <div class="col-xl-12 col-12 mb-5">
+        <!-- card -->
+        <div class="card h-100 card-lg">
+            <!-- card body -->
+            <div class="card-body p-0">
+                <!-- table -->
+                <div class="table-responsive ">
+                    <table id="myTable" class=" myTable table table-centered table-hover mb-0 text-nowrap table-borderless">
+                        <thead class="bg-light">
+                            <tr>
+                                <th>#</th>
+                                <th>Brand</th>
+                                <th>Brand Image</th>
+                           
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for sub_category in object_list %}
+                            <tr>  
+                                <td>{{forloop.counter}}</td>
+                                <td><a href="{{ sub_category.brand_image.url }}" class="text-reset">{{ sub_category.brand_name }}</a></td>   
+                                <td><a href="{{ sub_category.brand_image.url }}" class="text-reset "><img src="{{ sub_category.brand_image.url }}" alt="" class="icon-shape icon-md"></a></td>              
+                               
+                           
+                                <td>
+                                    <div class="dropdown">
+                                        <a href="#" class="text-reset" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="feather-icon icon-more-vertical fs-5"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                       <li><a class="dropdown-item" href="{% url 'main:brands_delete' sub_category.pk %}"><i class="bi bi-trash me-3"></i>Delete</a></li>
+                                            <li><a class="dropdown-item" href="{% url 'main:brands_update' sub_category.pk %}"><i class="bi bi-pencil-square me-3 "></i>Edit</a></li> 
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="{% static 'assets/css/dataTable.css' %}{{current_version}}">
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<script>
+    let table = new DataTable('#myTable', {
+        responsive: true
+    });
+ 
+</script>
+
+{% endblock  %}

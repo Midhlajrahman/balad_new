@@ -34,8 +34,9 @@ from main.forms import (
     SliderForm,
     StateForm,
     TestimonialForm,
-    ColourForm,
-    SubCategoryForm
+    # ColourForm,
+    SubCategoryForm,
+    WeddingForm,BrandsForm
 )
 from main.mixins import LoginRequiredMixin, SuperAdminLoginRequiredMixin
 from main.models import District, ShippingFee, State
@@ -47,8 +48,10 @@ from products.models import (
     ProductImage,
     Review,
     Slider,
-    Colour,
+    # Colour,
     SubCategory,
+    WeddingBanner,
+    Brands
     
 )
 from web.forms import ContactForm
@@ -329,11 +332,11 @@ class CreateProductView(SuperAdminLoginRequiredMixin, View):
     form_class = ProductForm
     available_size_formset_class = formset_factory(AvailableSizeForm, extra=1, can_delete=True)
     product_image_formset_class = formset_factory(ProductImageForm, extra=1, can_delete=True)
-    colour_formset_class = formset_factory(ColourForm,extra=1,can_delete=True)
+    # colour_formset_class = formset_factory(ColourForm,extra=1,can_delete=True)
     def get(self, request, *args, **kwargs):
         available_size_formset = self.available_size_formset_class(prefix="available_size_formset")
         product_image_formset = self.product_image_formset_class(prefix="product_image_formset")
-        colour_formset = self.colour_formset_class(prefix="colour_formset")
+        # colour_formset = self.colour_formset_class(prefix="colour_formset")
         product_form = self.form_class()
         context = {
             "is_product": True,
@@ -341,7 +344,7 @@ class CreateProductView(SuperAdminLoginRequiredMixin, View):
             "title": "Add New Product",
             "available_size_formset": available_size_formset,
             "product_image_formset": product_image_formset,
-            "colour_formset": colour_formset,
+            # "colour_formset": colour_formset,
             "form": product_form,
         }
         return render(request, self.template_name, context)
@@ -349,11 +352,13 @@ class CreateProductView(SuperAdminLoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         product_image_formset = self.product_image_formset_class(request.POST, request.FILES, prefix="product_image_formset")
         available_size_formset = self.available_size_formset_class(request.POST, prefix="available_size_formset")
-        colour_formset = self.colour_formset_class(request.POST, request.FILES ,prefix="colour_formset") 
-        print(colour_formset)
+        # colour_formset = self.colour_formset_class(request.POST, request.FILES ,prefix="colour_formset") 
+        # print(colour_formset)
         product_form = self.form_class(request.POST, request.FILES)
 
-        if available_size_formset.is_valid() and product_form.is_valid() and product_image_formset.is_valid() and colour_formset.is_valid():
+        # if available_size_formset.is_valid() and product_form.is_valid() and product_image_formset.is_valid() and colour_formset.is_valid():
+
+        if available_size_formset.is_valid() and product_form.is_valid() and product_image_formset.is_valid():
             product = product_form.save()
 
             for size_form in available_size_formset:
@@ -366,10 +371,10 @@ class CreateProductView(SuperAdminLoginRequiredMixin, View):
                 image_data.product = product
                 image_data.save()
                 
-            for colour_form in colour_formset:
-                colour_data = colour_form.save(commit=False)
-                colour_data.product = product
-                colour_data.save()
+            # for colour_form in colour_formset:
+            #     colour_data = colour_form.save(commit=False)
+            #     colour_data.product = product
+            #     colour_data.save()
 
             response_data = {
                 "status": "true",
@@ -385,8 +390,8 @@ class CreateProductView(SuperAdminLoginRequiredMixin, View):
                 message += str(available_size_formset.errors)
             if product_image_formset.errors:
                 message += str(product_image_formset.errors)
-            if colour_formset.errors:
-                message += str(colour_formset.errors)
+            # if colour_formset.errors:
+            #     message += str(colour_formset.errors)
             
         
             response_data = {
@@ -460,24 +465,24 @@ def edit_product(request, pk):
             ),
         },
     )
-    if Colour.objects.filter(product=instance).exists():
-        extra = 0
-    else:
-        extra = 1
+    # if Colour.objects.filter(product=instance).exists():
+    #     extra = 0
+    # else:
+    #     extra = 1
 
-    ColourFormSet= inlineformset_factory(
-        Product,
-        Colour,
-        can_delete=True,
-        extra=extra,
-        fields="__all__",
-        widgets = {
-            "name": forms.TextInput(attrs={"placeholder": "Enter Color Name", "class": "form-control"}),
-            "image":forms.FileInput(attrs={"class": "file-input form-control"}),
-            "hex_code": forms.TextInput(attrs={"placeholder": "", "class": "form-control"}),
+    # ColourFormSet= inlineformset_factory(
+    #     Product,
+    #     # Colour,
+    #     can_delete=True,
+    #     extra=extra,
+    #     fields="__all__",
+    #     widgets = {
+    #         "name": forms.TextInput(attrs={"placeholder": "Enter Color Name", "class": "form-control"}),
+    #         "image":forms.FileInput(attrs={"class": "file-input form-control"}),
+    #         "hex_code": forms.TextInput(attrs={"placeholder": "", "class": "form-control"}),
             
-        }
-    )
+    #     }
+    # )
 
     if request.method == "POST":
         form = ProductForm(request.POST, request.FILES, instance=instance)
@@ -488,8 +493,9 @@ def edit_product(request, pk):
             instance=instance,
         )
         available_size_formset = AvailableSizeFormSet(request.POST, prefix="available_size_formset", instance=instance)
-        colour_formset = ColourFormSet(request.POST,request.FILES,prefix="colour_formset",instance=instance)
+        # colour_formset = ColourFormSet(request.POST,request.FILES,prefix="colour_formset",instance=instance)
         if form.is_valid():
+            
             data = form.save(commit=False)
             data.save()
             if product_image_formset.is_valid():
@@ -506,12 +512,12 @@ def edit_product(request, pk):
                     data2 = f0.save(commit=False)
                     data2.product = data
                     data2.save()
-            if colour_formset.is_valid():
-                Colour.objects.filter(product=data.pk).delete()
-                for f3 in colour_formset:
-                    data3 = f3.save(commit=False)
-                    data3.product=data
-                    data3.save()
+            # if colour_formset.is_valid():
+            #     Colour.objects.filter(product=data.pk).delete()
+            #     for f3 in colour_formset:
+            #         data3 = f3.save(commit=False)
+            #         data3.product=data
+            #         data3.save()
 
             response_data = {
                 "status": "true",
@@ -528,8 +534,8 @@ def edit_product(request, pk):
                 message += str(available_size_formset.errors)
             if product_image_formset.errors:
                 message += str(product_image_formset.errors)
-            if colour_formset.errors:
-                message += str(colour_formset.errors)
+            # if colour_formset.errors:
+            #     message += str(colour_formset.errors)
             
             response_data = {
                 "status": "false",
@@ -541,7 +547,7 @@ def edit_product(request, pk):
         form = ProductForm(instance=instance)
         product_image_formset = ProductImageFormSet(prefix="product_image_formset", instance=instance)
         available_size_formset = AvailableSizeFormSet(prefix="available_size_formset", instance=instance)
-        colour_formset = ColourFormSet(prefix="colour_formset",instance=instance)
+        # colour_formset = ColourFormSet(prefix="colour_formset",instance=instance)
         context = {
             "form": form,
             "product": instance,
@@ -549,7 +555,7 @@ def edit_product(request, pk):
             "is_edit": True,
             "product_image_formset": product_image_formset,
             "available_size_formset": available_size_formset,
-            "colour_formset": colour_formset,
+            # "colour_formset": colour_formset,
 
         }
         return render(request, "dashboard/product/entry.html", context)
@@ -999,3 +1005,142 @@ class CustomOrderUpdateView(SuperAdminLoginRequiredMixin, View):
         }
 
         return JsonResponse(response_data)
+    
+class WeddingListView(SuperAdminLoginRequiredMixin, ListView):
+    template_name = "dashboard/wedding/list.html"
+    model = WeddingBanner
+    extra_context = {"is_wedding": True}
+
+
+class WeddingCreateView(SuperAdminLoginRequiredMixin, CreateView):
+    model = WeddingBanner
+    template_name = "dashboard/wedding/entry.html"
+    form_class = WeddingForm
+    success_url = reverse_lazy("main:wedding_create")
+    extra_context = {"is_wedding": True, "title": "Add New Wedding Banner"}
+
+    def form_valid(self, form):
+        response_data = super().form_valid(form)
+        response_data = {
+            "status": "true",
+            "title": "Successfully Submitted",
+            "message": "Wedding Banner Created successfully.",
+        }
+        return JsonResponse(response_data)
+
+    def form_invalid(self, form):
+        response_data = super().form_invalid(form)
+        response_data = {
+            "status": "false",
+            "title": "Form validation error",
+            "message": str(form.errors),
+        }
+        return JsonResponse(response_data)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["is_edit"] = self.object is not None  # Check if editing an existing object
+        context["wedding"] = self.object  # Pass the object to the template
+        return context
+    
+
+
+class WeddingUpdateView(SuperAdminLoginRequiredMixin, UpdateView):
+    model = WeddingBanner
+    template_name = "dashboard/wedding/entry.html"
+    form_class = WeddingForm
+    success_url = reverse_lazy("main:wedding_update")
+    extra_context = {"is_wedding": True, "title": "Wedding Banner Update"}
+
+    def form_valid(self, form):
+        response_data = super().form_valid(form)
+        response_data = {
+            "status": "true",
+            "title": "Successfully Submitted",
+            "message": "Wedding Banner Updated successfully.",
+        }
+        return JsonResponse(response_data)
+
+    def form_invalid(self, form):
+        response_data = super().form_invalid(form)
+        response_data = {
+            "status": "false",
+            "title": "Form validation error",
+            "message": str(form.errors),
+        }
+        return JsonResponse(response_data)
+
+
+class WeddingDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
+    model = WeddingBanner
+    template_name = "dashboard/commen/delete.html"
+    success_url = reverse_lazy("main:wedding")
+
+
+class BrandsListView(SuperAdminLoginRequiredMixin, ListView):
+    template_name = "dashboard/brands/list.html"
+    model = Brands
+    extra_context = {"is_brands": True}
+
+
+class BrandsCreateView(SuperAdminLoginRequiredMixin, CreateView):
+    model = Brands
+    template_name = "dashboard/brands/entry.html"
+    form_class = BrandsForm
+    success_url = reverse_lazy("main:brands_create")
+    extra_context = {"is_brands": True, "title": "Add New Brand"}
+
+    def form_valid(self, form):
+        response_data = super().form_valid(form)
+        response_data = {
+            "status": "true",
+            "title": "Successfully Submitted",
+            "message": "Brand Created successfully.",
+        }
+        return JsonResponse(response_data)
+
+    def form_invalid(self, form):
+        response_data = super().form_invalid(form)
+        response_data = {
+            "status": "false",
+            "title": "Form validation error",
+            "message": str(form.errors),
+        }
+        return JsonResponse(response_data)
+
+
+class BrandsUpdateView(SuperAdminLoginRequiredMixin, UpdateView):
+    model = Brands
+    template_name = "dashboard/brands/entry.html"
+    form_class = BrandsForm
+    success_url = reverse_lazy("main:brands_update")
+    extra_context = {"is_brands": True, "title": "Brand Update"}
+
+    def form_valid(self, form):
+        response_data = super().form_valid(form)
+        response_data = {
+            "status": "true",
+            "title": "Successfully Submitted",
+            "message": "Brand Updated successfully.",
+        }
+        return JsonResponse(response_data)
+
+    def form_invalid(self, form):
+        response_data = super().form_invalid(form)
+        response_data = {
+            "status": "false",
+            "title": "Form validation error",
+            "message": str(form.errors),
+        }
+        return JsonResponse(response_data)
+    
+class BrandsDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
+    model = Brands
+    template_name = "dashboard/commen/delete.html"
+    success_url = reverse_lazy("main:brands")
+
+class LoadSubcategoriesView(View):
+    def get(self, request, *args, **kwargs):
+        category_id = request.GET.get("category_id")
+        subcategories = SubCategory.objects.filter(category_id=category_id).values("id", "name")
+        return JsonResponse(list(subcategories), safe=False)

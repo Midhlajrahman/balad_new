@@ -94,7 +94,8 @@ class OrderItem(models.Model):
     product = models.ForeignKey("products.AvailableSize", on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     quantity = models.PositiveIntegerField(default=1)
-
+    sku = models.CharField(max_length=100, null=True, blank=True)
+    color = models.CharField(max_length=100, null=True, blank=True)
     class Meta:
         verbose_name = _("Order Item")
         verbose_name_plural = _("Order Items")

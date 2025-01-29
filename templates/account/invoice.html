@@ -77,7 +77,8 @@
 			<thead>
 			  <tr class="bg-light">
 				<td class="col-3"><strong>Product</strong></td>
-				<td class="col-4"><strong>Size</strong></td>
+				<td class="col-2"><strong>Size</strong></td>
+				<td class="col-2"><strong>Color</strong></td>
 				<td class="col-2 text-center"><strong>Rate</strong></td>
 				<td class="col-1 text-center"><strong>QTY</strong></td>
 				<td class="col-2 text-end"><strong>Amount</strong></td>
@@ -86,8 +87,9 @@
 			<tbody>
                 {% for item in order.get_items %}
 				<tr>
-				  <td class="col-6">{{ item.product }}</td>
-				  <td class="col-1 text-1">{{ item.product.weight }}  {{ item.product.unit }}</td>
+				  <td class="col-6">{{ item.product }} <br> ({{item.sku}})</td>
+				  <td class="col-1 text-1">{{ item.product.weight }}  {{ item.product.unit }} </td>
+				  <td class="col-1 ">{{ item.color }}</td>
 				  <td class="col-1 text-center">₹{{ item.price }}</td>
 				  <td class="col-1 text-center">{{ item.quantity }}</td>
 				  <td class="col-2 text-end">₹{{ item.subtotal }}</td>
@@ -112,7 +114,7 @@
 				  </tr>
 				<tr class="bg-light">
 				  <td class="text-end"><strong>Grand Total:</strong></td>
-				  <td class="col-sm-2 text-end">₹{{ order.payable }}</td>
+				  <td class="col-sm-2 text-end">₹{{ order.subtotal }}</td>
 				</tr>
 			</table>
 		</div>

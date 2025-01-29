@@ -35,8 +35,9 @@
                             Order Date: <span class="text-dark">{{order.created}}</span><br>
                             Order Total: <span class="text-dark">₹{{ order.subtotal }}</span><br>
                             Order Status: <span class="text-dark">{{order.get_order_status_display}}</span><br>
-                            Payment Method: <span class="text-dark">{{order.get_payment_method_display}}</span><br>
+                            {% comment %} Payment Method: <span class="text-dark">{{order.get_payment_method_display}}</span><br> {% endcomment %}
                             Payment Status: <span class="text-dark">{{order.get_payment_status_display}}</span><br>
+                        
                         </p>
                     </div>
                 </div>
@@ -50,6 +51,7 @@
                             <tr>
                                 <th>Products</th>
                                 <th>Price</th>
+                                <th>Color</th>
                                 <th>Quantity</th>
                                 <th>Total</th>
                             </tr>
@@ -63,11 +65,14 @@
                                         <div class="ms-lg-4 mt-2 mt-lg-0">
                                             <h5 class="mb-0 h6">
                                                 {{i.product}}
+                                                <br>
+                                                ({{i.sku}})
                                             </h5>
                                         </div>
                                     </a>
                                 </td>
                                 <td><span class="text-body">₹ {{i.price}}</span></td>
+                                <td>{{i.color}}</td>
                                 <td>{{i.quantity}}</td>
                                 <td>₹ {{i.subtotal}}</td>
                             </tr>
@@ -75,6 +80,7 @@
                             <tr>
                                 <td class="border-bottom-0 pb-0"></td>
                                 <td class="border-bottom-0 pb-0"></td>
+                                <td></td>
                                 <td colspan="1" class="fw-medium text-dark ">
                                   <!-- text -->
                                   Sub Total :
@@ -98,6 +104,7 @@
                             <tr>
                                 <td class="border-bottom-0 pb-0"></td>
                                 <td class="border-bottom-0 pb-0"></td>
+                                <td></td>
                                 <td colspan="1" class="fw-medium text-dark ">
                                   <!-- text -->
                                   Shipping Cost :
@@ -110,6 +117,7 @@
                             <tr>
                                 <td class="border-bottom-0 pb-0"></td>
                                 <td class="border-bottom-0 pb-0"></td>
+                                <td></td>
                                 <td colspan="1" class="fw-medium text-dark ">
                                   <!-- text -->
                                   Grand Total :

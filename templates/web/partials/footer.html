@@ -14,13 +14,13 @@
                             </div> {% endcomment %}
                             <ul>
                                 <li>
-                                    <p>Address: White House, <br> UK</p>
+                                    <p>Address: Kmt Silks <br> Perithalmanna</p>
                                 </li>
                                 <li>
-                                    <p>Email: <a href="mailto:kmtsilksaluva@gmail.com">kmtsilksaluva@gmail.com</a></p>
+                                    <p>Email: <a href="mailto:kmtsilk@gmail.com">kmtsilk@gmail.com</a></p>
                                 </li>
                                 <li>
-                                    <p>Phone: <a href="tel:+918547848091">8547848091</a></p>
+                                    <p>Phone: <a href="tel:+91123434545">1234545</a></p>
                                 </li>
                             </ul>
                             <a href="#" class="tf-btn btn-line">Get direction<i class="icon icon-arrow1-top-left"></i></a>
@@ -40,24 +40,13 @@
                             <h6>Help</h6>
                         </div>
                         <ul class="footer-menu-list tf-collapse-content">
+                            {% for cat in all_categories  %}
+                            
                             <li>
-                                <a href="#" class="footer-menu_item">Privacy Policy</a>
+                                <a href="{{cat.get_absolute_url}}" class="footer-menu_item">{{cat.name}}</a>
                             </li>
-                            <li> 
-                                <a href="#" class="footer-menu_item">  Returns + Exchanges </a>
-                            </li>
-                            <li> 
-                                <a href="#" class="footer-menu_item">Shipping</a>
-                            </li>
-                            <li> 
-                                <a href="#" class="footer-menu_item">Terms &amp; Conditions</a>
-                            </li>
-                            <li> 
-                                <a href="#" class="footer-menu_item">FAQ’s</a>
-                            </li>
-                            <li> 
-                                <a href="#" class="footer-menu_item">Compare</a>
-                            </li>
+                            {% endfor %}
+                           
                            
                         </ul>
                     </div>
@@ -73,14 +62,12 @@
                                 <a href="#" class="footer-menu_item">Our Story</a>
                             </li>
                             <li> 
-                                <a href="#" class="footer-menu_item">Visit Our Store</a>
+                                <a href="{% url 'web:shop' %}" class="footer-menu_item">Visit Our Store</a>
                             </li>
                             <li> 
                                 <a href="{% url 'web:contact' %}" class="footer-menu_item">Contact Us</a>
                             </li>
-                            <li> 
-                                <a href="#" class="footer-menu_item">Account</a>
-                            </li>
+                          
                         </ul>
                     </div>
                   
@@ -471,13 +458,7 @@
                 </a>
              
             </li>
-            <li class="nav-mb-item">
-                <a href="{% url 'web:customize_product' %}" class="collapsed mb-menu-link current">
-                    <span>Customise Products</span>
-                    <span class="btn-open-sub"></span>
-                </a>
-             
-            </li>
+          
         </li>
         <li class="nav-mb-item">
             <a href="{% url 'web:contact' %}" class="collapsed mb-menu-link current">
@@ -504,9 +485,9 @@
                 <a href="#" class="text-need">Need help ?</a>
             </div>
             <ul class="mb-info">
-                <li>Address: White House  Fashion Street,  <br> UK</li>
-                <li>Email: <b>kmtsilksaluva@gmail.com</b></li>
-                <li>Phone: <b>8547848091</b></li>
+                <li>Address:KMT Silks,  <br> Perithalmanna</li>
+                <li>Email: <b>kmtsilksa@gmail.com</b></li>
+                <li>Phone: <b>123456789</b></li>
             </ul>
         </div>
     </div>

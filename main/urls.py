@@ -1,7 +1,7 @@
 from django.urls import path
 
 from . import views
-
+from .views import LoadSubcategoriesView
 app_name = "main"
 
 urlpatterns = [
@@ -125,11 +125,39 @@ urlpatterns = [
         views.SubCategoryDelete.as_view(),
         name="sub_category_delete",
     ),
-    path("custom_orders/", views.CustomOrderView.as_view(), name="custom_orders"),
+
+       # wedding
+    path("wedding/", views.WeddingListView.as_view(), name="wedding"),
+
     path(
-        "custom_orders/<str:order_id>/detail/",
-        views.CustomOrderDetailView.as_view(),
-        name="custom_order_detail",
+        "wedding/create/", views.WeddingCreateView.as_view(), name="wedding_create"
     ),
+    path(
+        "wedding/<str:pk>/update/",
+        views.WeddingUpdateView.as_view(),
+        name="wedding_update",
+    ),
+    path(
+        "wedding/<str:pk>/delete/",
+        views.WeddingDeleteView.as_view(),
+        name="wedding_delete",
+    ),
+           # Brands
+    path("brands/", views.BrandsListView.as_view(), name="brands"),
+
+    path(
+        "brands/create/", views.BrandsCreateView.as_view(), name="brands_create"
+    ),
+    path(
+        "brands/<str:pk>/update/",
+        views.BrandsUpdateView.as_view(),
+        name="brands_update",
+    ),
+    path(
+        "brands/<str:pk>/delete/",
+        views.BrandsDeleteView.as_view(),
+        name="brands_delete",
+    ),
+    path("load-subcategories/", LoadSubcategoriesView.as_view(), name="load_subcategories"),
     
 ]

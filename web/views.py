@@ -22,7 +22,7 @@ from main.models import District,ShippingFee
 from order.forms import OrderForm
 from order.models import Order, OrderItem
 from products.forms import ReviewForm
-from products.models import AvailableSize, Category, Product, Slider,SubCategory,FestivalSeason,Brands,Colour,ProductImage
+from products.models import AvailableSize, Category, Product, Slider,SubCategory,WeddingBanner,Brands,ProductImage
 
 # CART
 from web.cart import Cart
@@ -33,6 +33,7 @@ from django.db.models import Count
 import json
 
 from django.template.loader import render_to_string
+from dal import autocomplete
 
 client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY, settings.RAZOR_PAY_SECRET))
 
@@ -52,8 +53,9 @@ class IndexView(TemplateView):
         context["sale"] = Product.objects.filter(is_sale=True)
         context['new_arrival']=Product.objects.all().order_by('-id')
         context['product_cat']=product_cats
-        context['display_sub_category']=SubCategory.objects.filter(is_display_sub_category=True)
-        context['season'] = FestivalSeason.objects.all()
+        context['display_women_sub_category']=SubCategory.objects.filter(is_display_sub_category=True,category__name='Women')
+        context['display_men_sub_category']=SubCategory.objects.filter(is_display_sub_category=True,category__name='Men')
+        context['season'] = WeddingBanner.objects.all()
         context['brands'] = Brands.objects.all()
        
 
@@ -93,8 +95,9 @@ class ShopView(ListView):
         #                                              .annotate(count=Count('weight')) \
         #                                              .order_by('weight')
         context['most_review'] = Product.objects.annotate(num_reviews=Count('reviews'))  
-        context['all_colors'] = Colour.objects.distinct()  
-        context['products'] = Product.objects.prefetch_related('colour_set')
+        # context['all_colors'] = Colour.objects.distinct()  
+        # context['products'] = Product.objects.prefetch_related('colour_set')
+        context['products'] = Product.objects.all()
         context["all_brands"] = Brands.objects.all()
        
         return context
@@ -396,12 +399,16 @@ class CheckoutView(View):
                 variant = get_object_or_404(AvailableSize, id=item_id)
                 quantity = item_data["quantity"]
                 price = Decimal(item_data["sale_price"])
+                sku = variant.product.sku if variant.product.sku else "N/A"
+                color = variant.product.color if variant.product.color else "N/A"
 
                 order_item = OrderItem.objects.create(
                     order=data,
                     product=variant,
                     price=price,
                     quantity=quantity,
+                    sku=sku,
+                    color=color,
                 )
                 order_item.save()
 
@@ -423,8 +430,11 @@ class CheckoutView(View):
 
         # Append items to the message body
             for item in cart_items:
-                message_body += f"- {item['variant'].product} (x{item['quantity']}): {item['total_price']} INR\n"
-
+                message_body += (
+                f"- {item['variant'].product} (x{item['quantity']}): {item['total_price']} INR\n"
+                f"  SKU: {item['variant'].product.sku if item['variant'].product.sku else 'N/A'}\n"
+                f"  Color: {item['variant'].product.color if item['variant'].product.color else 'N/A'}\n\n"
+            )
             message_body += f"\nSubtotal: {data.subtotal} INR"
 
         # Send message via WhatsApp
@@ -725,7 +735,7 @@ def my_account_orders(request):
 def category_list(request,slug):
     category = Category.objects.filter(slug=slug).first()
     sub_category = SubCategory.objects.filter(slug=slug).first()
-    festival = Product.objects.filter(is_seasonal=True)
+    festival = Product.objects.filter(is_wedding_product=True)
     if category:
         products = Product.objects.filter(category=category)
         context = {
@@ -756,13 +766,13 @@ def category_list(request,slug):
 
 
 
-def customize_product(request): 
-    custom = Product.objects.filter(is_customisable=True)
+def offer_sale(request): 
+    custom = Product.objects.filter(is_sale=True)
    
     context = {
         'custom': custom,      
     }
-    return render(request, 'web/custom.html', context)
+    return render(request, 'web/offer.html', context)
 
 def get_images_by_color(request, pk):
     color_id = request.GET.get('color_id')
@@ -840,3 +850,21 @@ def get_product_details(request):
         return JsonResponse({'error': 'Product ID is missing'}, status=400)
     
 
+class SubCategoryAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        # Prevent exposure of the queryset for unauthenticated users
+        if not self.request.user.is_authenticated:
+            return SubCategory.objects.none()
+
+        queryset = SubCategory.objects.all()
+
+        # Check if a `category` parameter is forwarded
+        category_id = self.forwarded.get('category', None)
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+
+        # Optionally filter by search query
+        if self.q:
+            queryset = queryset.filter(name__icontains=self.q)
+
+        return queryset

@@ -34,14 +34,15 @@
                             <div class="compare-at-price" id="compare-at-price-{{ product.id }}">{{product.get_regular_price }}</div>
                         </div>
                        <div class="tf-product-description">
-                            <p>Crafted with premium-quality fabric, our clothing offers unmatched comfort and durability. </p>
+                            <p>{{product.details|safe}}</p>
                         </div>
                         <div class="tf-product-info-variant-picker">
                             <div class="variant-picker-item">
                                 <div class="variant-picker-label">
-                                    Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.colour_set.first.name }}</span>
+                                    {% comment %} Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.colour_set.first.name }}</span> {% endcomment %}
+                                    Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.color }}</span>
                                 </div>
-                                <div class="variant-picker-values" data-product-id="{{ product.id }}">
+                                {% comment %} <div class="variant-picker-values" data-product-id="{{ product.id }}">
                                     {% for color in product.colour_set.all %}
                                     <input id="values-{{ color.name|lower }}" type="radio"
                                         name="color1-{{ product.id }}" {% if forloop.first %}checked{% endif %}
@@ -53,7 +54,7 @@
                                         <span class="tooltip">{{ color.name }}</span>
                                     </label>
                                     {% endfor %}
-                                </div>
+                                </div> {% endcomment %}
                             </div>
 
                             <div class="variant-picker-item">
@@ -98,6 +99,7 @@
                                     data-product="{{ product.id }}"><span>Add to cart &nbsp;</span></a>
                             </form>
                         </div>
+                      
 
                     </div>
                 </div>

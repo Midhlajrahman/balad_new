@@ -109,19 +109,27 @@
                                     <a href="{% url 'web:shop' %}" class="item-link">Shop</a>
                                 
                                 </li>
-                                <li class="menu-item">
-                                    <a href="{% url 'web:customize_product' %}" class="item-link">Customize Product
-                                </li>
+                               
                                 {% if user.is_superuser %}
                                 <li class="menu-item">
                                     <a href="{% url 'main:index' %}" class="item-link">Dashboard
                                 </li>
                                 {% endif %}
-                               
+
+                                {% for cat in all_categories %}
+                                
+                                <li class="menu-item position-relative">
+                                    <a href="{{cat.get_absolute_url}}" class="item-link">{{cat.name}}</a>
+
+                                </li>
+                                {% endfor %}
+
                                 <li class="menu-item position-relative">
                                     <a href="{% url 'web:contact' %}" class="item-link">Contact</a>
 
                                 </li>
+                               
+                       
                           
                               
                             </ul>

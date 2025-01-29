@@ -3701,7 +3701,7 @@ header.header-bg {
 }
 
 .btn-fill {
-  background-color: var(--main);
+  background-color:#001f3f;
   border: 1px solid var(--main);
   color: var(--white);
 }
@@ -7857,7 +7857,8 @@ header.header-bg {
 }
 .tf-categories-wrap .collection-item-circle img {
   max-width: 104px;
-  border-radius: 7px;
+  /* border-radius: 7px; */
+  border-radius: 4px;
 }
 .tf-categories-wrap .collection-item-circle {
   min-width: 155px;
@@ -18458,7 +18459,7 @@ blockquote .text {
   }
 
   .slider-home-2 .wrap-slider {
-    height: 300px;
+    /* height: 300px; */
     margin-right: -80px;
   }
 
@@ -19743,6 +19744,8 @@ background-color: black;
       max-height: 100%; 
       object-fit: cover;
       margin-left: 75px;
+      margin-top: 10px;
+      border-radius: 4px;
   }
   .quick_view .modal-content .tf-product-info-title a {
     font-size: 15px !important;
@@ -19769,10 +19772,17 @@ background-color: black;
 .tf-product-info-title {
   margin-bottom: 10px !important;
 }
+.quick_view .wrap .tf-product-media-wrap{
+  background-color: black;
+}
 }
 .banner-height {
   height: 75vh; /* Set height to 70% of the viewport */
   overflow: hidden; /* Hide anything overflowing the container */
 
+}
+
+.shop-btn{
+  border-radius: 4px;
 }
 

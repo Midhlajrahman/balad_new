@@ -83,14 +83,14 @@ class Brands(models.Model):
         verbose_name_plural = 'Brands'
        
 
-class FestivalSeason(models.Model):
+class WeddingBanner(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="festivalseasion"
     )
     name = models.CharField(max_length=255)
     slug = models.SlugField()
     banner_image = VersatileImageField(
-        "subcategory",
+        "wedding_banner",
         blank=True,
         null=True,
         upload_to="subcategories/season",
@@ -101,10 +101,11 @@ class FestivalSeason(models.Model):
         choices=(("Published", "Published"), ("Unpublished", "Unpublished")),
         default="Published",
     )
+    is_active = models.BooleanField(default=True)
 
     class Meta:
-        verbose_name = _("Festival Season")
-        verbose_name_plural = _("Festival Season")
+        verbose_name = _("Wedding Banner")
+        verbose_name_plural = _("Wedding Banner")
         ordering = ("name",)
 
     def __str__(self):
@@ -113,9 +114,13 @@ class FestivalSeason(models.Model):
     def get_absolute_url(self):
         return reverse_lazy("web:category_product", kwargs={"slug": self.slug})
     
+    def get_update_url(self):
+        return reverse_lazy("main:wedding_update", kwargs={"pk": self.pk})
 
+    def get_delete_url(self):
+        return reverse_lazy("main:wedding_delete", kwargs={"pk": self.pk})
     
-       
+
 class SubCategory(models.Model):
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name="subcategories"
@@ -162,18 +167,18 @@ class Product(models.Model):
     brands = models.ForeignKey(
         "products.Brands", on_delete=models.CASCADE, related_name="brands", null=True, blank=True
     )
-    is_customisable = models.BooleanField(default=False)
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
     sku = models.CharField(max_length=100,null=True,blank=True,unique=True)
-    details = models.TextField(null=True, blank=True)
+    details = HTMLField(null=True,blank=True)
     image = models.ImageField(
         upload_to="products/", help_text=" The recommended size is 450x600 pixels."
     )
+    color = models.CharField(max_length=100,null=True,blank=True)
     is_popular = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_sale = models.BooleanField(default=False)
-    is_seasonal = models.BooleanField(default=False)
+    is_wedding_product = models.BooleanField(default=False)
 
     # meta
     meta_title = models.CharField(max_length=200, blank=True)
@@ -248,34 +253,34 @@ class Product(models.Model):
     def get_sizes(self):
         return self.sizes.all()
 
-    def get_colors(self):
-        return self.colour_set.all()
+    # def get_colors(self):
+    #     return self.colour_set.all()
 
 
-class Colour(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='colour_set',)
-    name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='product/color')
-    hex_code = models.CharField(max_length=7, blank=True, null=True)
+# class Colour(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='colour_set',)
+#     name = models.CharField(max_length=255)
+#     image = models.ImageField(upload_to='product/color')
+#     hex_code = models.CharField(max_length=7, blank=True, null=True)
 
-    def save(self, *args, **kwargs):
-        try:
-            self.hex_code = webcolors.name_to_hex(self.name.lower())
-        except ValueError:
-            self.hex_code = '#FFFFFF'  # Default to white if the name is not valid
-        super().save(*args, **kwargs)
+#     def save(self, *args, **kwargs):
+#         try:
+#             self.hex_code = webcolors.name_to_hex(self.name.lower())
+#         except ValueError:
+#             self.hex_code = '#FFFFFF'  # Default to white if the name is not valid
+#         super().save(*args, **kwargs)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField(
         upload_to="products/", help_text=" The recommended size is 800x600 pixels."
     )
-    color = models.ForeignKey(
-        Colour, on_delete=models.CASCADE, related_name="images", null=True, blank=True
-    )
+    # color = models.ForeignKey(
+    #     Colour, on_delete=models.CASCADE, related_name="images", null=True, blank=True
+    # )
 
     class Meta:
         verbose_name = _("Product Image")

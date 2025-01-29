@@ -100,7 +100,15 @@
           </div>
         </li>
 
-
+        <li class="nav-item">
+          <a class="nav-link {% if is_brands %} active {% endif %}" href="{% url 'main:brands' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-person-rolodex"></i></span>
+              <span class="nav-link-text">Brands</span>
+            </div>
+          </a>
+        </li> 
 
         <li class="nav-item">
           <a class="nav-link {% if is_slider %} active {% endif %}" href="{% url 'main:sliders' %}">
@@ -108,6 +116,16 @@
               <span class="nav-link-icon">
                 <i class="bi bi-aspect-ratio"></i></span>
               <span class="nav-link-text">Sliders</span>
+            </div>
+          </a>
+        </li> 
+
+        <li class="nav-item">
+          <a class="nav-link {% if is_wedding %} active {% endif %}" href="{% url 'main:wedding' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-aspect-ratio"></i></span>
+              <span class="nav-link-text">Wedding Banner</span>
             </div>
           </a>
         </li> 
@@ -121,47 +139,6 @@
             </div>
           </a>
         </li> 
-        
-        <li class="nav-item">
-          <a class="nav-link {% if is_custom_order %} active {% endif %}" href="{% url 'main:custom_orders' %}">
-            <div class="d-flex align-items-center">
-              <span class="nav-link-icon">
-                <i class="bi bi-person-rolodex"></i></span>
-              <span class="nav-link-text">Custom Orders</span>
-            </div>
-          </a>
-        </li> 
-        {% comment %} <li class="nav-item">
-          <a class="nav-link {% if is_tag %} active {% endif %}" href="{% url 'main:tags' %}">
-            <div class="d-flex align-items-center">
-              <span class="nav-link-icon">
-                <i class="bi bi-tag"></i
-              ></span>
-              <span class="nav-link-text">Tags</span>
-            </div>
-          </a>
-        </li> {% endcomment %}
-        {% comment %} <li class="nav-item">
-          <a class="nav-link {% if is_state %} active {% endif %}" href="{% url 'main:states' %}">
-            <div class="d-flex align-items-center">
-              <span class="nav-link-icon">
-                <i class="bi bi-geo-alt"></i
-              ></span>
-              <span class="nav-link-text">States</span>
-            </div>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {% if is_district %} active {% endif %}" href="{% url 'main:districts' %}">
-            <div class="d-flex align-items-center">
-              <span class="nav-link-icon">
-                <i class="bi bi-pin-map"></i
-              ></span>
-              <span class="nav-link-text">Districts</span>
-            </div>
-          </a>
-        </li> {% endcomment %}
-        
       </ul>
     </div>
   </div>

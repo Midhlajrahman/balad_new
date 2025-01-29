@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
-
+from dal import autocomplete
 from .models import (
     AvailableSize,
     Category,
@@ -9,9 +9,8 @@ from .models import (
     ProductImage,
     Review,
     Slider,
-    Colour,
     SubCategory,
-    FestivalSeason,
+    WeddingBanner,
     Brands
    
 )
@@ -57,15 +56,15 @@ class AvailableSizeInline(admin.TabularInline):
     model = AvailableSize
     extra = 1
 
-class ColorInLine(admin.TabularInline):
-    model = Colour
-    extra=1
+# class ColorInLine(admin.TabularInline):
+#     model = Colour
+#     extra=1
 
 @admin.register(SubCategory)
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ("name", "category", "status")
     prepopulated_fields = {"slug": ("name",)}
-
+    search_fields = ['name', 'category__name']
     def save_model(self, request, obj, form, change):
         # Generate slug if it's not set or ensure uniqueness
         if not obj.slug:
@@ -80,14 +79,14 @@ class SubCategoryAdmin(admin.ModelAdmin):
         # Save the object
         super().save_model(request, obj, form, change)
 
-@admin.register(FestivalSeason)
-class FestivalSeasonAdmin(admin.ModelAdmin):
+@admin.register(WeddingBanner)
+class WeddingBannerAdmin(admin.ModelAdmin):
     list_display = ('name',)
     prepopulated_fields = {"slug": ("name",)}
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("name", "order", "image_preview", "category", "is_active","sku")
+    list_display = ("name", "order", "image_preview", "category", "subcategory","sku")
     exclude = ("creator",)
     list_filter = (
         "category",
@@ -96,9 +95,9 @@ class ProductAdmin(admin.ModelAdmin):
     )
     list_editable = ("order",)
     prepopulated_fields = {"slug": ("name",)}
-    search_fields = ("name",)
-    autocomplete_fields = ("category",)
-    inlines = [ProductImageInline, AvailableSizeInline,ColorInLine]
+    search_fields = ("name","sku")
+    autocomplete_fields = ("category", "subcategory")
+    inlines = [ProductImageInline, AvailableSizeInline]
 
     def image_preview(self, obj):
         if obj.image:
@@ -110,15 +109,23 @@ class ProductAdmin(admin.ModelAdmin):
     
    
 
-    def get_form(self, request, obj=None, **kwargs):
-        form = super().get_form(request, obj, **kwargs)
-        # Dynamically filter subcategory queryset
-        if obj and obj.category:
-            form.base_fields['subcategory'].queryset = SubCategory.objects.filter(category=obj.category)
-        else:
-            form.base_fields['subcategory'].queryset = SubCategory.objects.none()
-        return form
+    # def get_form(self, request, obj=None, **kwargs):
+    #     form = super().get_form(request, obj, **kwargs)
+       
+    #     if obj and obj.category:
+    #         form.base_fields['subcategory'].queryset = SubCategory.objects.filter(category=obj.category)
+    #     else:
+    #         form.base_fields['subcategory'].queryset = SubCategory.objects.none()
+    #     return form
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "subcategory":
+            kwargs["widget"] = autocomplete.ModelSelect2(
+                url="web:subcategory-autocomplete",
+                forward=["category"]  # Link the category field to forward its value
+            )
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
     image_preview.short_description = "Image Preview"
     sale_price.short_description = "Sale Price"
 
