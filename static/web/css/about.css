@@ -1,0 +1,140 @@
+@media(max-width:991px) {
+    .makeup-section .makeup-top-item {
+        margin-bottom: 50px
+    }
+}
+
+.makeup-section .makeup-img {
+    width: 100%;
+    height: 100%
+}
+
+.makeup-section .makeup-img img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover;
+    border-radius: 12px
+}
+
+.makeup-section .makeup-content {
+    max-width: 512px;
+    width: 100%;
+    padding-left: 40px
+}
+
+@media(min-width:992px) and (max-width:1199px) {
+    .makeup-section .makeup-content {
+        padding-right: 25px
+    }
+}
+
+@media(max-width:991px) {
+    .makeup-section .makeup-content {
+        max-width: unset;
+        padding: 0
+    }
+}
+
+.makeup-section .makeup-content span {
+    color: var(--primary-color1);
+    font-size: 15px;
+    font-family: var(--font-Jost);
+    letter-spacing: .3px;
+    text-transform: capitalize;
+    display: inline-block;
+    margin-bottom: 6px
+}
+
+.makeup-section .makeup-content h2 {
+    color: var(--primary-color1);
+    font-size: 35px;
+    font-family: var(--font-Jost);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: .7px;
+    text-transform: capitalize;
+    margin-bottom: 10px
+}
+
+@media(min-width:576px) and (max-width:768px) {
+    .makeup-section .makeup-content h2 {
+        margin-bottom: 15px;
+        font-size: 30px
+    }
+}
+
+@media(max-width:576px) {
+    .makeup-section .makeup-content h2 {
+        margin-bottom: 15px;
+        font-size: 30px
+    }
+}
+
+.makeup-section .makeup-content p {
+    color: var(--primary-color1);
+    font-size: 16px;
+    font-family: var(--font-Jost);
+    line-height: 1.8;
+    letter-spacing: .48px;
+    text-transform: capitalize;
+    margin-bottom: 35px
+}
+
+@media(max-width:991px) {
+    .makeup-section .makeup-content p {
+        margin-bottom: 25px
+    }
+}
+
+.vision{
+    background-color: white;
+    color: black;
+    border-radius: 13px;
+    font-size: 16px;
+    font-family: var(--font-Jost);
+    line-height: 1.8;
+    letter-spacing: .48px;
+    text-transform: capitalize;
+    
+}
+.vision .vision_one p{
+
+    font-size: 16px;
+    font-family: var(--font-Jost);
+    line-height: 1.8;
+    letter-spacing: .48px;
+    text-transform: capitalize;
+}
+
+.vision .vision_two ul{
+    padding-left: 1.5rem;
+    line-height: 1.7rem; 
+}
+
+.vision_two{
+    padding-left: 1.5rem;
+    line-height: 1.7rem; 
+    letter-spacing: 0px;
+}
+.mission-text{
+    line-height: 1.7rem;
+    text-align: justify;
+}
+.vision_three ol{
+    padding-left: 1rem;
+}
+.vision_three{
+    border-radius: 13px;
+}
+
+/* .hrr{
+    height: 2px;
+    width: 100px;
+    color: black;
+} */
+ .under-score{
+    height: 1.5px;
+    width: 100px;
+   background: black;
+}

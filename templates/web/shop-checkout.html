@@ -162,10 +162,10 @@
                                         <input type="radio" name="paymentMethod" id="delivery  cashOnDelivery" value="COD" class="tf-check">
                                         <label for="delivery  cashOnDelivery"></label>
                                     </div> {% endcomment %}
-                                    <p class="text_black-2 mb_20">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="privacy-policy.html" class="text-decoration-underline">privacy policy</a>.</p>
+                                    <p class="text_black-2 mb_20">Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a href="{% url 'web:privacy_policy' %}" class="text-decoration-underline">privacy policy</a>.</p>
                                     <div class="box-checkbox fieldset-radio mb_20">
                                         <input type="checkbox" id="check-agree" class="tf-check">
-                                        <label for="check-agree" class="text_black-2">I have read and agree to the website <a href="terms-conditions.html" class="text-decoration-underline">terms and conditions</a>.</label>
+                                        <label for="check-agree" class="text_black-2">I have read and agree to the website <a href="{% url 'web:privacy_policy' %}" class="text-decoration-underline">terms and conditions</a>.</label>
                                     </div>
                                 </div>
                                 <button type="submit" class="tf-btn radius-3 btn-fill btn-icon animate-hover-btn justify-content-center">Place order</button>

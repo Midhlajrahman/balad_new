@@ -1,17 +1,20 @@
 from django.conf import settings
-from products.models import Category,Product,AvailableSize
+from products.models import Category,Product,AvailableSize,SubCategory
 from web.cart import Cart
 from decimal import Decimal
 from django.shortcuts import get_object_or_404
 
 def main_context(request):
     all_categories = Category.objects.all()
+    all_sub = SubCategory.objects.all()
     cart_instance = Cart(request)
     cart = cart_instance.cart
     cart_count = len(cart)
     popular_image = None
     query=request.GET.get("q","")
     product = Product.objects.filter(name__icontains=query)
+    display_women_sub_category=SubCategory.objects.filter(is_display_sub_category=True,category__name='Women')
+    display_men_sub_category=SubCategory.objects.filter(is_display_sub_category=True,category__name='Men')
 
     cart_items = []
     cart_total = Decimal(0)
@@ -39,4 +42,8 @@ def main_context(request):
         'query':query,
         "cart_items": cart_items,
         "cart_total": cart_total,
+        'all_sub':all_sub,
+        'display_women_sub_category': display_women_sub_category,
+        'display_men_sub_category':display_men_sub_category
+        
     }

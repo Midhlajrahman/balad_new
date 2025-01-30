@@ -77,12 +77,12 @@
                                     <span class="total-value" id='cart_total'>{{cart_total|floatformat:2}}</span>
                                 </div>
                                 <p class="tf-cart-tax">
-                                    Taxes and <a href="shipping-delivery.html">shipping</a>  calculated at checkout
+                                    Taxes and <a href="#">shipping</a>  calculated at checkout
                                 </p>
                                 <div class="cart-checkbox">
                                     <input type="checkbox" class="tf-check" id="check-agree">
                                     <label for="check-agree" class="fw-4">
-                                        I agree with the <a href="#">terms and conditions</a>
+                                        I agree with the <a href="{% url 'web:privacy_policy' %}">terms and conditions</a>
                                     </label>
                                 </div>
                                 <div class="cart-checkout-btn">

@@ -83,11 +83,15 @@
                                         <div class="compare-at-price" id="compare-at-price">{{product.get_regular_price}}</div>
                                         
                                     </div>
+                                    <div class="tf-product-description">
+                                        <p>{{product.details|safe}}</p>
+                                    </div>
                                  
                                     <div class="tf-product-info-variant-picker">
                                         <div class="variant-picker-item">
                                             <div class="variant-picker-label">
-                                                Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.colour_set.first.name }}</span>
+                                                {% comment %} Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.colour_set.first.name }}</span> {% endcomment %}
+                                                Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.color }}</span>
                                             </div>
                                             <div class="variant-picker-values" data-product-id="{{ product.id }}">
                                                 {% for color in product.colour_set.all %}
@@ -103,21 +107,7 @@
                                                 {% endfor %}
                                             </div>
                                         </div>
-                                        {% comment %} <div class="variant-picker-item">
-                                            <div class="d-flex justify-content-between align-items-center">
-                                                <div class="variant-picker-label">
-                                                    Size: <span class="fw-6 variant-picker-label-value">S</span>
-                                                </div>
-                                                <a href="#find_size" data-bs-toggle="modal" class="find-size fw-6">Find your size</a>
-                                            </div>
-                                            <div class="variant-picker-values">
-                                                <input type="radio" name="size1" id="values-s" checked>
-                                                <label class="style-text size-btn" for="values-s" data-value="S">
-                                                    <p>S</p>
-                                                </label>
-                                              
-                                            </div>
-                                        </div> {% endcomment %}
+                                  
                                         <div class="variant-picker-item">
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <div class="variant-picker-label">
@@ -147,7 +137,7 @@
                                         </div>    
 
                                     </div>
-                                    <div class="tf-product-info-quantity">
+                                    {% comment %} <div class="tf-product-info-quantity">
                                         <div class="quantity-title fw-6">Quantity</div>
                                         <div class="wg-quantity">
                                             <span class="btn-quantity minus-btn">-</span>
@@ -157,71 +147,7 @@
 
                                        
                                     </div>
-                                    <form class="form-contact" action="#" method="post">
-                                        {% csrf_token %}
-                                        <input type="hidden" name="product_name" value="{{ product.name }}">
-                                        <div class="d-flex gap-15 mb_15">
-                                            <fieldset class="w-100">
-                                                {{ form.name }}
-                                            </fieldset>
-                                            <fieldset class="w-100">
-                                                {{ form.phone }}
-                                            </fieldset>
-                                        </div>
-                                        <div class="d-flex gap-15 mb_15">
-                                            <fieldset class="w-100">
-                                                {{ form.email }}
-                                            </fieldset>
-
-                                        </div>
-                                       
-                                        <div class="mb_15">
-                                            {{ form.address }}
-                                        </div>
-                                     
-                                        <div class="d-flex gap-15 mb_15">
-                                        <fieldset class="w-100">
-                                            {{ form.front_neck_depth }}
-                                        </fieldset>
-                                        <fieldset class="w-100">
-                                            {{ form.back_neck_depth }}
-                                        </fieldset>
-                                        </div>
-                                        <div class="d-flex gap-15 mb_15">
-                                        <fieldset class="w-100">
-                                            {{ form.bust }}
-                                        </fieldset>
                                    
-                                     
-                                        <fieldset class="w-100">
-                                            {{ form.waist }}
-                                        </fieldset>
-                                    </div>
-                                    <div class="d-flex gap-15 mb_15">
-                                        <fieldset class="w-100">
-                                            {{ form.sleeve_length }}
-                                        </fieldset>
-                                      
-                                        <fieldset class="w-100">
-                                            {{ form.shoulder_length }}
-                                        </fieldset>
-                                    </div>
-
-                                    <div class="d-flex gap-15 mb_15">
-                                        <fieldset class="w-100">
-                                            {{ form.full_length }}
-                                        </fieldset>
-                                        
-                                        
-                                        
-                                        </div>
-
-                                        
-                                        <div class="send-wrap">
-                                            <button type="submit" class="tf-btn w-100 radius-3 btn-fill animate-hover-btn justify-content-center">Order Now</button>
-                                        </div>
-                                    </form>
-                                    
                                    
                                     <div class="tf-product-info-delivery-return mt-3">
                                         <div class="row">
@@ -242,8 +168,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tf-product-info-trust-seal">
+                                    </div> {% endcomment %}
+                                    {% comment %} <div class="tf-product-info-trust-seal">
                                         <div class="tf-product-trust-mess">
                                             <i class="icon-safe"></i>
                                             <p class="fw-6">Guarantee Safe <br> Checkout</p>
@@ -255,7 +181,7 @@
                                             <img src="images/payments/img-3.png" alt="">
                                             <img src="images/payments/img-4.png" alt="">
                                         </div>
-                                    </div>
+                                    </div> {% endcomment %}
                                 </div>
                             </div>
                         </div>

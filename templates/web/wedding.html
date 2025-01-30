@@ -63,7 +63,7 @@
                     <div class="meta-filter-shop"></div>
                     <div class="grid-layout wrapper-shop  product-list" data-grid="grid-4">
                         <!-- card product 1 -->
-                        {% for product in custom  %}
+                        {% for product in festival_products  %}
 
                         <div class="card-product isotope-item"  data-category="{{ product.category.slug }}" data-item="{{product.id}}" data-price="{{ product.get_sale_price }}"   data-color="{{ product.colour_set.all|join:' ' }}" data-brand="{{ product.brands.brand_name }}"   data-size="{{ product.size_set.all|join:' ' }}" >
                             <div class="card-product-wrapper"  data-item="{{product.id}}">

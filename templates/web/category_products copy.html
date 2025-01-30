@@ -7,8 +7,12 @@
             <div class="container-full">
                 <div class="row">
                     <div class="col-12">
+                        {% if category %}
                         <div class="heading text-center">{{category}}</div>
-                        <p class="text-center text-2 text-light mt_5">Shop through our latest selection of Fashion</p> 
+                        {% else %}
+                        <div class="heading text-center">{{subcategory}}</div>
+                        {% endif %}
+                        <p class="text-center text-2 text_black-2 mt_5">Shop through our latest selection of Fashion</p> 
                     </div>
                 </div>
             </div>
@@ -61,19 +65,19 @@
                 </div>
                 <div class="wrapper-control-shop">
                     <div class="meta-filter-shop"></div>
-                    <div class="grid-layout wrapper-shop  product-list" data-grid="grid-4">
+                    <div class="grid-layout wrapper-shop product-list" data-grid="grid-4">
                         <!-- card product 1 -->
-                        {% for product in custom  %}
+                        {% for product in products  %}
 
                         <div class="card-product isotope-item"  data-category="{{ product.category.slug }}" data-item="{{product.id}}" data-price="{{ product.get_sale_price }}"   data-color="{{ product.colour_set.all|join:' ' }}" data-brand="{{ product.brands.brand_name }}"   data-size="{{ product.size_set.all|join:' ' }}" >
                             <div class="card-product-wrapper"  data-item="{{product.id}}">
-                                <a href="{{product.get_absolute_url}}" class="product-img">
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}" class="product-img">
                                     <img class="lazyload img-product" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">
                                 </a>
                                 <div class="list-product-btn absolute-2">
 
-                                    <a href="{{product.get_absolute_url}}"
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
                                         class="box-icon bg_white quickview tf-btn-loading">
                                         <span class="icon icon-view"></span>
                                         <span class="tooltip">Quick View</span>
@@ -83,7 +87,7 @@
                               
                             </div>
                             <div class="card-product-info">
-                                <a href="{{product.get_absolute_url}}" class="title link">{{product.name}}</a>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}" class="title link">{{product.name}}</a>
                                 <span class="price">{{product.get_sale_price}}</span>
                                 <ul class="list-color-product">
                                     {% for color in product.colour_set.all %}

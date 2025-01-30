@@ -7,12 +7,10 @@
             <div class="container-full">
                 <div class="row">
                     <div class="col-12">
-                        {% if category %}
-                        <div class="heading text-center">{{category}}</div>
-                        {% else %}
-                        <div class="heading text-center">{{subcategory}}</div>
-                        {% endif %}
-                        <p class="text-center text-2 text_black-2 mt_5">Shop through our latest selection of Fashion</p> 
+                        
+                        <div class="heading text-center">{{tittle}}</div>
+                        
+                        <p class="text-center text-2 text-light mt_5">Shop through our latest selection of Fashion</p> 
                     </div>
                 </div>
             </div>
@@ -21,9 +19,29 @@
         <section class="flat-spacing-1">
             <div class="container-full">
                 <div class="tf-shop-control grid-3 align-items-center">
-                    <div class="tf-control-filter">
+                    <div class="tf-control-layout">
+                        {% if not subcategory %}
+
+                        <div class="tf-dropdown-sort" id="subcategory-filter" data-bs-toggle="dropdown">
+                            <div class="btn-select">
+                                <span class="text-sort-value" id="dropdownMenuButton">Subcategories</span>
+                                <span class="icon icon-arrow-down"></span>
+                            </div>
+                            <div class="dropdown-menu">
+                                {% for subcategory in subcategories %}
+                                <div class="select-item active">
+                                    <span class="text-value-item dropdown-item" data-subcategory-id="{{ subcategory.id }}">{{ subcategory.name }}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                      
                         {% comment %} <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-btn-filter"><span class="icon icon-filter"></span><span class="text">Filter</span></a> {% endcomment %}
                     </div>
+
+
+
                     <ul class="tf-control-layout d-flex justify-content-center">
                         <li class="tf-view-layout-switch sw-layout-2" data-value-grid="grid-2">
                             <div class="item"><span class="icon icon-grid-2"></span></div>
@@ -69,7 +87,7 @@
                         <!-- card product 1 -->
                         {% for product in products  %}
 
-                        <div class="card-product isotope-item"  data-category="{{ product.category.slug }}" data-item="{{product.id}}" data-price="{{ product.get_sale_price }}"   data-color="{{ product.colour_set.all|join:' ' }}" data-brand="{{ product.brands.brand_name }}"   data-size="{{ product.size_set.all|join:' ' }}" >
+                        <div class="card-product isotope-item"  data-category="{{ product.category.slug }}"   data-subcategory="{{ product.subcategory.id }}" data-item="{{product.id}}" data-price="{{ product.get_sale_price }}"   data-color="{{ product.colour_set.all|join:' ' }}" data-brand="{{ product.brands.brand_name }}"   data-size="{{ product.size_set.all|join:' ' }}" >
                             <div class="card-product-wrapper"  data-item="{{product.id}}">
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}" class="product-img">
                                     <img class="lazyload img-product" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">

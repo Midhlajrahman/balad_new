@@ -91,9 +91,6 @@ class ShopView(ListView):
 
         context["categories"] = Category.objects.all()
         context["title"] = self.category_title
-        # context['unique_weights'] = AvailableSize.objects.values('weight') \
-        #                                              .annotate(count=Count('weight')) \
-        #                                              .order_by('weight')
         context['most_review'] = Product.objects.annotate(num_reviews=Count('reviews'))  
         # context['all_colors'] = Colour.objects.distinct()  
         # context['products'] = Product.objects.prefetch_related('colour_set')
@@ -732,39 +729,56 @@ def my_account_orders(request):
         }
     return render(request,'web/account-orders.html',context)
 
-def category_list(request,slug):
+def category_list(request, slug):
     category = Category.objects.filter(slug=slug).first()
     sub_category = SubCategory.objects.filter(slug=slug).first()
     festival = Product.objects.filter(is_wedding_product=True)
+    if WeddingBanner.objects.filter(slug=slug).exists():
+        instance =WeddingBanner.objects.filter(slug=slug).last().category
+        print('instance',instance)
+        festival= festival.filter(category=instance)
+
+    sort_option = request.GET.get("sort", "latest")  # Default sorting
+    subcategory_id = request.GET.get("subcategory")  # Get selected subcategory
+
+    products = Product.objects.none()  # Default to empty
+
     if category:
         products = Product.objects.filter(category=category)
-        context = {
-            'products': products,
-            'category': category,
-            'subcategory': None
-        }
+        tittle = products.last().category.name
+
     elif sub_category:
         products = Product.objects.filter(subcategory=sub_category)
-        context = {
-            'products': products,
-            'category': None,
-            'subcategory': sub_category
-        }
-    elif festival:
-        context={
-             'products':festival
-        }
+        tittle = products.last().subcategory.name
+    elif festival.exists():
+        products = festival
+        tittle = f"{products.last().category.name} - Wedding"
+    # Apply Subcategory Filtering
+    if subcategory_id:
+        products = products.filter(subcategory_id=subcategory_id)
+        tittle = products.last().category.name
+    # Apply Sorting
+    if sort_option == "low-to-high":
+        products = products.order_by("order")
+    elif sort_option == "high-to-low":
+        products = products.order_by("-order")
     else:
-        # Handle case where slug does not match any category or subcategory
-        products = Product.objects.none()
-        context = {
-            'products': products,
-            'category': None,
-            'subcategory': None
-        }
-    return render(request,'web/category_products.html',context)
+        products = products.order_by("-id")  # Assuming 'Latest' sorts by newest products
 
+    # Fetch all subcategories for dropdown
+    subcategories = SubCategory.objects.filter(category=category) if category else SubCategory.objects.all()
 
+    context = {
+        "products": products,
+        "category": category,
+        "subcategory": sub_category,
+        "subcategories": subcategories,
+        "selected_subcategory": int(subcategory_id) if subcategory_id else None,
+        "sort_option": sort_option,
+        'tittle':tittle
+    }
+    
+    return render(request, "web/category_products.html", context)
 
 def offer_sale(request): 
     custom = Product.objects.filter(is_sale=True)
@@ -868,3 +882,17 @@ class SubCategoryAutocomplete(autocomplete.Select2QuerySetView):
             queryset = queryset.filter(name__icontains=self.q)
 
         return queryset
+
+
+def wedding_list(request, slug):
+    # Get wedding products
+    festival_products = Product.objects.filter(is_wedding_product=True, category__slug=slug)
+    
+    # Get the WeddingBanner for the same category
+    wedding_banner = WeddingBanner.objects.filter(category__slug=slug).first()
+
+    context = {
+        "festival_products": festival_products,
+        "wedding_banner": wedding_banner,
+    }
+    return render(request, "web/wedding.html", context)

@@ -991,7 +991,8 @@ label {
   transition: all 0.3s ease;
 }
 .link:hover {
-  color: var(--primary) !important;
+  /* color: var(--primary) !important; */
+  color: #223267 !important;
 }
 
 .grid-2 {
@@ -10717,7 +10718,9 @@ blockquote .text {
 
 .tf-page-title {
   padding: 69px 0 65px;
-  background-image: url(../images/shop/file/page-title-blog.png);
+  /* background-image: url(../images/shop/file/page-title-blog.png); */
+  background-color: #223267;
+  color: white;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -13473,7 +13476,8 @@ blockquote .text {
   margin-bottom: 24px;
   font-size: 14px;
   line-height: 24px;
-  color: rgb(134, 134, 134);
+  /* color: rgb(134, 134, 134); */
+  color: #000;
 }
 .tf-main-area-page p:last-child {
   margin-bottom: 0px;

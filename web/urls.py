@@ -86,6 +86,7 @@ urlpatterns = [
    
 
     path('subcategory-autocomplete/', SubCategoryAutocomplete.as_view(), name='subcategory-autocomplete'),
+    path("wedding/<slug:slug>/",views.wedding_list,name='wedding'),
  
     
 ]

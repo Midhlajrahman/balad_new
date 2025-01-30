@@ -42,35 +42,58 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+
 document.querySelectorAll('.dropdown-item').forEach(item => {
     item.addEventListener('click', event => {
         event.preventDefault();
 
-        // Update the button text to the selected filter
-        const selectedFilter = event.target.getAttribute('data-value');
-        const button = document.getElementById('dropdownMenuButton');
-        button.textContent = event.target.textContent;
+        const target = event.target;
+        const selectedFilter = target.getAttribute('data-value');
+        const selectedSubcategory = target.getAttribute('data-subcategory-id');
 
-        // Get both product containers for each tab
-        const productsContainers = document.querySelectorAll('.product-list');
+        // Check if it's a sorting or filtering action
+        if (selectedFilter) {
+            // Sorting Logic
+            const button = document.getElementById('dropdownMenuButton');
+            button.textContent = target.textContent;
 
-        productsContainers.forEach(productsContainer => {
-            const products = Array.from(productsContainer.getElementsByClassName('card-product'));
+            const productsContainers = document.querySelectorAll('.product-list');
+            productsContainers.forEach(productsContainer => {
+                const products = Array.from(productsContainer.getElementsByClassName('card-product'));
 
-            let sortedProducts;
-            if (selectedFilter === "latest") {
-                sortedProducts = products.sort((a, b) => parseInt(b.dataset.item) - parseInt(a.dataset.item));
-            } else if (selectedFilter === "low-to-high") {
-                sortedProducts = products.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
-            } else if (selectedFilter === "high-to-low") {
-                sortedProducts = products.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
-            }
+                let sortedProducts;
+                if (selectedFilter === "latest") {
+                    sortedProducts = products.sort((a, b) => parseInt(b.dataset.item) - parseInt(a.dataset.item));
+                } else if (selectedFilter === "low-to-high") {
+                    sortedProducts = products.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+                } else if (selectedFilter === "high-to-low") {
+                    sortedProducts = products.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+                }
 
+                productsContainer.innerHTML = "";
+                sortedProducts.forEach(product => productsContainer.appendChild(product));
+            });
+        } 
 
-            // Clear the container and append sorted products
-            productsContainer.innerHTML = "";
-            sortedProducts.forEach(product => productsContainer.appendChild(product));
-        });
+        if (selectedSubcategory) {
+            // Subcategory Filtering Logic
+            const subcategoryButton = document.getElementById('dropdownMenuButton');
+            subcategoryButton.textContent = target.textContent;
+
+            const productsContainers = document.querySelectorAll('.product-list');
+            productsContainers.forEach(productsContainer => {
+                const products = Array.from(productsContainer.getElementsByClassName('card-product'));
+
+                products.forEach(product => {
+                    if (product.dataset.subcategory === selectedSubcategory || selectedSubcategory === "all") {
+                        product.style.display = "block";
+                    } else {
+                        product.style.display = "none";
+                    }
+                });
+            });
+        }
     });
 });
 
