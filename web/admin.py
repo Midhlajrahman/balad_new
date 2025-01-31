@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-from .models import Contact, Testimonial,CustomOrder
+from .models import Contact, CustomOrder
 
 admin.site.unregister(Group)
+
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
@@ -26,4 +27,4 @@ class ContactAdmin(admin.ModelAdmin):
 
 @admin.register(CustomOrder)
 class CustomOrderAdmin(admin.ModelAdmin):
-    list_display = ('name','phone') 
+    list_display = ("name", "phone")

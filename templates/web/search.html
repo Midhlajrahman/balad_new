@@ -7,10 +7,8 @@
             <div class="container-full">
                 <div class="row">
                     <div class="col-12">
-                        {% if category %}
-                        <div class="heading text-center">{{category}}</div>
-                        {% else %}
-                        <div class="heading text-center">{{subcategory}}</div>
+                        {% if query %}
+                        <div class="heading text-center">{{query}}</div>
                         {% endif %}
                         <p class="text-center text-2 text_black-2 mt_5">Shop through our latest selection of Fashion</p> 
                     </div>
@@ -67,7 +65,8 @@
                     <div class="meta-filter-shop"></div>
                     <div class="grid-layout wrapper-shop product-list" data-grid="grid-4">
                         <!-- card product 1 -->
-                        {% for product in products  %}
+                    	{% if search_product %}
+                        {% for product in search_product %}
 
                         <div class="card-product isotope-item"  data-category="{{ product.category.slug }}" data-item="{{product.id}}" data-price="{{ product.get_sale_price }}"   data-color="{{ product.colour_set.all|join:' ' }}" data-brand="{{ product.brands.brand_name }}"   data-size="{{ product.size_set.all|join:' ' }}" >
                             <div class="card-product-wrapper"  data-item="{{product.id}}">
@@ -75,15 +74,15 @@
                                     <img class="lazyload img-product" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">
                                 </a>
-                                <div class="list-product-btn absolute-2">
+                                <div class="list-product-btn absolute-3">
 
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
-                                        class="box-icon bg_white quickview tf-btn-loading">
+                                        class="box-icon bg_white quickview tf-btn-loading style-2">
                                         <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
+                                        <span class="text">Quick View</span>
                                     </a>
-                                </div>
     
+                                </div>       
                               
                             </div>
                             <div class="card-product-info">
@@ -106,6 +105,11 @@
 
                                                     
                         {% endfor %}
+                        {% else %}
+                        <div class="col-12">
+                            <p class="text-center">No products found.</p>
+                        </div>
+                        {% endif %}
                        
                     </div>
                    

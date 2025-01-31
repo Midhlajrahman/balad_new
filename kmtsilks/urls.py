@@ -26,7 +26,9 @@ urlpatterns = (
         ),
         path(
             "OneSignalSDKWorker.js",
-            TemplateView.as_view(template_name="OneSignalSDKWorker.js", content_type="text/javascript"),
+            TemplateView.as_view(
+                template_name="OneSignalSDKWorker.js", content_type="text/javascript"
+            ),
         ),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

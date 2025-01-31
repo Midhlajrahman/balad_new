@@ -22,8 +22,6 @@ class Cart:
             }
         self.cart[product_id]["quantity"] += quantity
         self.save()
-    
-  
 
     def remove(self, product_variant):
         product_id = str(product_variant.id)
@@ -47,7 +45,10 @@ class Cart:
         return Decimal(item["quantity"]) * Decimal(item["sale_price"])
 
     def cart_total(self):
-        return sum(Decimal(item[1]["quantity"]) * Decimal(item[1]["sale_price"]) for item in self.get_cart())
+        return sum(
+            Decimal(item[1]["quantity"]) * Decimal(item[1]["sale_price"])
+            for item in self.get_cart()
+        )
 
     def get_product_quantity(self, product_variant):
         product_id = str(product_variant.id)

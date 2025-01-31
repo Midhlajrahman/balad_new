@@ -27,7 +27,7 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
-    
+
 
 class Testimonial(models.Model):
     name = models.CharField(max_length=50)
@@ -47,8 +47,9 @@ class Testimonial(models.Model):
     def __str__(self):
         return str(self.name)
 
+
 class CustomOrder(models.Model):
-    product_name = models.CharField(max_length=100, blank=True) 
+    product_name = models.CharField(max_length=100, blank=True)
     name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15)
     email = models.EmailField()

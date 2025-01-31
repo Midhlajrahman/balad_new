@@ -1,6 +1,7 @@
 {% extends "web/base.html" %}
 {% load static %}
 {% block content %}
+
 <!-- /Header -->
 <!-- Slider -->
 <div class="tf-slideshow slider-home-2 slider-effect-fade position-relative banner-height">
@@ -156,15 +157,16 @@
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}"
                                         src="{{product.image.url}}" alt="image-product">
                                 </a>
-                                <div class="list-product-btn">
+                                <div class="list-product-btn absolute-3">
 
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
-                                        class="box-icon bg_white quickview tf-btn-loading">
+                                        class="box-icon bg_white quickview tf-btn-loading style-2">
                                         <span class="icon icon-view"></span>
-                                        <span class="tooltip">Quick View</span>
+                                        <span class="text">Quick View</span>
                                     </a>
+    
                                 </div>                       
-
+                
                                 <div class="size-list">
                                     {% for size in product.get_sizes %}
                                     <span>{{ size.unit }}</span>
@@ -222,14 +224,23 @@
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}"
                                         src="{{product.image.url}}" alt="image-product">
                                 </a>
-                                <div class="list-product-btn">
+                                {% comment %} <div class="list-product-btn">
 
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
                                         class="box-icon bg_white quickview tf-btn-loading">
                                         <span class="icon icon-view"></span>
                                         <span class="tooltip">Quick View</span>
                                     </a>
-                                </div>
+                                </div> {% endcomment %}
+                                <div class="list-product-btn absolute-3">
+
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
+                                        class="box-icon bg_white quickview tf-btn-loading style-2">
+                                        <span class="icon icon-view"></span>
+                                        <span class="text">Quick View</span>
+                                    </a>
+    
+                                </div>       
                                 <div class="size-list">
                                     {% for size in product.get_sizes %}
                                     <span>{{ size.unit }}</span>
@@ -289,14 +300,24 @@
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}"
                                         src="{{product.image.url}}" alt="image-product">
                                 </a>
-                                <div class="list-product-btn">
+                                {% comment %} <div class="list-product-btn">
 
                                     <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
                                         class="box-icon bg_white quickview tf-btn-loading">
                                         <span class="icon icon-view"></span>
                                         <span class="tooltip">Quick View</span>
                                     </a>
-                                </div>
+                                </div> {% endcomment %}
+                                <div class="list-product-btn absolute-3">
+
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
+                                        class="box-icon bg_white quickview tf-btn-loading style-2">
+                                        <span class="icon icon-view"></span>
+                                        <span class="text">Quick View</span>
+                                    </a>
+    
+                                </div>       
+
                                 <div class="size-list">
                                     {% for size in product.get_sizes %}
                                     <span>{{ size.unit }}</span>
@@ -450,8 +471,12 @@
 <div id="cart-modal" style="">
     {% include "web/includes/cart_modal.html" %}
 </div>
+
+{% include "web/includes/search.html" %}
+
 <script src="{% static 'web/js/index.js' %}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.all.min.js"></script>
+
 
 {% endblock %}
 {% endblock %}

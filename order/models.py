@@ -1,10 +1,11 @@
 import uuid
 
-from accounts.models import User
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+
+from accounts.models import User
 
 
 def generate_order_id():
@@ -14,7 +15,9 @@ def generate_order_id():
 
 
 class Order(models.Model):
-    unique_transaction_id = models.UUIDField(unique=True, editable=False, blank=True, null=True)
+    unique_transaction_id = models.UUIDField(
+        unique=True, editable=False, blank=True, null=True
+    )
     # razorpay_payment_id = models.CharField(max_length=200, blank=True, null=True)
     # razorpay_order_id = models.CharField(max_length=200, blank=True, null=True)
     # razorpay_signature = models.CharField(max_length=200, blank=True, null=True)
@@ -96,6 +99,7 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     sku = models.CharField(max_length=100, null=True, blank=True)
     color = models.CharField(max_length=100, null=True, blank=True)
+
     class Meta:
         verbose_name = _("Order Item")
         verbose_name_plural = _("Order Items")

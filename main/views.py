@@ -1,61 +1,32 @@
 from datetime import datetime, timedelta
 
 from django import forms
-
 # models
 from django.contrib.auth.models import User
-from django.db.models.deletion import ProtectedError
 from django.forms import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views import View
-
 # view
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    ListView,
-    TemplateView,
-    UpdateView,
-)
+from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
+                                  TemplateView, UpdateView)
 
 # forms
-from main.forms import (
-    AvailableSizeForm,
-    CategoryForm,
-    DistrictForm,
-    ProductForm,
-    ProductImageForm,
-    ReviewForm,
-    ShippingFeeForm,
-    SliderForm,
-    StateForm,
-    TestimonialForm,
-    # ColourForm,
-    SubCategoryForm,
-    WeddingForm,BrandsForm
-)
+from main.forms import (AvailableSizeForm, BrandsForm,  # ColourForm,
+                        CategoryForm, DistrictForm, ProductForm,
+                        ProductImageForm, ReviewForm, ShippingFeeForm,
+                        SliderForm, StateForm, SubCategoryForm,
+                        TestimonialForm, WeddingForm)
 from main.mixins import LoginRequiredMixin, SuperAdminLoginRequiredMixin
 from main.models import District, ShippingFee, State
 from order.models import Order
-from products.models import (
-    AvailableSize,
-    Category,
-    Product,
-    ProductImage,
-    Review,
-    Slider,
-    # Colour,
-    SubCategory,
-    WeddingBanner,
-    Brands
-    
-)
+from products.models import (AvailableSize, Brands, Category,  # Colour,
+                             Product, ProductImage, Review, Slider,
+                             SubCategory, WeddingBanner)
 from web.forms import ContactForm
-from web.models import Contact, Testimonial,CustomOrder
+from web.models import Contact, CustomOrder, Testimonial
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
@@ -65,9 +36,15 @@ class IndexView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         two_weeks_ago = datetime.now() - timedelta(weeks=2)
-        context["last_two_week_orders_count"] = Order.objects.filter(created__gte=two_weeks_ago).count()
-        context["last_two_week_reviews_count"] = Review.objects.filter(created_at__gte=two_weeks_ago).count()
-        context["last_two_week_customers_count"] = User.objects.filter(date_joined__gte=two_weeks_ago).count()
+        context["last_two_week_orders_count"] = Order.objects.filter(
+            created__gte=two_weeks_ago
+        ).count()
+        context["last_two_week_reviews_count"] = Review.objects.filter(
+            created_at__gte=two_weeks_ago
+        ).count()
+        context["last_two_week_customers_count"] = User.objects.filter(
+            date_joined__gte=two_weeks_ago
+        ).count()
         context["orders"] = Order.objects.filter(is_ordered=False).order_by("-id")[:100]
         context["customers"] = User.objects.order_by("-id")[:100]
         context["reviews"] = Review.objects.order_by("-id")[:100]
@@ -250,6 +227,7 @@ class DistrictDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
     template_name = "dashboard/commen/delete.html"
     success_url = reverse_lazy("main:districts")
 
+
 # category
 class CategoryListView(SuperAdminLoginRequiredMixin, ListView):
     template_name = "dashboard/category/list.html"
@@ -330,12 +308,21 @@ class ProductListView(SuperAdminLoginRequiredMixin, ListView):
 class CreateProductView(SuperAdminLoginRequiredMixin, View):
     template_name = "dashboard/product/entry.html"
     form_class = ProductForm
-    available_size_formset_class = formset_factory(AvailableSizeForm, extra=1, can_delete=True)
-    product_image_formset_class = formset_factory(ProductImageForm, extra=1, can_delete=True)
+    available_size_formset_class = formset_factory(
+        AvailableSizeForm, extra=1, can_delete=True
+    )
+    product_image_formset_class = formset_factory(
+        ProductImageForm, extra=1, can_delete=True
+    )
+
     # colour_formset_class = formset_factory(ColourForm,extra=1,can_delete=True)
     def get(self, request, *args, **kwargs):
-        available_size_formset = self.available_size_formset_class(prefix="available_size_formset")
-        product_image_formset = self.product_image_formset_class(prefix="product_image_formset")
+        available_size_formset = self.available_size_formset_class(
+            prefix="available_size_formset"
+        )
+        product_image_formset = self.product_image_formset_class(
+            prefix="product_image_formset"
+        )
         # colour_formset = self.colour_formset_class(prefix="colour_formset")
         product_form = self.form_class()
         context = {
@@ -350,15 +337,23 @@ class CreateProductView(SuperAdminLoginRequiredMixin, View):
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        product_image_formset = self.product_image_formset_class(request.POST, request.FILES, prefix="product_image_formset")
-        available_size_formset = self.available_size_formset_class(request.POST, prefix="available_size_formset")
-        # colour_formset = self.colour_formset_class(request.POST, request.FILES ,prefix="colour_formset") 
+        product_image_formset = self.product_image_formset_class(
+            request.POST, request.FILES, prefix="product_image_formset"
+        )
+        available_size_formset = self.available_size_formset_class(
+            request.POST, prefix="available_size_formset"
+        )
+        # colour_formset = self.colour_formset_class(request.POST, request.FILES ,prefix="colour_formset")
         # print(colour_formset)
         product_form = self.form_class(request.POST, request.FILES)
 
         # if available_size_formset.is_valid() and product_form.is_valid() and product_image_formset.is_valid() and colour_formset.is_valid():
 
-        if available_size_formset.is_valid() and product_form.is_valid() and product_image_formset.is_valid():
+        if (
+            available_size_formset.is_valid()
+            and product_form.is_valid()
+            and product_image_formset.is_valid()
+        ):
             product = product_form.save()
 
             for size_form in available_size_formset:
@@ -370,7 +365,7 @@ class CreateProductView(SuperAdminLoginRequiredMixin, View):
                 image_data = image_form.save(commit=False)
                 image_data.product = product
                 image_data.save()
-                
+
             # for colour_form in colour_formset:
             #     colour_data = colour_form.save(commit=False)
             #     colour_data.product = product
@@ -392,8 +387,7 @@ class CreateProductView(SuperAdminLoginRequiredMixin, View):
                 message += str(product_image_formset.errors)
             # if colour_formset.errors:
             #     message += str(colour_formset.errors)
-            
-        
+
             response_data = {
                 "status": "false",
                 "title": "Form validation error",
@@ -416,7 +410,9 @@ def edit_product(request, pk):
         extra=extra,
         fields=("image",),
         widgets={
-            "image": forms.FileInput(attrs={"class": "file-input required", "type": "file"}),
+            "image": forms.FileInput(
+                attrs={"class": "file-input required", "type": "file"}
+            ),
         },
     )
     if AvailableSize.objects.filter(product=instance).exists():
@@ -439,7 +435,9 @@ def edit_product(request, pk):
                     "type": "number",
                 }
             ),
-            "unit": forms.Select(attrs={"class": "required form-select", "required": True}),
+            "unit": forms.Select(
+                attrs={"class": "required form-select", "required": True}
+            ),
             "sale_price": forms.TextInput(
                 attrs={
                     "placeholder": "Sale Price ",
@@ -480,7 +478,7 @@ def edit_product(request, pk):
     #         "name": forms.TextInput(attrs={"placeholder": "Enter Color Name", "class": "form-control"}),
     #         "image":forms.FileInput(attrs={"class": "file-input form-control"}),
     #         "hex_code": forms.TextInput(attrs={"placeholder": "", "class": "form-control"}),
-            
+
     #     }
     # )
 
@@ -492,10 +490,12 @@ def edit_product(request, pk):
             prefix="product_image_formset",
             instance=instance,
         )
-        available_size_formset = AvailableSizeFormSet(request.POST, prefix="available_size_formset", instance=instance)
+        available_size_formset = AvailableSizeFormSet(
+            request.POST, prefix="available_size_formset", instance=instance
+        )
         # colour_formset = ColourFormSet(request.POST,request.FILES,prefix="colour_formset",instance=instance)
         if form.is_valid():
-            
+
             data = form.save(commit=False)
             data.save()
             if product_image_formset.is_valid():
@@ -536,7 +536,7 @@ def edit_product(request, pk):
                 message += str(product_image_formset.errors)
             # if colour_formset.errors:
             #     message += str(colour_formset.errors)
-            
+
             response_data = {
                 "status": "false",
                 "title": "Form validation error",
@@ -545,8 +545,12 @@ def edit_product(request, pk):
             return JsonResponse(response_data)
     else:
         form = ProductForm(instance=instance)
-        product_image_formset = ProductImageFormSet(prefix="product_image_formset", instance=instance)
-        available_size_formset = AvailableSizeFormSet(prefix="available_size_formset", instance=instance)
+        product_image_formset = ProductImageFormSet(
+            prefix="product_image_formset", instance=instance
+        )
+        available_size_formset = AvailableSizeFormSet(
+            prefix="available_size_formset", instance=instance
+        )
         # colour_formset = ColourFormSet(prefix="colour_formset",instance=instance)
         context = {
             "form": form,
@@ -556,7 +560,6 @@ def edit_product(request, pk):
             "product_image_formset": product_image_formset,
             "available_size_formset": available_size_formset,
             # "colour_formset": colour_formset,
-
         }
         return render(request, "dashboard/product/entry.html", context)
 
@@ -705,6 +708,7 @@ class SliderDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
     model = Slider
     template_name = "dashboard/commen/delete.html"
     success_url = reverse_lazy("main:sliders")
+
 
 # Shipping Fee
 
@@ -904,6 +908,7 @@ class TestimonialDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
     template_name = "dashboard/commen/delete.html"
     success_url = reverse_lazy("main:testimonials")
 
+
 # sub category
 class SubCategoryListView(SuperAdminLoginRequiredMixin, ListView):
     template_name = "dashboard/subcategory/list.html"
@@ -974,11 +979,11 @@ class SubCategoryDelete(SuperAdminLoginRequiredMixin, DeleteView):
     extra_context = {"is_subcategory": True}
 
 
-#Custom Order
+# Custom Order
 class CustomOrderView(SuperAdminLoginRequiredMixin, ListView):
     template_name = "dashboard/custom_order/list.html"
     model = CustomOrder
-    
+
 
 class CustomOrderDetailView(SuperAdminLoginRequiredMixin, DetailView):
     model = CustomOrder
@@ -1005,7 +1010,8 @@ class CustomOrderUpdateView(SuperAdminLoginRequiredMixin, View):
         }
 
         return JsonResponse(response_data)
-    
+
+
 class WeddingListView(SuperAdminLoginRequiredMixin, ListView):
     template_name = "dashboard/wedding/list.html"
     model = WeddingBanner
@@ -1036,13 +1042,14 @@ class WeddingCreateView(SuperAdminLoginRequiredMixin, CreateView):
             "message": str(form.errors),
         }
         return JsonResponse(response_data)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["is_edit"] = self.object is not None  # Check if editing an existing object
+        context["is_edit"] = (
+            self.object is not None
+        )  # Check if editing an existing object
         context["wedding"] = self.object  # Pass the object to the template
         return context
-    
 
 
 class WeddingUpdateView(SuperAdminLoginRequiredMixin, UpdateView):
@@ -1133,14 +1140,18 @@ class BrandsUpdateView(SuperAdminLoginRequiredMixin, UpdateView):
             "message": str(form.errors),
         }
         return JsonResponse(response_data)
-    
+
+
 class BrandsDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
     model = Brands
     template_name = "dashboard/commen/delete.html"
     success_url = reverse_lazy("main:brands")
 
+
 class LoadSubcategoriesView(View):
     def get(self, request, *args, **kwargs):
         category_id = request.GET.get("category_id")
-        subcategories = SubCategory.objects.filter(category_id=category_id).values("id", "name")
+        subcategories = SubCategory.objects.filter(category_id=category_id).values(
+            "id", "name"
+        )
         return JsonResponse(list(subcategories), safe=False)

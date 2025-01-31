@@ -1,39 +1,34 @@
 import urllib.parse
-from decimal import Decimal,InvalidOperation
-from django.utils import timezone
-from django.utils.http import urlencode
+from decimal import Decimal, InvalidOperation
+
 # PHONEPAY
 import razorpay
+from dal import autocomplete
 from django.conf import settings
 from django.core.mail import send_mail
-from django.db.models import Min, Q
+from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.urls import reverse
+from django.utils.http import urlencode
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import ListView, TemplateView
 from django.views.generic.detail import DetailView
-from main.mixins import LoginRequiredMixin
 
-# model
-from web.models import Testimonial
-from main.models import District,ShippingFee
+from main.mixins import LoginRequiredMixin
+from main.models import District
 from order.forms import OrderForm
 from order.models import Order, OrderItem
-from products.forms import ReviewForm
-from products.models import AvailableSize, Category, Product, Slider,SubCategory,WeddingBanner,Brands,ProductImage
-
+from products.models import (AvailableSize, Brands, Category, Product,
+                             ProductImage, Slider, SubCategory, WeddingBanner)
 # CART
 from web.cart import Cart
-
 # form
-from web.forms import ContactForm,MeasurementForm
-from django.db.models import Count
-import json
-
-from django.template.loader import render_to_string
-from dal import autocomplete
+from web.forms import ContactForm, MeasurementForm
+# model
+from web.models import Testimonial
 
 client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY, settings.RAZOR_PAY_SECRET))
 
@@ -44,25 +39,34 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         instances = Product.objects.filter(is_active=True)
-        product_cats = Product.objects.filter(is_active=True)
+        product_cats = instances
         categories = Category.objects.exclude(name="Customized Giftbox")
-    
+        query = self.request.GET.get("q", "")
+        if query:
+            print('query=',query)
+            instances = instances.filter(name__icontains=query)
+            product_cats = instances
         context["categories"] = categories
-        context["products"]=instances
+        context["products"] = instances
         context["sliders"] = Slider.objects.filter(is_active=True)
         context["sale"] = Product.objects.filter(is_sale=True)
-        context['new_arrival']=Product.objects.all().order_by('-id')
-        context['product_cat']=product_cats
-        context['display_women_sub_category']=SubCategory.objects.filter(is_display_sub_category=True,category__name='Women')
-        context['display_men_sub_category']=SubCategory.objects.filter(is_display_sub_category=True,category__name='Men')
-        context['season'] = WeddingBanner.objects.all()
-        context['brands'] = Brands.objects.all()
-       
+        context["new_arrival"] = Product.objects.all().order_by("-id")
+        context["product_cat"] = product_cats
+        context["display_women_sub_category"] = SubCategory.objects.filter(
+            is_display_sub_category=True, category__name="Women"
+        )
+        context["display_men_sub_category"] = SubCategory.objects.filter(
+            is_display_sub_category=True, category__name="Men"
+        )
+        context["season"] = WeddingBanner.objects.all()
+        context["brands"] = Brands.objects.all()
 
         # Add category products to context
-        category_products = {category: category.get_products() for category in categories}
+        category_products = {
+            category: category.get_products() for category in categories
+        }
         context["category_products"] = category_products
-        
+
         return context
 
 class AboutView(TemplateView):
@@ -71,34 +75,36 @@ class AboutView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["testimonials"] = Testimonial.objects.all()
-        
+
         return context
-    
-    
+
 class ShopView(ListView):
     model = Product
     template_name = "web/shop.html"
     context_object_name = "products"
-   
+
     def get_queryset(self):
         products = Product.objects.filter(is_active=True)
+        query = self.request.GET.get("q", "")
+        if query:
+            products = products.filter(name__icontains=query)
         category_title = None
         self.category_title = category_title if category_title else None
         return products
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
+        qs = self.get_queryset()
         context["categories"] = Category.objects.all()
         context["title"] = self.category_title
-        context['most_review'] = Product.objects.annotate(num_reviews=Count('reviews'))  
-        # context['all_colors'] = Colour.objects.distinct()  
+        context["most_review"] = qs.annotate(num_reviews=Count("reviews"))
+        # context['all_colors'] = Colour.objects.distinct()
         # context['products'] = Product.objects.prefetch_related('colour_set')
-        context['products'] = Product.objects.all()
+        context["products"] = qs
         context["all_brands"] = Brands.objects.all()
-       
+
         return context
-    
+
 class ProductDetailView(DetailView):
     model = Product
     template_name = "web/product_detail.html"
@@ -109,7 +115,7 @@ class ProductDetailView(DetailView):
         cart = Cart(self.request)
         cart_items = []
         form = MeasurementForm()
-        
+
         for item_id, item_data in cart.get_cart():
             variant = get_object_or_404(AvailableSize, id=item_id)
             quantity = item_data["quantity"]
@@ -128,10 +134,8 @@ class ProductDetailView(DetailView):
             Decimal(item[1]["quantity"]) * Decimal(item[1]["sale_price"])
             for item in cart.get_cart()
         )
-        
-        context["form"] = form
 
-      
+        context["form"] = form
         return context
 
     def post(self, request, *args, **kwargs):
@@ -141,28 +145,30 @@ class ProductDetailView(DetailView):
         if form.is_valid():
             # Save the form data to the backend
             custom_order = form.save(commit=False)
-            custom_order.product_name = product.name  # Save product name from the Product model
+            custom_order.product_name = (
+                product.name
+            )  # Save product name from the Product model
             custom_order.save()
 
             # Get the form data
             form_data = form.cleaned_data
-            name = form_data['name']
-            phone = form_data['phone']
-            email = form_data['email']
-            address = form_data['address']
-            front_neck_depth = form_data['front_neck_depth']
-            back_neck_depth = form_data['back_neck_depth']
-            bust = form_data['bust']
-            waist = form_data['waist']
-            sleeve_length = form_data['sleeve_length']
-            shoulder_length = form_data['shoulder_length']
-            full_length = form_data['full_length']
-            product_name = form_data['product_name']
+            name = form_data["name"]
+            phone = form_data["phone"]
+            email = form_data["email"]
+            address = form_data["address"]
+            front_neck_depth = form_data["front_neck_depth"]
+            back_neck_depth = form_data["back_neck_depth"]
+            bust = form_data["bust"]
+            waist = form_data["waist"]
+            sleeve_length = form_data["sleeve_length"]
+            shoulder_length = form_data["shoulder_length"]
+            full_length = form_data["full_length"]
+            product_name = form_data["product_name"]
 
             # Construct WhatsApp message
             message = (
                 f"Customisation Order Details:\n\n"
-                 f"Product Name: {product_name}\n"
+                f"Product Name: {product_name}\n"
                 f"Name: {name}\n"
                 f"Phone: {phone}\n"
                 f"Email: {email}\n"
@@ -175,17 +181,17 @@ class ProductDetailView(DetailView):
                 f"Sleeve Length: {sleeve_length} inches\n"
                 f"Shoulder Length: {shoulder_length} inches\n"
                 f"Full Length: {full_length} inches\n\n"
-               
             )
 
             # Encode message for WhatsApp URL
             encoded_message = urlencode({"text": message})
-            whatsapp_number = "+918547848091"  # Replace with your business WhatsApp number
+            whatsapp_number = (
+                "+918589005600"  # Replace with your business WhatsApp number
+            )
             whatsapp_url = f"https://wa.me/{whatsapp_number}?{encoded_message}"
 
             # Redirect user to WhatsApp
             return redirect(whatsapp_url)
-               
 
 class ContactView(View):
     def get(self, request):
@@ -207,12 +213,12 @@ class ContactView(View):
             }
         else:
             messege = {}
-            for key,error in list(form.errors.items()):
-                if key == 'captcha' and error[0] == 'This field is required.':
-                    messege = 'Please check the captcha'
+            for key, error in list(form.errors.items()):
+                if key == "captcha" and error[0] == "This field is required.":
+                    messege = "Please check the captcha"
                 else:
                     messege = error
-               
+
             response_data = {
                 "status": "false",
                 "title": "Form validation error",
@@ -248,29 +254,30 @@ def cart_view(request):
 
     return render(request, "web/cart.html", context)
 
+
 def cart_add(request):
     cart = Cart(request)
     cart_instance = cart.cart
     quantity = request.GET.get("quantity", 1)
     product_id = request.GET.get("product_id", "")
-    print('product_id=',product_id)
+    print("product_id=", product_id)
     variant = get_object_or_404(AvailableSize, pk=product_id)
     cart.add(variant, quantity=int(quantity))
     print(cart_instance)
 
-   # Prepare cart items for rendering
+    # Prepare cart items for rendering
     cart_items = [
         {
-          
             "quantity": item["quantity"],
-            "sale_price": item["sale_price"],    
+            "sale_price": item["sale_price"],
         }
         for item in cart_instance.values()
     ]
-  
 
     # Render updated modal HTML
-    cart_modal_html = render_to_string('web/includes/cart_modal.html', {'cart_items': cart_items})
+    cart_modal_html = render_to_string(
+        "web/includes/cart_modal.html", {"cart_items": cart_items}
+    )
 
     return JsonResponse(
         {
@@ -283,13 +290,11 @@ def cart_add(request):
         }
     )
 
-
 def clear_cart_item(request, item_id):
     cart = Cart(request)
     variant = get_object_or_404(AvailableSize, id=item_id)
     cart.remove(variant)
     return redirect(reverse("web:cart"))
-
 
 def minus_to_cart(request):
     cart = Cart(request)
@@ -311,7 +316,6 @@ def clear_cart(request):
     cart = Cart(request)
     cart.clear()
     return redirect(reverse("web:shop"))
-
 
 def order(request):
     if request.method == "POST":
@@ -347,12 +351,11 @@ def order(request):
         )
 
         whatsapp_api_url = "https://api.whatsapp.com/send"
-        phone_number = "+918547848091"
+        phone_number = "+918589005600"
         encoded_message = urllib.parse.quote(message)
         whatsapp_url = f"{whatsapp_api_url}?phone={phone_number}&text={encoded_message}"
         cart.clear()
         return redirect(whatsapp_url)
-
 
 
 def parse_decimal(value, default=0):
@@ -360,6 +363,8 @@ def parse_decimal(value, default=0):
         return Decimal(value)
     except (InvalidOperation, ValueError, TypeError):
         return Decimal(default)
+
+
 class CheckoutView(View):
     template_name = "web/shop-checkout.html"
 
@@ -367,20 +372,17 @@ class CheckoutView(View):
         cart = Cart(request)
         cart_items = self.get_cart_items(cart)
         form = OrderForm()
-      
 
         context = {
             "cart_items": cart_items,
             "cart_total": sum(item["total_price"] for item in cart_items),
             "form": form,
-           
         }
 
         return render(request, self.template_name, context)
-    
-    
-    def post(self,request, *args, **kwargs):
-    
+
+    def post(self, request, *args, **kwargs):
+
         form = OrderForm(request.POST)
         cart = Cart(request)
         cart_items = self.get_cart_items(cart)
@@ -409,7 +411,7 @@ class CheckoutView(View):
                 )
                 order_item.save()
 
-        # Construct the message body
+            # Construct the message body
             message_body = (
                 f"Order Confirmation\n\n"
                 f"Order ID: {data.id}\n"
@@ -424,26 +426,26 @@ class CheckoutView(View):
                 f"Email: {data.email}\n\n"
                 f"Items:\n"
             )
-
-        # Append items to the message body
+            # Append items to the message body
             for item in cart_items:
                 message_body += (
-                f"- {item['variant'].product} (x{item['quantity']}): {item['total_price']} INR\n"
-                f"  SKU: {item['variant'].product.sku if item['variant'].product.sku else 'N/A'}\n"
-                f"  Color: {item['variant'].product.color if item['variant'].product.color else 'N/A'}\n\n"
-            )
+                    f"- {item['variant'].product} (x{item['quantity']}): {item['total_price']} INR\n"
+                    f"  SKU: {item['variant'].product.sku if item['variant'].product.sku else 'N/A'}\n"
+                    f"  Color: {item['variant'].product.color if item['variant'].product.color else 'N/A'}\n\n"
+                )
             message_body += f"\nSubtotal: {data.subtotal} INR"
 
-        # Send message via WhatsApp
+            # Send message via WhatsApp
             whatsapp_api_url = "https://api.whatsapp.com/send"
-            phone_number = "+918547848091"  # Update this to the required phone number
+            phone_number = "+918589005600"
             encoded_message = urllib.parse.quote(message_body)
-            whatsapp_url = f"{whatsapp_api_url}?phone={phone_number}&text={encoded_message}"
-            
+            whatsapp_url = (
+                f"{whatsapp_api_url}?phone={phone_number}&text={encoded_message}"
+            )
+
             cart.clear()
             return redirect(whatsapp_url)
-              
-           
+
         else:
             context = {
                 "cart_items": cart_items,
@@ -466,8 +468,6 @@ class CheckoutView(View):
                 }
             )
         return cart_items
-
-
 
 class PaymentView(View):
     def get(self, request, pk, *args, **kwargs):
@@ -522,7 +522,7 @@ def callback(request, pk):
             total = 0
             counter = 1
             for item in order.get_items():
-                
+
                 products += f"{counter}.{item.product.product.name}-{item.product.weight} {item.product.unit} ({item.quantity}x{item.price}) ₹ {item.subtotal()} \n ----------------------- \n"
                 total += item.subtotal()
                 counter += 1
@@ -566,14 +566,14 @@ def callback(request, pk):
                 subject,
                 message,
                 "secure.gedexo@gmail.com",
-                [email,"info@kmtsilks.com"],
+                [email, "info@kmtsilks.com"],
                 fail_silently=False,
             )
-            
+
             print("email sent successfully")
             cart = Cart(request)
             cart.clear()
-            
+
         else:
             print("Signature verification failed, please check the secret key")
             order.payment_status = "Failed"
@@ -660,6 +660,7 @@ class CompleteOrderView(DetailView):
         }
         return render(request, self.template_name, context)
 
+
 class UserOrderDetailView(DetailView):
     model = Order
     template_name = "account/order_single.html"
@@ -678,74 +679,81 @@ def get_shipping_fee(request):
 # class MyAccountView(LoginRequiredMixin, TemplateView):
 #     template_name = "web/account_dashboard.html"
 
-    
+
 class MyOrderView(LoginRequiredMixin, View):
     template_name = "web/account_dashboard.html"
+
     def get(self, request):
         user = self.request.user
         context = {
             "orders": Order.objects.filter(user=user),
         }
         return render(request, self.template_name, context)
-    
-    
+
+
 class MyOrderDetailsView(LoginRequiredMixin, DetailView):
     template_name = "web/order_details.html"
     model = Order
-    context_object_name = 'order'
+    context_object_name = "order"
 
 
 class AutocompleteView(View):
     def get(self, request, *args, **kwargs):
-        query = request.GET.get('query', '')
+        query = request.GET.get("query", "")
         results = []
         if query:
-            products = Product.objects.filter(name__icontains=query, is_active=True)[:10]
+            products = Product.objects.filter(name__icontains=query, is_active=True)[
+                :10
+            ]
             results = [
-                {
-                    'name': product.name,
-                    'url': product.get_absolute_url()
-                }
+                {"name": product.name, "url": product.get_absolute_url()}
                 for product in products
             ]
         return JsonResponse(results, safe=False)
-    
+
 
 def custom_404(request, exception):
     return render(request, "web/404.html", status=404)
 
+
 def error(request):
-    context = {
-    }
+    context = {}
     return render(request, "web/404.html", context)
 
+
 def search_product(request):
-    return render (request,'web/search.html')
+    return render(request, "web/search.html")
+
 
 def my_account_orders(request):
     user = request.user
     context = {
-            "orders": Order.objects.filter(user=user),
-        }
-    return render(request,'web/account-orders.html',context)
+        "orders": Order.objects.filter(user=user),
+    }
+    return render(request, "web/account-orders.html", context)
+
 
 def category_list(request, slug):
     category = Category.objects.filter(slug=slug).first()
     sub_category = SubCategory.objects.filter(slug=slug).first()
     festival = Product.objects.filter(is_wedding_product=True)
     if WeddingBanner.objects.filter(slug=slug).exists():
-        instance =WeddingBanner.objects.filter(slug=slug).last().category
-        print('instance',instance)
-        festival= festival.filter(category=instance)
+        instance = WeddingBanner.objects.filter(slug=slug).last().category
+        print("instance", instance)
+        festival = festival.filter(category=instance)
 
     sort_option = request.GET.get("sort", "latest")  # Default sorting
     subcategory_id = request.GET.get("subcategory")  # Get selected subcategory
 
+    query = request.GET.get("q", "").strip()
     products = Product.objects.none()  # Default to empty
 
     if category:
         products = Product.objects.filter(category=category)
-        tittle = products.last().category.name
+        if  products.last():
+            tittle = products.last().category.name
+        else:
+            tittle = str(category)
 
     elif sub_category:
         products = Product.objects.filter(subcategory=sub_category)
@@ -757,16 +765,27 @@ def category_list(request, slug):
     if subcategory_id:
         products = products.filter(subcategory_id=subcategory_id)
         tittle = products.last().category.name
+
+    if query:
+        print('query=', query)
+        products = products.filter(name__icontains=query)
+
     # Apply Sorting
     if sort_option == "low-to-high":
         products = products.order_by("order")
     elif sort_option == "high-to-low":
         products = products.order_by("-order")
     else:
-        products = products.order_by("-id")  # Assuming 'Latest' sorts by newest products
+        products = products.order_by(
+            "-id"
+        )  # Assuming 'Latest' sorts by newest products
 
     # Fetch all subcategories for dropdown
-    subcategories = SubCategory.objects.filter(category=category) if category else SubCategory.objects.all()
+    subcategories = (
+        SubCategory.objects.filter(category=category)
+        if category
+        else SubCategory.objects.all()
+    )
 
     context = {
         "products": products,
@@ -775,21 +794,24 @@ def category_list(request, slug):
         "subcategories": subcategories,
         "selected_subcategory": int(subcategory_id) if subcategory_id else None,
         "sort_option": sort_option,
-        'tittle':tittle
+        "tittle": tittle,
+        "query": query,  
     }
-    
+
     return render(request, "web/category_products.html", context)
 
-def offer_sale(request): 
+
+def offer_sale(request):
     custom = Product.objects.filter(is_sale=True)
-   
+
     context = {
-        'custom': custom,      
+        "custom": custom,
     }
-    return render(request, 'web/offer.html', context)
+    return render(request, "web/offer.html", context)
+
 
 def get_images_by_color(request, pk):
-    color_id = request.GET.get('color_id')
+    color_id = request.GET.get("color_id")
     product = Product.objects.get(pk=pk)
 
     # Retrieve product images based on color
@@ -797,33 +819,45 @@ def get_images_by_color(request, pk):
 
     # Return images as a JSON response
     image_urls = [image.image.url for image in images]
-    return JsonResponse({'images': image_urls})
+    return JsonResponse({"images": image_urls})
+
 
 def quick_add_modal(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     sizes = product.get_sizes()
     colors = product.get_colors()
     sale_price = product.get_sale_price()
-    return JsonResponse({
-        'name': product.name,
-        'image_url': product.image.url,
-       'price': str(sale_price),  
-        'sizes': [{'id': size.id, 'unit': size.unit, 'sale_price': str(size.sale_price)} for size in sizes],
-        'colors': [{'name': color.name, 'hex_code': color.hex_code} for color in colors],
-    })
+    return JsonResponse(
+        {
+            "name": product.name,
+            "image_url": product.image.url,
+            "price": str(sale_price),
+            "sizes": [
+                {"id": size.id, "unit": size.unit, "sale_price": str(size.sale_price)}
+                for size in sizes
+            ],
+            "colors": [
+                {"name": color.name, "hex_code": color.hex_code} for color in colors
+            ],
+        }
+    )
+
 
 def add_to_cart(request):
-    if request.method == 'POST' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+    if (
+        request.method == "POST"
+        and request.headers.get("x-requested-with") == "XMLHttpRequest"
+    ):
         # Ensure product_id and size_id are integers
         print("POST data:", request.POST)
-        
+
         try:
-            product_id = int(request.POST.get('product_id'))
-            size_id = int(request.POST.get('size_id'))
-            quantity = int(request.POST.get('quantity'))
+            product_id = int(request.POST.get("product_id"))
+            size_id = int(request.POST.get("size_id"))
+            quantity = int(request.POST.get("quantity"))
         except (ValueError, TypeError) as e:
             print(f"Error parsing data: {e}")
-            return JsonResponse({'error': 'Invalid product or size ID'}, status=400)
+            return JsonResponse({"error": "Invalid product or size ID"}, status=400)
 
         # Get the product, if it doesn't exist return 404
         product = get_object_or_404(Product, id=product_id)
@@ -836,33 +870,35 @@ def add_to_cart(request):
 
         # Recalculate cart total and count
         cart_count = cart.items.count()
-        cart_total = cart.get_total()  # Assuming Cart model has a method to calculate the total
+        cart_total = (
+            cart.get_total()
+        )  # Assuming Cart model has a method to calculate the total
 
-        return JsonResponse({'cart_count': cart_count, 'cart_total': cart_total})
+        return JsonResponse({"cart_count": cart_count, "cart_total": cart_total})
 
-    return JsonResponse({'error': 'Invalid request'}, status=400)
+    return JsonResponse({"error": "Invalid request"}, status=400)
 
 
 def get_product_details(request):
-    product_id = request.GET.get('product_id')
+    product_id = request.GET.get("product_id")
     if product_id:
         try:
             product = Product.objects.get(id=product_id)
             # Return product details as JSON response
             product_data = {
-                'id': product.id,
-                'name': product.name,
-                'image_url': product.image.url,
-                'price': product.price,
-                'color': product.color,  # Assuming this field exists
-                'size': product.size,    # Assuming this field exists
+                "id": product.id,
+                "name": product.name,
+                "image_url": product.image.url,
+                "price": product.price,
+                "color": product.color,  # Assuming this field exists
+                "size": product.size,  # Assuming this field exists
             }
-            return JsonResponse({'product': product_data})
+            return JsonResponse({"product": product_data})
         except Product.DoesNotExist:
-            return JsonResponse({'error': 'Product not found'}, status=404)
+            return JsonResponse({"error": "Product not found"}, status=404)
     else:
-        return JsonResponse({'error': 'Product ID is missing'}, status=400)
-    
+        return JsonResponse({"error": "Product ID is missing"}, status=400)
+
 
 class SubCategoryAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
@@ -873,7 +909,7 @@ class SubCategoryAutocomplete(autocomplete.Select2QuerySetView):
         queryset = SubCategory.objects.all()
 
         # Check if a `category` parameter is forwarded
-        category_id = self.forwarded.get('category', None)
+        category_id = self.forwarded.get("category", None)
         if category_id:
             queryset = queryset.filter(category_id=category_id)
 
@@ -886,8 +922,9 @@ class SubCategoryAutocomplete(autocomplete.Select2QuerySetView):
 
 def wedding_list(request, slug):
     # Get wedding products
-    festival_products = Product.objects.filter(is_wedding_product=True, category__slug=slug)
-    
+    festival_products = Product.objects.filter(
+        is_wedding_product=True, category__slug=slug
+    )
     # Get the WeddingBanner for the same category
     wedding_banner = WeddingBanner.objects.filter(category__slug=slug).first()
 
@@ -896,3 +933,7 @@ def wedding_list(request, slug):
         "wedding_banner": wedding_banner,
     }
     return render(request, "web/wedding.html", context)
+
+
+def search_product(request):
+    return render (request,'web/search.html')

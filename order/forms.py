@@ -4,8 +4,12 @@ from .models import Order
 
 
 class OrderForm(forms.ModelForm):
-    selected_dial_code_mobile = forms.CharField(widget=forms.HiddenInput(), required=False)
-    selected_dial_code_alternative = forms.CharField(widget=forms.HiddenInput(), required=False)
+    selected_dial_code_mobile = forms.CharField(
+        widget=forms.HiddenInput(), required=False
+    )
+    selected_dial_code_alternative = forms.CharField(
+        widget=forms.HiddenInput(), required=False
+    )
 
     class Meta:
         model = Order
@@ -22,7 +26,9 @@ class OrderForm(forms.ModelForm):
             "email",
         ]
         widgets = {
-            "full_name": forms.TextInput(attrs={"class": "form-control", "placeholder": "Full name"}),
+            "full_name": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Full name"}
+            ),
             "address_line_1": forms.TextInput(
                 attrs={
                     "class": "form-control",
@@ -51,9 +57,19 @@ class OrderForm(forms.ModelForm):
                     "maxlength": "10",
                 }
             ),
-            "state": forms.TextInput(attrs={"class": "form-control", "placeholder": "State"}),
-            "district": forms.TextInput(attrs={"class": "form-control", "placeholder": "District"}),
-            "city": forms.TextInput(attrs={"class": "form-control", "placeholder": "City"}),
-            "pin_code": forms.TextInput(attrs={"class": "form-control", "placeholder": "Pin Code"}),
-            "email": forms.TextInput(attrs={"class": "form-control", "placeholder": "Email", "type": "email"}),
+            "state": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "State"}
+            ),
+            "district": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "District"}
+            ),
+            "city": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "City"}
+            ),
+            "pin_code": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Pin Code"}
+            ),
+            "email": forms.TextInput(
+                attrs={"class": "form-control", "placeholder": "Email", "type": "email"}
+            ),
         }

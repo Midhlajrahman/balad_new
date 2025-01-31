@@ -87,8 +87,7 @@
                         
                         <div class="col-xl-5 col-md-4 col-3">
                             <ul class="nav-icon d-flex justify-content-end align-items-center gap-20">
-                                {% comment %} <li class="nav-search"><a href="#canvasSearch" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="nav-icon-item"><i class="icon icon-search"></i></a></li> {% endcomment %}
-                                <li class="nav-account"><a href="#login" data-bs-toggle="modal" class="nav-icon-item text-light"><i class="icon icon-account"></i></a></li>
+                                <li class="nav-search"><a href="#canvasSearch" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="nav-icon-item text-light"><i class="icon icon-search"></i></a></li>
                                 <li class="nav-cart"><a href="#shoppingCart " data-bs-toggle="modal" class="nav-icon-item text-light"><i class="icon icon-bag"></i><span class="count-box">{{ cart_count|default:'0' }}</span></a></li>
                             </ul>
                         </div>
@@ -111,7 +110,7 @@
                                 </li>
                                
                                 {% if user.is_superuser %}
-                                <li class="menu-item">
+                                <li class="menu-item ">
                                     <a href="{% url 'main:index' %}" class="item-link">Dashboard
                                 </li>
                                 {% endif %}

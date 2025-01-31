@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+
 from main.models import GENDER_CHOICES
 
 # Create your models here.
@@ -14,7 +15,9 @@ class Customer(models.Model):
     )
     first_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, blank=True, null=True)
+    gender = models.CharField(
+        max_length=10, choices=GENDER_CHOICES, blank=True, null=True
+    )
     phone = models.CharField(max_length=15, blank=True, null=True)
 
     @property

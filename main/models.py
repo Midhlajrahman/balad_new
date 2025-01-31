@@ -18,7 +18,6 @@ UNIT_CHOICES = (
     ("XL", "XL"),
     ("XXL", "XXL"),
     ("XXXL", "XXXL"),
-   
 )
 
 

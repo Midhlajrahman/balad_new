@@ -22,9 +22,8 @@ INSTALLED_PLUGINS = [
     "crispy_bootstrap5",
     "versatileimagefield",
     "django_recaptcha",
-
-    'dal',
-    'dal_select2',
+    "dal",
+    "dal_select2",
 ]
 
 
@@ -217,5 +216,5 @@ TINYMCE_DEFAULT_CONFIG = {
     "content_style": "body { font-family:Arial,sans-serif; font-size:14px }",
 }
 
-TINYMCE_JS_URL = '/static/tinymce/tinymce.min.js'
-TINYMCE_JS_ROOT = '/static/tinymce'
+TINYMCE_JS_URL = "/static/tinymce/tinymce.min.js"
+TINYMCE_JS_ROOT = "/static/tinymce"

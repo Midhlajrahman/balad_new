@@ -71,14 +71,24 @@
                                     <img class="lazyload img-product" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}" src="{{product.image.url}}" alt="image-product">
                                 </a>
-                                <div class="list-product-btn absolute-2">
+                                {% comment %} <div class="list-product-btn absolute-2">
 
                                     <a href="{{product.get_absolute_url}}"
                                         class="box-icon bg_white quickview tf-btn-loading">
                                         <span class="icon icon-view"></span>
                                         <span class="tooltip">Quick View</span>
                                     </a>
-                                </div>
+                                </div> {% endcomment %}
+
+                                <div class="list-product-btn absolute-3">
+
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
+                                        class="box-icon bg_white quickview tf-btn-loading style-2">
+                                        <span class="icon icon-view"></span>
+                                        <span class="text">Quick View</span>
+                                    </a>
+    
+                                </div>       
     
                               
                             </div>

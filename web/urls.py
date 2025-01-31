@@ -1,8 +1,9 @@
 from django.urls import path
 from django.views.generic import TemplateView
-from .views import  get_images_by_color,quick_add_modal,SubCategoryAutocomplete
-from . import views
 
+from . import views
+from .views import (SubCategoryAutocomplete, get_images_by_color,
+                    quick_add_modal)
 
 app_name = "web"
 
@@ -76,17 +77,20 @@ urlpatterns = [
         name="search-autocomplete",
     ),
     path("error/", views.error, name="error"),
+    path("product/search/", views.search_product, name="search"),
+    path("account/my-orders-list/", views.my_account_orders, name="my_account_orders"),
+    path("category/<slug:slug>/", views.category_list, name="category_product"),
+    path(
+        "product/<int:pk>/images/", get_images_by_color, name="product_images_by_color"
+    ),
+    path("quick-add/<int:product_id>/", quick_add_modal, name="quick_add_modal"),
+    path("get-product-details/", views.get_product_details, name="get_product_details"),
+    path("offer_sale/", views.offer_sale, name="offer_sale"),
+    path(
+        "subcategory-autocomplete/",
+        SubCategoryAutocomplete.as_view(),
+        name="subcategory-autocomplete",
+    ),
+    path("wedding/<slug:slug>/", views.wedding_list, name="wedding"),
     path("product/search/",views.search_product,name='search'),
-    path("account/my-orders-list/",views.my_account_orders,name='my_account_orders'),
-    path("category/<slug:slug>/",views.category_list,name='category_product'),
-    path('product/<int:pk>/images/', get_images_by_color, name='product_images_by_color'),
-    path('quick-add/<int:product_id>/', quick_add_modal, name='quick_add_modal'),
-    path('get-product-details/', views.get_product_details, name='get_product_details'),
-    path('offer_sale/', views.offer_sale, name='offer_sale'),
-   
-
-    path('subcategory-autocomplete/', SubCategoryAutocomplete.as_view(), name='subcategory-autocomplete'),
-    path("wedding/<slug:slug>/",views.wedding_list,name='wedding'),
- 
-    
 ]

@@ -1,34 +1,35 @@
-from django.core.validators import MaxValueValidator
 from django.db import models
 from django.urls import reverse, reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from tinymce.models import HTMLField
 from versatileimagefield.fields import VersatileImageField
-from django.contrib.auth.models import User
-from main.models import COLOR_CHOICES, UNIT_CHOICES
-import webcolors
+
+from main.models import UNIT_CHOICES
+
 
 class Slider(models.Model):
-    title = models.CharField(max_length=255,blank=True,null=True)
+    title = models.CharField(max_length=255, blank=True, null=True)
     image = models.ImageField(upload_to="slider/")
-    mobile_image = models.ImageField(upload_to="slider/",blank=True,null=True)
-    category = models.ForeignKey("products.Category", on_delete=models.CASCADE,blank=True,null=True)
+    mobile_image = models.ImageField(upload_to="slider/", blank=True, null=True)
+    category = models.ForeignKey(
+        "products.Category", on_delete=models.CASCADE, blank=True, null=True
+    )
     is_active = models.BooleanField(default=True)
-    
+
     class Meta:
         verbose_name = _("Slider")
         verbose_name_plural = _("Sliders")
         ordering = ("title",)
-    
+
     def get_list_url():
         return reverse_lazy("main:sliders")
-    
+
     def get_update_url(self):
         return reverse_lazy("main:slider_update", kwargs={"pk": self.pk})
 
     def get_delete_url(self):
         return reverse_lazy("main:slider_delete", kwargs={"pk": self.pk})
-    
+
     def __str__(self):
         return str(self.title)
 
@@ -36,13 +37,13 @@ class Slider(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
-    
+
     image = VersatileImageField(
         "category",
         blank=True,
         null=True,
         upload_to="categories/",
-        help_text=" The recommended size is 120x120 pixels.",
+       
     )
     status = models.CharField(
         max_length=20,
@@ -60,28 +61,28 @@ class Category(models.Model):
 
     def get_product_count(self):
         return self.category.count()
-    
+
     def get_subcategories(self):
         return SubCategory.objects.filter(category=self)
-    
+
     def get_absolute_url(self):
         return reverse_lazy("web:category_product", kwargs={"slug": self.slug})
 
-
     def __str__(self):
         return f"{self.name}"
-    
+
+
 class Brands(models.Model):
     brand_name = models.CharField(max_length=50)
     brand_image = models.ImageField(upload_to="Brands")
 
     def __str__(self):
         return self.brand_name
-    
+
     class Meta:
-        verbose_name = 'Brand'
-        verbose_name_plural = 'Brands'
-       
+        verbose_name = "Brand"
+        verbose_name_plural = "Brands"
+
 
 class WeddingBanner(models.Model):
     category = models.ForeignKey(
@@ -94,7 +95,7 @@ class WeddingBanner(models.Model):
         blank=True,
         null=True,
         upload_to="subcategories/season",
-        help_text="The recommended size is 120x120 pixels.",
+      
     )
     status = models.CharField(
         max_length=20,
@@ -110,16 +111,16 @@ class WeddingBanner(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_absolute_url(self):
         return reverse_lazy("web:category_product", kwargs={"slug": self.slug})
-    
+
     def get_update_url(self):
         return reverse_lazy("main:wedding_update", kwargs={"pk": self.pk})
 
     def get_delete_url(self):
         return reverse_lazy("main:wedding_delete", kwargs={"pk": self.pk})
-    
+
 
 class SubCategory(models.Model):
     category = models.ForeignKey(
@@ -132,14 +133,14 @@ class SubCategory(models.Model):
         blank=True,
         null=True,
         upload_to="subcategories/",
-        help_text="The recommended size is 120x120 pixels.",
+     
     )
     status = models.CharField(
         max_length=20,
         choices=(("Published", "Published"), ("Unpublished", "Unpublished")),
         default="Published",
     )
-    is_display_sub_category=models.BooleanField(default=False)
+    is_display_sub_category = models.BooleanField(default=False)
 
     class Meta:
         verbose_name = _("SubCategory")
@@ -152,29 +153,38 @@ class SubCategory(models.Model):
 
     def __str__(self):
         return f"{self.category}-{self.name}"
-    
+
     def get_absolute_url(self):
         return reverse_lazy("web:category_product", kwargs={"slug": self.slug})
-    
+
+
 class Product(models.Model):
-    order = models.IntegerField(unique=True, blank=True,null=True)
+    order = models.IntegerField(unique=True, blank=True, null=True)
     category = models.ForeignKey(
         "products.Category", on_delete=models.CASCADE, related_name="category"
     )
     subcategory = models.ForeignKey(
-        "products.SubCategory", on_delete=models.CASCADE, related_name="products", null=True, blank=True
+        "products.SubCategory",
+        on_delete=models.CASCADE,
+        related_name="products",
+        null=True,
+        blank=True,
     )
     brands = models.ForeignKey(
-        "products.Brands", on_delete=models.CASCADE, related_name="brands", null=True, blank=True
+        "products.Brands",
+        on_delete=models.CASCADE,
+        related_name="brands",
+        null=True,
+        blank=True,
     )
     name = models.CharField(max_length=200)
     slug = models.SlugField(unique=True)
-    sku = models.CharField(max_length=100,null=True,blank=True,unique=True)
-    details = HTMLField(null=True,blank=True)
+    sku = models.CharField(max_length=100, null=True, blank=True, unique=True)
+    details = HTMLField(null=True, blank=True)
     image = models.ImageField(
-        upload_to="products/", help_text=" The recommended size is 450x600 pixels."
+        upload_to="products/"
     )
-    color = models.CharField(max_length=100,null=True,blank=True)
+    color = models.CharField(max_length=100, null=True, blank=True)
     is_popular = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_sale = models.BooleanField(default=False)
@@ -237,19 +247,20 @@ class Product(models.Model):
 
     def num_of_reviews(self):
         return self.get_reviews().count()
-    
+
     def get_weight(self):
         # Retrieve the first AvailableSize instance with stock for the product
-        available_size = AvailableSize.objects.filter(product=self, is_stock=True).first()
+        available_size = AvailableSize.objects.filter(
+            product=self, is_stock=True
+        ).first()
         return available_size.weight if available_size else None
-    
+
     def get_images_by_color(self, color_name):
         return self.images.filter(color__name=color_name)
 
-   
     def __str__(self):
         return f" {self.name}"
-    
+
     def get_sizes(self):
         return self.sizes.all()
 
@@ -272,7 +283,8 @@ class Product(models.Model):
 
 #     def __str__(self):
 #         return self.name
-    
+
+
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     image = models.ImageField(
@@ -293,16 +305,15 @@ class ProductImage(models.Model):
         storage.delete(path)
 
 
-
 class AvailableSize(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE,related_name='sizes' )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="sizes")
     # size = models.IntegerField()
     unit = models.CharField(max_length=10, choices=UNIT_CHOICES)
     sale_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     regular_price = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True
     )
-    
+
     is_stock = models.BooleanField(default=True)
 
     class Meta:
@@ -322,13 +333,13 @@ class AvailableSize(models.Model):
 
     def get_absolute_url(self):
         return reverse("web:offer_details", kwargs={"pk": self.pk})
-    
+
     def __str__(self):
         return f"{self.product} - {self.unit} "
-    
 
     def get_sale_price(self):
         return self.sale_price
+
 
 class Review(models.Model):
     product = models.ForeignKey(
@@ -342,5 +353,3 @@ class Review(models.Model):
 
     def __str__(self):
         return f"{self.product.name}"
-
-
