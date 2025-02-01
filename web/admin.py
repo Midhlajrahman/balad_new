@@ -25,6 +25,6 @@ class ContactAdmin(admin.ModelAdmin):
 #     )
 
 
-@admin.register(CustomOrder)
-class CustomOrderAdmin(admin.ModelAdmin):
-    list_display = ("name", "phone")
+# @admin.register(CustomOrder)
+# class CustomOrderAdmin(admin.ModelAdmin):
+#     list_display = ("name", "phone")
