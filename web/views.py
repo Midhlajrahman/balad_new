@@ -803,7 +803,10 @@ def category_list(request, slug):
 
 def offer_sale(request):
     custom = Product.objects.filter(is_sale=True)
-
+    query = request.GET.get("q", "")
+    if query:
+            custom = custom.filter(name__icontains=query)
+           
     context = {
         "custom": custom,
     }
@@ -927,7 +930,9 @@ def wedding_list(request, slug):
     )
     # Get the WeddingBanner for the same category
     wedding_banner = WeddingBanner.objects.filter(category__slug=slug).first()
-
+    query = request.get("q","")
+    if query:
+        festival_products = festival_products.filter(name__icontains=query)
     context = {
         "festival_products": festival_products,
         "wedding_banner": wedding_banner,
