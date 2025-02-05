@@ -942,3 +942,6 @@ def wedding_list(request, slug):
 
 def search_product(request):
     return render (request,'web/search.html')
+
+def showrooms(request):
+    return render(request,'web/showrooms.html')

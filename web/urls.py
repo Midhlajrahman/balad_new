@@ -93,4 +93,5 @@ urlpatterns = [
     ),
     path("wedding/<slug:slug>/", views.wedding_list, name="wedding"),
     path("product/search/",views.search_product,name='search'),
+    path("showrooms/",views.showrooms,name='showrooms'),
 ]
