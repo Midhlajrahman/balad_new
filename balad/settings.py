@@ -61,7 +61,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = "kmtsilks.urls"
+ROOT_URLCONF = "balad.urls"
 
 TEMPLATES = [
     {
@@ -81,7 +81,7 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = "kmtsilks.wsgi.application"
+WSGI_APPLICATION = "balad.wsgi.application"
 
 
 # Database
@@ -197,7 +197,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SESSION_COOKIE_SECURE = True
 # DOMAIN = "http://127.0.0.1:8000"
-DOMAIN = "https://kmtsilks.geany.website"
+DOMAIN = "https://balad.geany.website"
 
 RAZOR_PAY_KEY = config("RAZOR_PAY_KEY")
 RAZOR_PAY_SECRET = config("RAZOR_PAY_SECRET")

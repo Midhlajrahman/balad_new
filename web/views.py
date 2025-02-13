@@ -336,7 +336,7 @@ def order(request):
 
         message = (
             f"============================\n"
-            f"Welcome to kmtsilks.\n"
+            f"Welcome to balad.\n"
             f"============================\n\n"
             f'Name: {request.POST.get("name")}\n'
             f'Phone: {request.POST.get("phone")}\n'
@@ -346,7 +346,7 @@ def order(request):
             f"{products}\n\n"
             f"Grand Total: {total}\n"
             f"============================\n"
-            f"Thank you for placing your order with kmtsilks. Your order has been confirmed.your order will be delivered in 7 working days.\n"
+            f"Thank you for placing your order with balad. Your order has been confirmed.your order will be delivered in 7 working days.\n"
             f"Thank you for shopping with us.\n "
         )
 
@@ -556,17 +556,17 @@ def callback(request, pk):
                 f"Pincode: {order.pin_code}\n"
                 f"Mobile: {order.mobile_no}\n"
                 f"Email: {order.email}\n\n"
-                f"Thank you for placing your order with kmtsilks. Your order has been confirmed.your order will be delivered in 7 working days.\n\n"
+                f"Thank you for placing your order with balad. Your order has been confirmed.your order will be delivered in 7 working days.\n\n"
             )
 
             email = order.email
-            subject = "Order Confirmation - kmtsilks"
+            subject = "Order Confirmation - balad"
             message = message
             send_mail(
                 subject,
                 message,
                 "secure.gedexo@gmail.com",
-                [email, "info@kmtsilks.com"],
+                [email, "info@balad.com"],
                 fail_silently=False,
             )
 
@@ -637,7 +637,7 @@ class CompleteOrderView(DetailView):
             f"Pincode: {order.pin_code}\n"
             f"Mobile: {order.mobile_no}\n"
             f"Email: {order.email}\n\n"
-            f"Thank you for placing your order with kmtsilks. "
+            f"Thank you for placing your order with balad. "
             f"Your order has been confirmed. Your order will be delivered in 7 working days.\n\n"
         )
 

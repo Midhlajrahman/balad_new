@@ -1,5 +1,5 @@
 """
-ASGI config for kmtsilks project.
+ASGI config for balad project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "kmtsilks.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "balad.settings")
 
 application = get_asgi_application()

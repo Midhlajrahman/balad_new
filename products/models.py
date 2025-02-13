@@ -203,7 +203,7 @@ class Product(models.Model):
 
     # def save(self, *args, **kwargs):
     #     if not self.image.name:
-    #         unique_filename = f"kmtsilks_{self.slug}_{uuid.uuid4()}.webp"
+    #         unique_filename = f"balad_{self.slug}_{uuid.uuid4()}.webp"
     #         self.image.name = os.path.join( unique_filename)
     #         super(Product, self).save(*args, **kwargs)
 
