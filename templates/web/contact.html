@@ -85,71 +85,41 @@
             </div>
         </section> {% endcomment %}
 
+        <!-- form -->
         <section class="flat-spacing-21">
             <div class="container">
-                <div class="row">
-                    <!-- Branch 1 -->
-                    <div class="col-md-6 mt-2">
-                        <div class="card p-4 border-0 shadow-lg">
-                            <div class="card-body">
-                                <h5 class="mb-3">Perinthalmanna Store</h5>
-                                <div class="mb-3">
-                                    <p class="mb-1"><strong>Address</strong></p>
-                                    <p>KMT Silks, Kozhikkode - Palakkad Bypass Rd, opposite Ksrtc Bus Stand, Shanti Nagar, Perinthalmanna, Kerala 679322</p>
-                                </div>
-                                <div class="mb-3">
-                                    <p class="mb-1"><strong>Phone</strong></p>
-                                    <p>Lan : 04933-226893 <br> Mobile : +91 9207005600 </p>
-                                </div>
-                                <div class="mb-3">
-                                    <p class="mb-1"><strong>Email</strong></p>
-                                    <p>balad@gmail.com</p>
-                                </div>
-                                <div class="mb-3">
-                                    <iframe 
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d27785.134681146388!2d76.20850953476561!3d10.974905300000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7cdac8012e9bb%3A0x8a3904a3d1e93c1c!2sKMT%20Silks%2C%20Perinthalmanna!5e1!3m2!1sen!2sin!4v1738729922383!5m2!1sen!2sin"
-                                        width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy">
-                                    </iframe>
-                                </div>
-                              
-                            </div>
+                <div class="tf-grid-layout gap30 lg-col-2">
+                    <div class="tf-content-left">
+                        <h5 class="mb_20">Visit Our Store</h5>
+                        <div class="mb_20">
+                            <p class="mb_15"><strong>Address</strong></p>
+                            <p>Near mims hospital khaleej mall calicut, Kozhikode, India, Kerala</p>
+                        </div>
+                        <div class="mb_20">
+                            <p class="mb_15"><strong>Phone</strong></p>
+                            <p>+91 94474 25555</p>
+                        </div>
+                        <div class="mb_20">
+                            <p class="mb_15"><strong>Email</strong></p>
+                            <p>hello@baladperfume.com</p>
+                        </div>
+                        <div class="mb_36">
+                            <p class="mb_15"><strong>Open Time</strong></p>
+                            <p class="mb_15">Our store is open for shopping:</p>
+                            <p>Every day from 09:30 AM to 09:00 PM</p>
+                        </div>
+                        <div>
+                            <ul class="tf-social-icon d-flex gap-20 style-default">
+                                <li><a href="https://www.facebook.com/baladperfume/" target="_blank" class="box-icon link round social-facebook border-line-black"><i class="icon fs-14 icon-fb"></i></a></li>
+                                <li><a href="https://www.instagram.com/baladperfume/" target="_blank" class="box-icon link round social-instagram border-line-black"><i class="icon fs-14 icon-instagram"></i></a></li>
+                                <li><a href="https://www.youtube.com/@baladperfume" target="_blank" class="box-icon link round social-pinterest border-line-black"><i class="icon fs-14 icon-youtube"></i></a></li>
+                            </ul>
                         </div>
                     </div>
-        
-                    <!-- Branch 2 -->
-                    <div class="col-md-6 mt-2">
-                        <div class="card p-4 border-0 shadow-lg">
-                            <div class="card-body">
-                                <h5 class="mb-3">Kottakkal Store</h5>
-                                <div class="mb-3">
-                                    <p class="mb-1"><strong>Address</strong></p>
-                                    <p>Near Ayurveda College Calicut Road, Malappuram Edarikkode, Post, Kottakkal, Kerala 676501</p>
-                                </div>
-                                <div class="mb-3">
-                                    <p class="mb-1"><strong>Phone</strong></p>
-                                    <p>Lan : 0483-2962266<br> Mobile : +91 7994440408</p>
-                                </div>
-                                <div class="mb-3">
-                                    <p class="mb-1"><strong>Email</strong></p>
-                                    <p>balad@gmail.com</p>
-                                </div>
-                                <div class="mb-3">
-                                    <iframe 
-                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3472.881967860433!2d75.98311687441546!3d10.996989655087887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba7b3f3cef6ed43%3A0x21967c4ae71277dd!2sKMT%20Silks%20Kottakkal!5e1!3m2!1sen!2sin!4v1738730124137!5m2!1sen!2sin"
-                                        width="100%" height="200" style="border:0;" allowfullscreen="" loading="lazy">
-                                    </iframe>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>  
-                
-                <div class="d-flex justify-content-center mt-5">
-                    <div class="w-100 text-center" style="max-width: 600px;">
+                    <div class="tf-content-right">
                         <h5 class="mb_20">Get in Touch</h5>
-                        <p class="mb_24">If you’ve got great products or looking to work with us, drop us a line.</p>
-                        <div class="">
+                        <p class="mb_24">If you’ve got great products your making or looking to work with us then drop us a line.</p>
+                        <div>
                             <form class="form-contact" id="contactForm" action="" method="post">
                                 {% csrf_token %}
                                 <div class="d-flex gap-15 mb_15">
@@ -182,9 +152,15 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </section>
+        <!-- /form -->
+
+        <!-- map -->
+        <div class="w-100">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d125883.7937528102!2d77.167543!3d9.606585!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b065516fbf48fc5%3A0x38d4930c20c92cc8!2zQkFMQUQgUEVSRlVNRVMgKOC0rOC0suC0puC1jSDgtKrgtYbgtbzgtKvgtY3gtK_gtYLgtILgtLjgtY0p!5e0!3m2!1sen!2sin!4v1739770675976!5m2!1sen!2sin" width="100%" height="440" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <!-- /map -->
         
 
 {% block js %}
@@ -235,5 +211,15 @@
     });
 </script>
 
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+    crossorigin="anonymous"></script>
+
+<script src="{% static 'web/js/product_detail.js' %}"></script>
+<div id="cart-modal" style="">
+    {% include "web/includes/cart_modal.html" %}
+</div>
+<script src="{% static 'web/js/shop-filter.js' %}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.0/dist/sweetalert2.all.min.js"></script>
+{% include "web/includes/search.html" %}
 {% endblock %}
 {% endblock %}

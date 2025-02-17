@@ -28,7 +28,7 @@ from web.cart import Cart
 # form
 from web.forms import ContactForm, MeasurementForm
 # model
-from web.models import Testimonial
+from web.models import Testimonial, FAQ, Blog
 
 client = razorpay.Client(auth=(settings.RAZOR_PAY_KEY, settings.RAZOR_PAY_SECRET))
 
@@ -75,9 +75,29 @@ class AboutView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["testimonials"] = Testimonial.objects.all()
+        context["brands"] = Brands.objects.all()
+        context["faqs"] = FAQ.objects.all()
+        return context
+    
+class BlogView(TemplateView):
+    template_name = "web/blog.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["blogs"] = Blog.objects.all()
         return context
 
+
+class BlogDetailView(DetailView):
+    model = Blog
+    template_name = "web/blog-detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["blogs"] = Blog.objects.all()
+        return context
+    
+    
 class ShopView(ListView):
     model = Product
     template_name = "web/shop.html"
@@ -437,7 +457,7 @@ class CheckoutView(View):
 
             # Send message via WhatsApp
             whatsapp_api_url = "https://api.whatsapp.com/send"
-            phone_number = "+918589005600"
+            phone_number = "+919447425555"
             encoded_message = urllib.parse.quote(message_body)
             whatsapp_url = (
                 f"{whatsapp_api_url}?phone={phone_number}&text={encoded_message}"
@@ -736,11 +756,9 @@ def my_account_orders(request):
 def category_list(request, slug):
     category = Category.objects.filter(slug=slug).first()
     sub_category = SubCategory.objects.filter(slug=slug).first()
-    festival = Product.objects.filter(is_wedding_product=True)
     if WeddingBanner.objects.filter(slug=slug).exists():
         instance = WeddingBanner.objects.filter(slug=slug).last().category
         print("instance", instance)
-        festival = festival.filter(category=instance)
 
     sort_option = request.GET.get("sort", "latest")  # Default sorting
     subcategory_id = request.GET.get("subcategory")  # Get selected subcategory
@@ -942,6 +960,3 @@ def wedding_list(request, slug):
 
 def search_product(request):
     return render (request,'web/search.html')
-
-def showrooms(request):
-    return render(request,'web/showrooms.html')

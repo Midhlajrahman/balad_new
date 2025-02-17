@@ -154,19 +154,19 @@ urlpatterns = [
         views.SubCategoryDelete.as_view(),
         name="sub_category_delete",
     ),
-    # wedding
-    path("wedding/", views.WeddingListView.as_view(), name="wedding"),
-    path("wedding/create/", views.WeddingCreateView.as_view(), name="wedding_create"),
-    path(
-        "wedding/<str:pk>/update/",
-        views.WeddingUpdateView.as_view(),
-        name="wedding_update",
-    ),
-    path(
-        "wedding/<str:pk>/delete/",
-        views.WeddingDeleteView.as_view(),
-        name="wedding_delete",
-    ),
+    # # wedding
+    # path("wedding/", views.WeddingListView.as_view(), name="wedding"),
+    # path("wedding/create/", views.WeddingCreateView.as_view(), name="wedding_create"),
+    # path(
+    #     "wedding/<str:pk>/update/",
+    #     views.WeddingUpdateView.as_view(),
+    #     name="wedding_update",
+    # ),
+    # path(
+    #     "wedding/<str:pk>/delete/",
+    #     views.WeddingDeleteView.as_view(),
+    #     name="wedding_delete",
+    # ),
     # Brands
     path("brands/", views.BrandsListView.as_view(), name="brands"),
     path("brands/create/", views.BrandsCreateView.as_view(), name="brands_create"),

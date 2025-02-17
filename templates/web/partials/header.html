@@ -4,45 +4,23 @@
     <div id="wrapper">
         <div class="tf-top-bar bg_dark line">
             <div class="px_15 lg-px_40">
-                <div class="tf-top-bar_wrap grid-3 gap-30 align-items-center">
+                <div class="tf-top-bar_wrap grid-2 gap-30 align-items-center">
                     <div class="tf-top-bar_left">
                         <div class="d-flex gap-30 text_white fw-5">
-                            <span>(+333) 123-1688</span>
-                            <span>sayhello@ecomus.com</span>
+                            <span>+91 94474 25555</span>
+                            <span>hello@baladperfume.com</span>
                         </div>
                     </div>
-                    <div class="text-center overflow-hidden">
-                        <div dir="ltr" class="swiper tf-sw-top_bar" data-preview="1" data-space="0" data-loop="true" data-speed="1000" data-delay="2000">
-                            <div class="swiper-wrapper">
-                                <div class="swiper-slide">
-                                    <p class="top-bar-text fw-5 text_white">Spring Fashion Sale <a href="shop-de{% url "web:index" %}" title="all collection" class="tf-btn btn-line">Shop now<i class="icon icon-arrow1-top-left"></i></a></p>
-                                </div>
-                                <div class="swiper-slide">
-                                    <p class="top-bar-text fw-5 text_white">Summer sale discount off 70%</a></p>
-                                </div>
-                                <div class="swiper-slide">
-                                    <p class="top-bar-text fw-5 text_white">Time to refresh your wardrobe.</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                     <div class="top-bar-language tf-cur justify-content-end">
                         <div class="tf-currencies">
-                            <select class="image-select center style-default type-currencies color-white">
-                                <option data-thumbnail="images/country/fr.svg">EUR <span>€ | France</span></option>
-                                <option data-thumbnail="images/country/de.svg">EUR <span>€ | Germany</span></option>
-                                <option selected data-thumbnail="images/country/us.svg">USD <span>$ | United States</span></option>
-                                <option data-thumbnail="images/country/vn.svg">VND <span>₫ | Vietnam</span></option>
-                            </select>
+                            <ul class="tf-top-bar_item tf-social-icon d-flex gap-10">
+                                <li><a href="https://www.facebook.com/baladperfume/" target="_blank" class="box-icon w_28 round social-facebook bg_white"><i class="icon fs-12 icon-fb"></i></a></li>
+                                <li><a href="https://www.instagram.com/baladperfume/" target="_blank" class="box-icon w_28 round social-instagram bg_white"><i class="icon fs-12 icon-instagram"></i></a></li>
+                                <li><a href="https://www.youtube.com/@baladperfume" target="_blank" class="box-icon w_28 round social-pinterest bg_white"><i class="icon fs-12 icon-youtube"></i></a></li>
+                            </ul>
                         </div>
-                        <div class="tf-languages">
-                            <select class="image-select center style-default type-languages color-white">
-                                <option>English</option>
-                                <option>العربية</option>
-                                <option>简体中文</option>
-                                <option>اردو</option>
-                            </select>
-                        </div>    
+                        
                     </div>
                 </div>
             </div>
@@ -91,10 +69,6 @@
 
                                 </li>
 
-                                <li class="menu-item position-relative">
-                                    <a href="{% url 'web:showrooms' %}" class="item-link">Showrooms</a>
-
-                                </li>
 
                                 <li class="menu-item position-relative">
                                     <a href="{% url 'web:contact' %}" class="item-link">Contact</a>
@@ -148,20 +122,21 @@
                                     <a href="{% url 'web:shop' %}" class="item-link">Shop</a>
                                 
                                 </li>
-                               
+
                                 {% if user.is_superuser %}
-                                <li class="menu-item ">
-                                    <a href="{% url 'main:index' %}" class="item-link">Dashboard
+                                <li class="menu-item">
+                                    <a href="{% url 'main:index' %}" class="item-link">Dashboard</a>
+                                
                                 </li>
                                 {% endif %}
 
-                                {% for cat in all_categories %}
+                                {% comment %} {% for cat in all_categories %}
                                 
                                 <li class="menu-item position-relative">
                                     <a href="{{cat.get_absolute_url}}" class="item-link">{{cat.name}}</a>
 
                                 </li>
-                                {% endfor %}
+                                {% endfor %} {% endcomment %}
 
                                 <li class="menu-item position-relative">
                                     <a href="{% url 'web:about' %}" class="item-link">About</a>
@@ -169,7 +144,7 @@
                                 </li>
 
                                 <li class="menu-item position-relative">
-                                    <a href="{% url 'web:showrooms' %}" class="item-link">Showrooms</a>
+                                    <a href="{% url 'web:blog' %}" class="item-link">Blog</a>
 
                                 </li>
 

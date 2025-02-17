@@ -1,0 +1,39 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% block content  %}
+<!-- page-title -->
+<div class="tf-page-title">
+    <div class="container-full">
+        <div class="heading text-center">Blog Detail</div>
+    </div>
+</div>
+
+
+<!-- blog-detail -->
+<div class="blog-detail">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="blog-detail-main">
+                    <div class="blog-detail-main-heading">
+                        <div class="image">
+                            <img class="lazyload" data-src="{{blog.image.url}}" src="{{blog.image.url}}" alt="">
+                        </div>
+                    </div>
+                    <div class="blog-detail-main-heading">
+                        <div class="title">{{blog.title}}</div>
+                        <div class="meta">by <span>{{blog.auther}}</span> on <span>{{blog.date}}</span></div>
+                    </div>
+                    <div class="desc">
+                        {{blog.description|safe}}
+                    </div>
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /blog-detail -->
+{% endblock %}

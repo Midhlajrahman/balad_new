@@ -158,4 +158,4 @@ class AvailableSizeAdmin(admin.ModelAdmin):
 
 @admin.register(Brands)
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ("brand_name",)
+    list_display = ("brand_name", "is_brand")

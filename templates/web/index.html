@@ -42,54 +42,7 @@
     </div>
 </div>
 
-<section class="flat-spacing-20">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <div class="tf-categories-wrap">
-                    <div class="tf-categories-container">
-                        {% for category in categories %}
-                        <div class="collection-item-circle hover-img">
-                            <a href="{{category.get_absolute_url}}" class="collection-image img-style">
-                                <img class="lazyload" data-src="{{category.image.url}}" src="{{category.image.url}}"
-                                    alt="collection-img">
-                            </a>
-                            <div class="collection-content text-center">
-                                <a href="{{category.get_absolute_url}}" class="link title fw-6">{{category.name}}</a>
-                            </div>
-                        </div>
-                        {% endfor %}
-
-                    </div>
-                  
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-{% comment %} <section>
-    <div class="container">
-        <div class="row">
-
-            <div class="col-12 col-md-6 mt-1">
-                <a href="{% url 'web:customize_product' %}">
-                    <div class="bg_orange-999">
-
-                        <img src="{% static 'web/images/custom-suit.webp' %}" alt="Season Image" class="banner-img-fit"
-                            style='border-radius:7px'>
-
-                    </div>
-                </a>
-            </div>
-
-           
-
-        </div>
-    </div>
-</section> {% endcomment %}
-
-<section class='#'>
+<section class='pt-5'>
     {% comment %} flat-spacing-12 {% endcomment %}
     <div class="container">
         <div dir="ltr"
@@ -123,6 +76,66 @@
         </div>
     </div>
 </section>
+
+{% comment %} <section class="flat-spacing-20">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="tf-categories-wrap">
+                    <div class="tf-categories-container">
+                        {% for category in categories %}
+                        <div class="collection-item-circle hover-img">
+                            <a href="{{category.get_absolute_url}}" class="collection-image img-style">
+                                <img class="lazyload" data-src="{{category.image.url}}" src="{{category.image.url}}"
+                                    alt="collection-img">
+                            </a>
+                            <div class="collection-content text-center">
+                                <a href="{{category.get_absolute_url}}" class="link title fw-6">{{category.name}}</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</section> {% endcomment %}
+
+ <!-- Categories -->
+ <section class="flat-spacing-14 category-list-section">
+    <div class="container">
+        <div class="flat-title wow fadeInUp" data-wow-delay="0s">
+            <span class="title">Shop by categories</span>
+        </div>
+        <div class="hover-sw-nav">
+            <div dir="ltr" class="swiper tf-sw-collection" data-preview="4" data-tablet="2" data-mobile="2" data-space-lg="30" data-space-md="30" data-space="15" data-loop="false" data-auto-play="false">
+                <div class="swiper-wrapper">
+                    {% for category in categories %}
+                    <div class="swiper-slide" lazy="true">
+                        <div class="collection-item style-2 hover-img">
+                            <div class="collection-inner">
+                                <a href="{{category.get_absolute_url}}" class="collection-image img-style rounded-0">
+                                    <img class="lazyload" data-src="{{category.image.url}}" src="{{category.image.url}}" alt="{{category.name}}">
+                                </a>
+                                <div class="collection-content">
+                                    <a href="{{category.get_absolute_url}}" class="tf-btn collection-title hover-icon fs-15"><span>{{category.name}}</span><i class="icon icon-arrow1-top-left"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="nav-sw nav-next-slider nav-next-collection box-icon w_46 round"><span class="icon icon-arrow-left"></span></div>
+            <div class="nav-sw nav-prev-slider nav-prev-collection box-icon w_46 round"><span class="icon icon-arrow-right"></span></div>
+            <div class="sw-dots style-2 sw-pagination-collection justify-content-center"></div>
+        </div>
+    </div>
+</section>
+
+
 
 <!-- /Collection -->
 <!-- Sale Product -->
@@ -364,7 +377,7 @@
     </div>
 </section>
 
-
+{% comment %} 
 <section>
     <div class="container">
         <div class="row">
@@ -382,7 +395,7 @@
 
         </div>
     </div>
-</section>
+</section> {% endcomment %}
 
 
 <section class='flat-spacing-12'>
@@ -419,7 +432,7 @@
     </div>
 </section>
 
-<section>
+{% comment %} <section>
     <div class="container">
         <div class="row">
        
@@ -435,7 +448,7 @@
 
         </div>
     </div>
-</section>
+</section> {% endcomment %}
 
 <!-- brand -->
 <section class="flat-spacing-1 brand-space">

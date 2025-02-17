@@ -75,6 +75,7 @@ class Category(models.Model):
 class Brands(models.Model):
     brand_name = models.CharField(max_length=50)
     brand_image = models.ImageField(upload_to="Brands")
+    is_brand = models.BooleanField(default=False)
 
     def __str__(self):
         return self.brand_name
@@ -188,7 +189,6 @@ class Product(models.Model):
     is_popular = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_sale = models.BooleanField(default=False)
-    is_wedding_product = models.BooleanField(default=False)
 
     # meta
     meta_title = models.CharField(max_length=200, blank=True)

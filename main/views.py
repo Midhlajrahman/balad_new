@@ -1012,76 +1012,76 @@ class CustomOrderUpdateView(SuperAdminLoginRequiredMixin, View):
         return JsonResponse(response_data)
 
 
-class WeddingListView(SuperAdminLoginRequiredMixin, ListView):
-    template_name = "dashboard/wedding/list.html"
-    model = WeddingBanner
-    extra_context = {"is_wedding": True}
+# class WeddingListView(SuperAdminLoginRequiredMixin, ListView):
+#     template_name = "dashboard/wedding/list.html"
+#     model = WeddingBanner
+#     extra_context = {"is_wedding": True}
 
 
-class WeddingCreateView(SuperAdminLoginRequiredMixin, CreateView):
-    model = WeddingBanner
-    template_name = "dashboard/wedding/entry.html"
-    form_class = WeddingForm
-    success_url = reverse_lazy("main:wedding_create")
-    extra_context = {"is_wedding": True, "title": "Add New Wedding Banner"}
+# class WeddingCreateView(SuperAdminLoginRequiredMixin, CreateView):
+#     model = WeddingBanner
+#     template_name = "dashboard/wedding/entry.html"
+#     form_class = WeddingForm
+#     success_url = reverse_lazy("main:wedding_create")
+#     extra_context = {"is_wedding": True, "title": "Add New Wedding Banner"}
 
-    def form_valid(self, form):
-        response_data = super().form_valid(form)
-        response_data = {
-            "status": "true",
-            "title": "Successfully Submitted",
-            "message": "Wedding Banner Created successfully.",
-        }
-        return JsonResponse(response_data)
+#     def form_valid(self, form):
+#         response_data = super().form_valid(form)
+#         response_data = {
+#             "status": "true",
+#             "title": "Successfully Submitted",
+#             "message": "Wedding Banner Created successfully.",
+#         }
+#         return JsonResponse(response_data)
 
-    def form_invalid(self, form):
-        response_data = super().form_invalid(form)
-        response_data = {
-            "status": "false",
-            "title": "Form validation error",
-            "message": str(form.errors),
-        }
-        return JsonResponse(response_data)
+#     def form_invalid(self, form):
+#         response_data = super().form_invalid(form)
+#         response_data = {
+#             "status": "false",
+#             "title": "Form validation error",
+#             "message": str(form.errors),
+#         }
+#         return JsonResponse(response_data)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["is_edit"] = (
-            self.object is not None
-        )  # Check if editing an existing object
-        context["wedding"] = self.object  # Pass the object to the template
-        return context
-
-
-class WeddingUpdateView(SuperAdminLoginRequiredMixin, UpdateView):
-    model = WeddingBanner
-    template_name = "dashboard/wedding/entry.html"
-    form_class = WeddingForm
-    success_url = reverse_lazy("main:wedding_update")
-    extra_context = {"is_wedding": True, "title": "Wedding Banner Update"}
-
-    def form_valid(self, form):
-        response_data = super().form_valid(form)
-        response_data = {
-            "status": "true",
-            "title": "Successfully Submitted",
-            "message": "Wedding Banner Updated successfully.",
-        }
-        return JsonResponse(response_data)
-
-    def form_invalid(self, form):
-        response_data = super().form_invalid(form)
-        response_data = {
-            "status": "false",
-            "title": "Form validation error",
-            "message": str(form.errors),
-        }
-        return JsonResponse(response_data)
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context["is_edit"] = (
+#             self.object is not None
+#         )  # Check if editing an existing object
+#         context["wedding"] = self.object  # Pass the object to the template
+#         return context
 
 
-class WeddingDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
-    model = WeddingBanner
-    template_name = "dashboard/commen/delete.html"
-    success_url = reverse_lazy("main:wedding")
+# class WeddingUpdateView(SuperAdminLoginRequiredMixin, UpdateView):
+#     model = WeddingBanner
+#     template_name = "dashboard/wedding/entry.html"
+#     form_class = WeddingForm
+#     success_url = reverse_lazy("main:wedding_update")
+#     extra_context = {"is_wedding": True, "title": "Wedding Banner Update"}
+
+#     def form_valid(self, form):
+#         response_data = super().form_valid(form)
+#         response_data = {
+#             "status": "true",
+#             "title": "Successfully Submitted",
+#             "message": "Wedding Banner Updated successfully.",
+#         }
+#         return JsonResponse(response_data)
+
+#     def form_invalid(self, form):
+#         response_data = super().form_invalid(form)
+#         response_data = {
+#             "status": "false",
+#             "title": "Form validation error",
+#             "message": str(form.errors),
+#         }
+#         return JsonResponse(response_data)
+
+
+# class WeddingDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
+#     model = WeddingBanner
+#     template_name = "dashboard/commen/delete.html"
+#     success_url = reverse_lazy("main:wedding")
 
 
 class BrandsListView(SuperAdminLoginRequiredMixin, ListView):

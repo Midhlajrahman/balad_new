@@ -1,6 +1,47 @@
-@media (min-width: 768px) {
+@media (min-width: 991px) {
     .logo-header img {
         width: 100% !important;
         height: 80px !important;
     }
+}
+@media (max-width: 768px) {
+    .logo-header img {
+        width: 60px !important;
+        height: 80px !important;
+    }
+}
+@media (min-width: 1150px) {
+    .faq-section .tf-accordion-wrap > .content {
+        width: 78.333333%;
+    }
+}
+@media (min-width: 768px) {
+    .testimonial-item.style-column .author {
+        margin-bottom: 10px;
+    }
+}
+
+.blog-detail .blog-detail-main .blog-detail-main-heading .image img {
+    height: 450px !important;
+}
+.blog-detail .blog-detail-main .desc {
+    text-align: center;
+}
+
+.category-list-section .tf-sw-collection .swiper-slide img {
+    border-radius: 6px !important;
+    width: 100% !important;
+    height: 300px !important;
+}
+collection-item .collection-image {
+    border-radius: 6px !important;
+
+}
+.category-list-section.flat-spacing-14{
+    padding-top: 30px !important;
+}
+
+.category-list-section .collection-item{
+    width: 300px !important;
+    height: 300px !important;
 }

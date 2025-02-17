@@ -1,4 +1,5 @@
 from django.db import models
+from tinymce.models import HTMLField
 from django.urls import reverse_lazy
 
 # Create your models here.
@@ -65,3 +66,36 @@ class CustomOrder(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class FAQ(models.Model):
+    question = models.CharField(max_length=100)
+    answer = models.TextField()
+
+    def __str__(self):
+        return self.question
+    
+    class Meta:
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQs'
+    
+
+class Blog(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    auther = models.CharField(max_length=100, default="Admin")   
+    date = models.DateField()
+    image = models.ImageField(upload_to='blog/')
+    description = HTMLField()
+    
+    def get_absolute_url(self):
+        return reverse_lazy("web:blog_detail", kwargs={"slug": self.slug})
+    
+    
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = 'Blog'
+        verbose_name_plural = 'Blogs'
+    

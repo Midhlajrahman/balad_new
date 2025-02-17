@@ -38,10 +38,12 @@
                         </div>
                         <div class="tf-product-info-variant-picker">
                             <div class="variant-picker-item">
+                                {% comment %}
                                 <div class="variant-picker-label">
-                                    {% comment %} Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.colour_set.first.name }}</span> {% endcomment %}
+                                     Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.colour_set.first.name }}</span> 
                                     Color: <span class="fw-6 variant-picker-label-value value-currentColor">{{product.color }}</span>
                                 </div>
+                                {% endcomment %}
                                 {% comment %} <div class="variant-picker-values" data-product-id="{{ product.id }}">
                                     {% for color in product.colour_set.all %}
                                     <input id="values-{{ color.name|lower }}" type="radio"

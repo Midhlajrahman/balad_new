@@ -10,6 +10,8 @@ app_name = "web"
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     path("about/", views.AboutView.as_view(), name="about"),
+    path("blog/", views.BlogView.as_view(), name="blog"),
+    path("blog/<slug:slug>/", views.BlogDetailView.as_view(), name="blog_detail"),
     path("contact/", views.ContactView.as_view(), name="contact"),
     path(
         "privacy-policy/",
@@ -93,5 +95,4 @@ urlpatterns = [
     ),
     path("wedding/<slug:slug>/", views.wedding_list, name="wedding"),
     path("product/search/",views.search_product,name='search'),
-    path("showrooms/",views.showrooms,name='showrooms'),
 ]

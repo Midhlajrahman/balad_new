@@ -1,0 +1,40 @@
+{% extends "web/base.html" %}
+{% load static %}
+{% block content  %}
+
+<!-- page-title -->
+ <div class="tf-page-title">
+    <div class="container-full">
+        <div class="heading text-center">Blogs</div>
+    </div>
+</div>
+
+<!-- blog-grid-main -->
+ <div class="blog-grid-main">
+    <div class="container">
+        <div class="row">
+            {% for blog in blogs %}
+            <div class="col-xl-4 col-md-6 col-12">
+                <div class="blog-article-item">
+                    <div class="article-thumb">
+                        <a href="{{blog.get_absolute_url}}">
+                            <img class="lazyload" data-src="{{blog.image.url}}" src="{{blog.image.url}}" alt="{{blog.title}}">
+                        </a>
+                        
+                    </div>
+                    <div class="article-content">
+                        <div class="article-title">
+                            <a href="{{blog.get_absolute_url}}" class="">{{blog.title}}</a>
+                        </div>
+                        <div class="article-btn">
+                            <a href="{{blog.get_absolute_url}}" class="tf-btn btn-line fw-6">Read more<i class="icon icon-arrow1-top-left"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- /blog-grid-main -->
+{% endblock %}
