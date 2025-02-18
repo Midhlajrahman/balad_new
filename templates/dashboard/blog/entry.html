@@ -1,0 +1,163 @@
+{% extends 'dashboard/base.html' %} 
+{% load static %}
+{% block title %}{{title}}{% endblock%} 
+
+{% block content %}
+<style>
+  .tox-tinymce {
+    width: 100% !important; /* Adjust width */
+    max-width: 800px; /* Optional: Add a max-width constraint */
+}
+</style>
+<div class="row mb-8">
+  <div class="col-md-12">
+    <div class="d-md-flex justify-content-between align-items-center">
+      <div>
+        <h2>{{title}}</h2>
+      </div>
+      <div class="mt-5 mt-md-0">
+        <a onclick="history.back()" class="btn btn-light">Back to Blog</a>
+      </div>
+    </div>
+  </div>
+</div>
+<form method="POST" enctype="multipart/form-data" class="ajax redirect skip_empty_row" data-redirect="{% url 'main:blogs' %}">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col-md-12 col-12">
+      <div class="card mb-6 card-lg">
+        <div class="card-body p-6 ">
+          <h4 class="mb-5 h5">Blog Image </h4>
+          <div class="mb-4 d-flex">
+            <div class="position-relative" >
+              {% if is_edit %}
+              <img class="image  icon-shape icon-xxxl bg-light rounded-4" src="{{slider.image.url}}" alt="Image">
+              {% else %}
+              <img class="image  icon-shape icon-xxxl bg-light rounded-4" src="{% static 'assets/images/assets/upload.png' %}" alt="Image">
+              {% endif %}
+              <div class="file-upload position-absolute end-0 top-0 mt-n2 me-n1">
+                <input type="file" class="file-input " name="image">
+                <span class="icon-shape icon-sm rounded-circle bg-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-pencil-fill text-muted" viewBox="0 0 16 16">
+                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                  </svg>
+                </span>
+              </div>
+            </div>
+          </div>
+          {% if form.image.help_text %}
+            <span class="text-danger">{{form.image.help_text}}</span>
+          {% endif %}
+          <div class=" mt-2 row">
+            <!-- input -->
+            <div class="mb-3 col-md-6">
+              <label class="form-label">{{form.title.label}} {% if form.title.field.required %}<span class="text-danger">*</span>{% endif %} </label>
+              {{ form.title }}
+            </div>
+            <div class="mb-3 col-md-6">
+              <label class="form-label">{{form.slug.label}} {% if form.slug.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+              {{form.slug}}
+            </div>
+
+            <div class="mb-3 col-md-6">
+              <label class="form-label">{{form.auther.label}} {% if form.auther.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+              {{form.auther}}
+            </div>
+            
+            <div class="mb-3 col-md-6">
+              <label class="form-label">{{form.date.label}} {% if form.sku.field.required %}<span class="text-danger">*</span>{% endif %}</label>
+              {{form.date}}
+            </div>
+         
+           <div class="mb-3 col-lg-12 mt-5">
+              <h4 class="mb-3 h5">Descriptions</h4>
+              {{ form.description }}
+            </div> 
+          </div>
+        </div>
+      </div>
+      <div class="card mb-6 card-lg">
+        <div class="card-body p-6 ">
+          <h4 class="mb-4 h5">Meta Data</h4>
+          <!-- input -->
+          <div class="mb-3">
+            <label class="form-label">Meta Title</label>
+            {{form.meta_title}}
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Meta Keywords</label>
+            {{form.meta_keywords}}
+          </div>
+
+          <!-- input -->
+          <div class="mb-3">
+            <label class="form-label">Meta Description</label>
+            {{form.meta_description}}
+          </div>
+          
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-md-5">
+    <button style="width:60%" type="submit" class="btn btn-primary">Submit</button>
+ </div>
+</form>
+{% endblock content %}
+
+
+{% block js_plugins %}
+<script src="{% static 'assets/js/formset.js'  %}{{current_version}}"></script>
+{% include 'web/includes/form-ajax.html' %}
+{% comment %} <script src="https://cdn.tiny.cloud/1/9cvvdpu7uhs90es7skaryob9mtmcmv22t1n4x2y4ze4j3bbw/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> {% endcomment %}
+{% comment %} <script>tinymce.init({selector:'#id_details'});</script> {% endcomment %}
+
+<script>
+  $(document).ready(function () {
+    // Function to update the slug based on the title
+    function updateSlug() {
+        var title = $('#id_title').val();
+        var slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        $('#id_slug').val(slug);
+    }
+
+    // Attach the function to the change event of the title field
+    $('#id_title').on('input', updateSlug);
+});
+</script>
+
+{{form.media}}
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+<style>
+  .btn-icon {
+    border-radius: 50%;
+    width: 40px;
+    line-height: 40px !important;
+    height: 40px;
+    padding: 0;
+    text-align: center;
+    display: inline-block;
+  }
+  .waves-effect {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+}
+.dynamic-formset1-add td {
+    text-align: center;
+}
+</style>
+{% endblock%}

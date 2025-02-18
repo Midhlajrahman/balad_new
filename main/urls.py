@@ -136,6 +136,41 @@ urlpatterns = [
         views.TestimonialDeleteView.as_view(),
         name="testimonial_delete",
     ),
+    # blog
+    path("blogs/", views.BlogListView.as_view(), name="blogs"),
+    path(
+        "blog/create/",
+        views.BlogCreateView.as_view(),
+        name="blog_create",
+    ),
+    path(
+        "blog/<str:pk>/update/",
+        views.BlogUpdateView.as_view(),
+        name="blog_update",
+    ),
+    path(
+        "blog/<str:pk>/delete/",
+        views.BlogDeleteView.as_view(),
+        name="blog_delete",
+    ),
+    
+    # FAQ
+    path("faqs/", views.FAQListView.as_view(), name="faqs"),
+    path(
+        "faq/create/",
+        views.FAQCreateView.as_view(),
+        name="faq_create",
+    ),
+    path(
+        "faq/<str:pk>/update/",
+        views.FAQUpdateView.as_view(),
+        name="faq_update",
+    ),
+    path(
+        "faq/<str:pk>/delete/",
+        views.FAQDeleteView.as_view(),
+        name="faq_delete",
+    ),
     # subcategory
     # catgory
     path("subcategories/", views.SubCategoryListView.as_view(), name="sub_categories"),

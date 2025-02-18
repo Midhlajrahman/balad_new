@@ -59,7 +59,7 @@ class IndexView(TemplateView):
             is_display_sub_category=True, category__name="Men"
         )
         context["season"] = WeddingBanner.objects.all()
-        context["brands"] = Brands.objects.all()
+        context["brands"] = Brands.objects.filter(is_brand_display=True)
 
         # Add category products to context
         category_products = {
@@ -75,7 +75,7 @@ class AboutView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["testimonials"] = Testimonial.objects.all()
-        context["brands"] = Brands.objects.all()
+        context["brands"] = Brands.objects.filter(is_brand_display=True)
         context["faqs"] = FAQ.objects.all()
         return context
     

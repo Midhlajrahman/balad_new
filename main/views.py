@@ -18,7 +18,7 @@ from main.forms import (AvailableSizeForm, BrandsForm,  # ColourForm,
                         CategoryForm, DistrictForm, ProductForm,
                         ProductImageForm, ReviewForm, ShippingFeeForm,
                         SliderForm, StateForm, SubCategoryForm,
-                        TestimonialForm, WeddingForm)
+                        TestimonialForm, BlogForm, FAQForm)
 from main.mixins import LoginRequiredMixin, SuperAdminLoginRequiredMixin
 from main.models import District, ShippingFee, State
 from order.models import Order
@@ -26,7 +26,7 @@ from products.models import (AvailableSize, Brands, Category,  # Colour,
                              Product, ProductImage, Review, Slider,
                              SubCategory, WeddingBanner)
 from web.forms import ContactForm
-from web.models import Contact, CustomOrder, Testimonial
+from web.models import Contact, CustomOrder, Testimonial, Blog, FAQ
 
 
 class IndexView(LoginRequiredMixin, TemplateView):
@@ -908,6 +908,143 @@ class TestimonialDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
     template_name = "dashboard/commen/delete.html"
     success_url = reverse_lazy("main:testimonials")
 
+
+# Blog
+
+
+class BlogListView(SuperAdminLoginRequiredMixin, ListView):
+    template_name = "dashboard/blog/list.html"
+    model = Blog
+    extra_context = {"is_blog": True}
+
+
+class BlogCreateView(SuperAdminLoginRequiredMixin, CreateView):
+    model = Blog
+    template_name = "dashboard/blog/entry.html"
+    form_class = BlogForm
+    success_url = reverse_lazy("main:blogs")
+    extra_context = {"is_blog": True, "title": "Add New Blog"}
+
+    def form_valid(self, form):
+        form.instance.image = self.request.FILES.get('image')  # Ensure image is saved
+        response_data = super().form_valid(form)
+        response_data = {
+            "status": "true",
+            "title": "Successfully Submitted",
+            "message": "Testimonial Created successfully.",
+        }
+        return JsonResponse(response_data)
+
+    def form_invalid(self, form):
+        response_data = super().form_invalid(form)
+        response_data = {
+            "status": "false",
+            "title": "Form validation error",
+            "message": str(form.errors),
+        }
+        return JsonResponse(response_data)
+
+
+class BlogUpdateView(SuperAdminLoginRequiredMixin, UpdateView):
+    model = Blog
+    template_name = "dashboard/blog/entry.html"
+    form_class = BlogForm
+    success_url = reverse_lazy("main:blogs")
+    extra_context = {"is_blog": True, "title": "Blog Update"}
+
+    def form_valid(self, form):
+        form.instance.image = self.request.FILES.get('image')
+        response_data = super().form_valid(form)
+        response_data = {
+            "status": "true",
+            "title": "Successfully Submitted",
+            "message": "Blog Updated successfully.",
+        }
+        return JsonResponse(response_data)
+
+    def form_invalid(self, form):
+        response_data = super().form_invalid(form)
+        response_data = {
+            "status": "false",
+            "title": "Form validation error",
+            "message": str(form.errors),
+        }
+        return JsonResponse(response_data)
+
+
+class BlogDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
+    model = Blog
+    template_name = "dashboard/commen/delete.html"
+    success_url = reverse_lazy("main:blogs")
+
+
+# FAQ
+
+
+class FAQListView(SuperAdminLoginRequiredMixin, ListView):
+    template_name = "dashboard/faq/list.html"
+    model = FAQ
+    extra_context = {"is_faq": True}
+
+
+class FAQCreateView(SuperAdminLoginRequiredMixin, CreateView):
+    model = FAQ
+    template_name = "dashboard/faq/entry.html"
+    form_class = FAQForm
+    success_url = reverse_lazy("main:faqs")
+    extra_context = {"is_faq": True, "title": "Add New FAQ"}
+
+    def form_valid(self, form):
+        response_data = super().form_valid(form)
+        response_data = {
+            "status": "true",
+            "title": "Successfully Submitted",
+            "message": "Testimonial Created successfully.",
+        }
+        return JsonResponse(response_data)
+
+    def form_invalid(self, form):
+        response_data = super().form_invalid(form)
+        response_data = {
+            "status": "false",
+            "title": "Form validation error",
+            "message": str(form.errors),
+        }
+        return JsonResponse(response_data)
+
+
+class FAQUpdateView(SuperAdminLoginRequiredMixin, UpdateView):
+    model = FAQ
+    template_name = "dashboard/faq/entry.html"
+    form_class = FAQForm
+    success_url = reverse_lazy("main:faqs")
+    extra_context = {"is_faq": True, "title": "FAQ Update"}
+
+    def form_valid(self, form):
+        form.instance.image = self.request.FILES.get('image')
+        response_data = super().form_valid(form)
+        response_data = {
+            "status": "true",
+            "title": "Successfully Submitted",
+            "message": "FAQ Updated successfully.",
+        }
+        return JsonResponse(response_data)
+
+    def form_invalid(self, form):
+        response_data = super().form_invalid(form)
+        response_data = {
+            "status": "false",
+            "title": "Form validation error",
+            "message": str(form.errors),
+        }
+        return JsonResponse(response_data)
+
+
+class FAQDeleteView(SuperAdminLoginRequiredMixin, DeleteView):
+    model = FAQ
+    template_name = "dashboard/commen/delete.html"
+    success_url = reverse_lazy("main:faqs")
+    
 
 # sub category
 class SubCategoryListView(SuperAdminLoginRequiredMixin, ListView):

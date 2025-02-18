@@ -75,7 +75,7 @@ class Category(models.Model):
 class Brands(models.Model):
     brand_name = models.CharField(max_length=50)
     brand_image = models.ImageField(upload_to="Brands")
-    is_brand = models.BooleanField(default=False)
+    is_brand_display = models.BooleanField(default=False)
 
     def __str__(self):
         return self.brand_name
@@ -185,7 +185,7 @@ class Product(models.Model):
     image = models.ImageField(
         upload_to="products/"
     )
-    color = models.CharField(max_length=100, null=True, blank=True)
+    # color = models.CharField(max_length=100, null=True, blank=True)
     is_popular = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_sale = models.BooleanField(default=False)
@@ -308,7 +308,7 @@ class ProductImage(models.Model):
 class AvailableSize(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="sizes")
     # size = models.IntegerField()
-    unit = models.CharField(max_length=10, choices=UNIT_CHOICES)
+    unit = models.CharField(max_length=10,)
     sale_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     regular_price = models.DecimalField(
         max_digits=10, decimal_places=2, blank=True, null=True

@@ -131,6 +131,36 @@
         </li>  {% endcomment %}
 
         <li class="nav-item">
+          <a class="nav-link {% if is_testimonial %} active {% endif %}" href="{% url 'main:testimonials' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-person-rolodex"></i></span>
+              <span class="nav-link-text">Testimonials</span>
+            </div>
+          </a>
+        </li> 
+
+        <li class="nav-item">
+          <a class="nav-link {% if is_faq %} active {% endif %}" href="{% url 'main:faqs' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-person-rolodex"></i></span>
+              <span class="nav-link-text">FAQs</span>
+            </div>
+          </a>
+        </li> 
+
+        <li class="nav-item">
+          <a class="nav-link {% if is_blog %} active {% endif %}" href="{% url 'main:blogs' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-person-rolodex"></i></span>
+              <span class="nav-link-text">Blog</span>
+            </div>
+          </a>
+        </li> 
+
+        <li class="nav-item">
           <a class="nav-link {% if is_contact %} active {% endif %}" href="{% url 'main:contacts' %}">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon">

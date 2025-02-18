@@ -12,7 +12,7 @@ COLOR_CHOICES = (
 )
 
 UNIT_CHOICES = (
-    ("S", "S"),
+    ("ML", "Milli Liter"),
     ("M", "M"),
     ("L", "L"),
     ("XL", "XL"),

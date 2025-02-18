@@ -45,3 +45,33 @@ collection-item .collection-image {
     width: 300px !important;
     height: 300px !important;
 }
+@media (max-width: 576px) {
+    .modal-img img {
+        /* width: 60%; */
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: cover;
+        margin-top: 0px;
+        border-radius: 4px;
+    }
+}
+
+.hover-img .img-style img {
+    width: 500px !important;
+    height: 270px !important;
+    object-fit: cover;
+    -webkit-transition: transform 2s cubic-bezier(0, 0, 0.44, 1.18);
+    transition: transform 1.5s cubic-bezier(0, 0, 0.44, 1.18);
+}
+
+.variant-picker-values input:checked + label:not(.color-btn) {
+    width: auto;
+    border-color: var(--main);
+    box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.1019607843);
+}
+
+.product-quickview-modal .item img{
+    height: 500px !important;
+    object-fit: cover !important;
+}

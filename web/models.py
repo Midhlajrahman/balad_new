@@ -83,6 +83,9 @@ class FAQ(models.Model):
 class Blog(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
+    meta_title = models.CharField(max_length=170, blank=True, null=True)
+    meta_keywords = models.CharField(max_length=170, blank=True, null=True)
+    meta_description = models.CharField(max_length=170, blank=True, null=True)
     auther = models.CharField(max_length=100, default="Admin")   
     date = models.DateField()
     image = models.ImageField(upload_to='blog/')
@@ -90,6 +93,15 @@ class Blog(models.Model):
     
     def get_absolute_url(self):
         return reverse_lazy("web:blog_detail", kwargs={"slug": self.slug})
+    
+    def get_list_url():
+        return reverse_lazy("main:blogs")
+
+    def get_update_url(self):
+        return reverse_lazy("main:blog_update", kwargs={"pk": self.pk})
+
+    def get_delete_url(self):
+        return reverse_lazy("main:blog_delete", kwargs={"pk": self.pk})
     
     
     def __str__(self):

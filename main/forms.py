@@ -5,7 +5,7 @@ from main.models import District, ShippingFee, State
 from products.models import (AvailableSize, Brands, Category,  # Colour,
                              Product, ProductImage, Review, Slider,
                              SubCategory, WeddingBanner)
-from web.models import Testimonial
+from web.models import Testimonial, Blog, FAQ
 
 
 class CategoryForm(forms.ModelForm):
@@ -272,6 +272,45 @@ class TestimonialForm(forms.ModelForm):
             "description": forms.Textarea(attrs={"class": "form-control"}),
         }
 
+
+class BlogForm(forms.ModelForm):
+    class Meta:
+        model = Blog
+        fields = "__all__"
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control",}),
+            "slug": forms.TextInput(attrs={"class": "form-control"}),
+            "meta_title": forms.TextInput(
+                attrs={"placeholder": "Title", "class": "form-control"}
+            ),
+            "meta_keywords": forms.Textarea(
+                attrs={"placeholder": "Keywords", "class": "form-control", "rows": 3}
+            ),
+            "meta_description": forms.Textarea(
+                attrs={"placeholder": "Description", "class": "form-control", "rows": 3}
+            ),
+            "auther": forms.TextInput(attrs={"class": "form-control"}),
+            "date": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+            "image": forms.FileInput(attrs={"class": "file-input"}),
+            "description": TinyMCE(attrs={"cols": 80, "rows": 20}),  # TinyMCE Widget
+
+        }
+        
+    
+class FAQForm(forms.ModelForm):
+    class Meta:
+        model = FAQ
+        fields = "__all__"
+        widgets = {
+            "question": forms.Textarea(
+                attrs={"placeholder": "Question", "class": "form-control", "rows": 3}
+            ),
+            "answer": forms.Textarea(
+                attrs={"placeholder": "Answer", "class": "form-control", "rows": 3}
+            ),
+
+        }
+        
 
 class BrandsForm(forms.ModelForm):
     class Meta:
