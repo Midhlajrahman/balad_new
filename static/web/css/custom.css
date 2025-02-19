@@ -6,6 +6,7 @@
 }
 @media (max-width: 768px) {
     .logo-header img {
+        padding: 5px !important;
         width: 60px !important;
         height: 80px !important;
     }
