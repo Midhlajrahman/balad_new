@@ -3,7 +3,7 @@
   <div class="navbar-vertical">
     <div class="px-4 py-5">
       <a href="/" class="navbar-brand">
-        {% comment %} <img src="{% static 'assets/images/logo/logo.png' %}" class="img-logo" alt="balad" /> {% endcomment %}
+        {% comment %} <img src="{% static 'assets/images/logo/logo.svg' %}" class="img-logo" alt="balad" /> {% endcomment %}
         balad
       </a>
     </div>
@@ -134,7 +134,7 @@
           <a class="nav-link {% if is_testimonial %} active {% endif %}" href="{% url 'main:testimonials' %}">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon">
-                <i class="bi bi-person-rolodex"></i></span>
+                <i class="bi bi-star-fill"></i></span>
               <span class="nav-link-text">Testimonials</span>
             </div>
           </a>
@@ -144,7 +144,7 @@
           <a class="nav-link {% if is_faq %} active {% endif %}" href="{% url 'main:faqs' %}">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon">
-                <i class="bi bi-person-rolodex"></i></span>
+                <i class="bi bi-question-circle"></i></span>
               <span class="nav-link-text">FAQs</span>
             </div>
           </a>
@@ -154,7 +154,7 @@
           <a class="nav-link {% if is_blog %} active {% endif %}" href="{% url 'main:blogs' %}">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon">
-                <i class="bi bi-person-rolodex"></i></span>
+                <i class="bi bi-file-earmark-text"></i></span>
               <span class="nav-link-text">Blog</span>
             </div>
           </a>
@@ -214,7 +214,7 @@
             </div>
           </a>
         </li>
-        <li class="nav-item">
+        {% comment %} <li class="nav-item">
           <a class="nav-link {% if is_review %} active {% endif %}" href="{% url 'main:review_list' %}">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon">
@@ -223,7 +223,7 @@
               <span class="nav-link-text">Reviews</span>
             </div>
           </a>
-        </li>
+        </li> {% endcomment %}
         <li class="nav-item">
           <a class="nav-link {% if not is_product %} collapsed {% endif %} "href="#"data-bs-toggle="collapse"data-bs-target="#navproducts"aria-expanded="{% if not is_product %} false {% else %}true {% endif %}"aria-controls="navproducts">
             <div class="d-flex align-items-center">
@@ -264,11 +264,72 @@
           </div>
         </li>
         <li class="nav-item">
+          <a class="nav-link {% if not is_sub_category %} collapsed {% endif %} "href="#"data-bs-toggle="collapse"data-bs-target="#navsubcatrgories"aria-expanded="{% if not is_subcategory %} false {% else %}true {% endif %}"aria-controls="navsubcatrgories">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon"> <i class="bi bi-list-task"></i></span>
+              <span class="nav-link-text">Sub Categories</span>
+            </div>
+          </a>
+          <div id="navsubcatrgories" class="collapse {%if is_sub_category %} show {% endif %}" data-bs-parent="#sideNavbar">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link {% if is_sub_category_list %} active {% endif %}" href="{% url 'main:sub_categories' %}">Sub Category List </a>
+            </li>
+            <!-- Nav item -->
+            <li class="nav-item">
+              <a class="nav-link  {% if is_sub_category_create %} active {% endif %}" href="{% url 'main:sub_category_create' %}"> Add Sub Category </a>
+            </li>
+          </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link {% if is_brands %} active {% endif %}" href="{% url 'main:brands' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-person-rolodex"></i></span>
+              <span class="nav-link-text">Brands</span>
+            </div>
+          </a>
+        </li> 
+
+
+        <li class="nav-item">
           <a class="nav-link {% if is_slider %} active {% endif %}" href="{% url 'main:sliders' %}">
             <div class="d-flex align-items-center">
               <span class="nav-link-icon">
                 <i class="bi bi-aspect-ratio"></i></span>
               <span class="nav-link-text">Sliders</span>
+            </div>
+          </a>
+        </li> 
+
+        <li class="nav-item">
+          <a class="nav-link {% if is_testimonial %} active {% endif %}" href="{% url 'main:testimonials' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-star-fill"></i></span>
+              <span class="nav-link-text">Testimonials</span>
+            </div>
+          </a>
+        </li> 
+
+        <li class="nav-item">
+          <a class="nav-link {% if is_faq %} active {% endif %}" href="{% url 'main:faqs' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-question-circle"></i></span>
+              <span class="nav-link-text">FAQs</span>
+            </div>
+          </a>
+        </li> 
+
+        <li class="nav-item">
+          <a class="nav-link {% if is_blog %} active {% endif %}" href="{% url 'main:blogs' %}">
+            <div class="d-flex align-items-center">
+              <span class="nav-link-icon">
+                <i class="bi bi-file-earmark-text"></i></span>
+              <span class="nav-link-text">Blog</span>
             </div>
           </a>
         </li> 

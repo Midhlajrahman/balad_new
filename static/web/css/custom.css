@@ -75,3 +75,8 @@ collection-item .collection-image {
     height: 500px !important;
     object-fit: cover !important;
 }
+
+.footer .footer-logo img{
+    height: 80px;
+    width: 100%;
+}
