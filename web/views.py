@@ -281,6 +281,7 @@ def cart_add(request):
     quantity = request.GET.get("quantity", 1)
     product_id = request.GET.get("product_id", "")
     print("product_id=", product_id)
+    print(quantity)
     variant = get_object_or_404(AvailableSize, pk=product_id)
     cart.add(variant, quantity=int(quantity))
     print(cart_instance)

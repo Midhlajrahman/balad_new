@@ -164,7 +164,7 @@
                             data-brand="{{ product.brands.brand_name }}"
                             data-size="{{ product.size_set.all|join:' ' }}">
                             <div class="card-product-wrapper" data-item="{{product.id}}">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}" class="product-img">
+                                <a href="{{product.get_absolute_url}}" class="product-img">
                                     <img class="lazyload img-product" data-src="{{product.image.url}}"
                                         src="{{product.image.url}}" alt="image-product">
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}"
@@ -189,7 +189,7 @@
                             <div class="card-product-info">
                                 {% comment %} <a href="{{product.get_absolute_url}}"
                                     class="title link">{{product.name}}</a> {% endcomment %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
+                                <a href="{{product.get_absolute_url}}" 
                                     class="title link">
                                     {{product.name}}
                                 </a>
@@ -231,7 +231,7 @@
                             data-brand="{{ product.brands.brand_name }}"
                             data-size="{{ product.size_set.all|join:' ' }}">
                             <div class="card-product-wrapper" data-item="{{product.id}}">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}" class="product-img">
+                                <a href="{{product.get_absolute_url}}"  class="product-img">
                                     <img class="lazyload img-product" data-src="{{product.image.url}}"
                                         src="{{product.image.url}}" alt="image-product">
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}"
@@ -263,7 +263,7 @@
                             <div class="card-product-info">
                                 {% comment %} <a href="{{product.get_absolute_url}}"
                                     class="title link">{{product.name}}</a> {% endcomment %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
+                                <a href="{{product.get_absolute_url}}"
                                     class="title link">
                                     {{product.name}}
                                 </a>
@@ -307,7 +307,7 @@
                             data-brand="{{ product.brands.brand_name }}"
                             data-size="{{ product.size_set.all|join:' ' }}">
                             <div class="card-product-wrapper" data-item="{{product.id}}">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}" class="product-img">
+                                <a href="{{product.get_absolute_url}}" class="product-img">
                                     <img class="lazyload img-product" data-src="{{product.image.url}}"
                                         src="{{product.image.url}}" alt="image-product">
                                     <img class="lazyload img-hover" data-src="{{product.image.url}}"
@@ -340,7 +340,7 @@
                             <div class="card-product-info">
                                 {% comment %} <a href="{{product.get_absolute_url}}"
                                     class="title link">{{product.name}}</a> {% endcomment %}
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick_view_{{ product.id }}"
+                                <a href="{{product.get_absolute_url}}"
                                     class="title link">
                                     {{product.name}}
                                 </a>

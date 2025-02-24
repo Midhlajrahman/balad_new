@@ -253,17 +253,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle add to cart button click
     const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            const productId = this.getAttribute('data-product');
-            const quantity = this.closest('.modal-content').querySelector('.quantity__input').value;
-            const price = this.querySelector('.tf-qty-price').innerText;
+    // addToCartButtons.forEach(button => {
+    //     button.addEventListener('click', function (event) {
+    //         const productId = this.getAttribute('data-product');
+    //         const quantity = this.closest('.modal-content').querySelector('.quantity__input').value;
+    //         const price = this.querySelector('.tf-qty-price').innerText;
 
-            // Handle the add to cart logic here
-            console.log(`Adding product ID: ${productId} to cart with quantity: ${quantity} and price: ${price}`);
+    //         // Handle the add to cart logic here
+    //         console.log(`Adding product ID: ${productId} to cart with quantity: ${quantity} and price: ${price}`);
 
 
-        });
-    });
+    //     });
+    // });
 });
 

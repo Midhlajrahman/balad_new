@@ -50,7 +50,7 @@
     // Event listener for add cart button click
     $("#cart-add-btn").click(function () {
         var product_Id = $('input[name="product_size"]:checked').val();
-        var quantity = $("input[name='quantity']").val()
+        var quantity = $("input[name='quantity']").val();
         var url = "/shop/cart/add/?product_id="+product_Id+"&quantity="+quantity; 
         $.ajax({
             type: "GET",

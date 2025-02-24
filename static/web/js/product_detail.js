@@ -183,7 +183,7 @@ $(document).ready(function () {
         }
         
         var quantity = $(this).closest('.modal-content').find("input[name='quantity']").val();
-        var url = `/shop/cart/add/?product_id=${selectedRadio.val()}&quantity=${quantity}`;
+        var url = `/shop/cart/add/?product_id=${selectedRadio.val()}&quantityy=${quantity}`;
         
         console.log(url);
         
